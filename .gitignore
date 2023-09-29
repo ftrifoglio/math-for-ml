@@ -1,3 +1,5 @@
 .venv
 .poetry
 .python-version
+.DS_Store
+docs/build

@@ -5,7 +5,6 @@ PYTHON_VERSION = 3.11
 PYTHON = $(VENV_DIR)/bin/python
 POETRY = $(POETRY_DIR)/bin/poetry
 PIP = $(POETRY_DIR)/bin/pip
-PRE-COMMIT = $(VENV_DIR)/bin/pre-commit
 # COLOURS
 COLOUR_GREEN=\033[0;32m
 COLOUR_RED=\033[0;31m
@@ -34,8 +33,6 @@ $(POETRY_DIR):
 
 $(VENV_DIR): $(POETRY_DIR)
 	@$(POETRY) install --no-interaction
-	@$(POETRY) add numpy matplotlib ipykernel
-	@$(POETRY) add pre-commit -G dev
 
 .PHONY = _venv venv
 
@@ -43,6 +40,12 @@ _venv: .python-version \
 	$(VENV_DIR)
 
 venv: _venv ## Create environment
+
+html_doc: ## Create HTML documentation
+	@rm -rf docs/build
+	@rm -rf docs/_autosummary
+	@cd docs && make html
+	@open docs/build/html/index.html
 
 .PHONY = clean
 

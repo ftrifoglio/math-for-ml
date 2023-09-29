@@ -1,0 +1,95 @@
+name: Docs CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/**'
+      - '.github/workflows/docs.yaml'
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      #----------------------------------------------
+      # checkout repo & set up python
+      #----------------------------------------------
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+      #----------------------------------------------
+      # setup python
+      #----------------------------------------------
+      - name: Set up Python
+        id: setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+      #----------------------------------------------
+      # load poetry, if cached
+      #----------------------------------------------
+      - name: Load cached Poetry
+        id: cached-poetry-installation
+        uses: actions/cache@v3
+        with:
+          path: ~/.local
+          key: poetry-cache-${{ runner.os }}-${{ env.POETRY_VERSION }}
+      #----------------------------------------------
+      # install poetry, if not cached
+      #----------------------------------------------
+      - name: Install Poetry
+        if: steps.cached-poetry-installation.outputs.cache-hit != 'true'
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+      #----------------------------------------------
+      # install pandoc
+      #----------------------------------------------
+      - name: Install Pandoc
+        run: |
+          sudo apt-get install -y --no-install-recommends pandoc
+      #----------------------------------------------
+      # load docs dependencies, if cached
+      #
+      # Notes:
+      #  1. changes to the poetry.lock file will mean that
+      #  this step is skipped and the next one will be executed instead
+      #  2. caching venv does not seem to work on Windows runners
+      #----------------------------------------------
+      - name: Load cached .venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: docs-venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+      #----------------------------------------------
+      # install docs dependencies, if not cached
+      #----------------------------------------------
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-root --with=docs
+      #----------------------------------------------
+      # install project (always)
+      #----------------------------------------------
+      - name: Install project
+        run: poetry install --no-interaction
+      #----------------------------------------------
+      # build docs
+      #----------------------------------------------
+      - name: Build docs
+        run: cd docs && make html
+      #----------------------------------------------
+      # publish docs to github pages
+      #----------------------------------------------
+      - name: Publish to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/build/html
