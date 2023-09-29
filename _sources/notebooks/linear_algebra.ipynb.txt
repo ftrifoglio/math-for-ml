@@ -1,0 +1,3977 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Linear Algebra"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "import matplotlib as mpl\n",
+    "import math\n",
+    "from scipy.ndimage import rotate\n",
+    "import sympy\n",
+    "from functools import partial\n",
+    "from IPython.display import display, Math\n",
+    "from itertools import product\n",
+    "from scipy.optimize import minimize\n",
+    "\n",
+    "plt.style.use(\"seaborn-v0_8-whitegrid\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Singularity (week 1)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "| Complete | Redundant | Contradictory |\n",
+    "|---|---|---|\n",
+    "| $\\begin{cases} a + b = 10  \\\\ a + 2b = 12 \\end{cases}$ | $\\begin{cases} a + b = 10  \\\\ 2a + 2b = 20 \\end{cases}$ | $\\begin{cases} a + b = 10  \\\\ 2a + 2b = 24 \\end{cases}$ |\n",
+    "\n",
+    "The first system is complete (non-singular) because it has one solution. $a=8$ and $b=2$.\n",
+    "\n",
+    "The second system is redundant (singular) because it has many solutions. Any $a$ and $b$ whose sum is 10.\n",
+    "\n",
+    "The second systemt is contradictory (singular) because it has no solutions. No $a+b$ can be equal to 10 while $2(a+b)$ not being 20.\n",
+    "\n",
+    "> 🔑 **Singular:** peculiar, irregular\n",
+    "\n",
+    "> 🔑 **Non-singular:** regular"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Singularity and linear dependency"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "A system of equations can also be represented as lines.\n",
+    "\n",
+    "In a non-singular system the lines will intersect at the solution.\n",
+    "\n",
+    "In a singular (redundant) system the lines will be one over the other (ie parallalel with distant zero).\n",
+    "\n",
+    "In a singular (contradictory) system the lines will be parallel and distant from each other."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "def line1(a):\n",
+    "    return 10.0 - a\n",
+    "\n",
+    "\n",
+    "def line2(a):\n",
+    "    return 6.0 - (0.5) * a\n",
+    "\n",
+    "\n",
+    "def line3(a):\n",
+    "    return (20.0 - 2.0 * a) / 2\n",
+    "\n",
+    "\n",
+    "def line4(a):\n",
+    "    return 12.0 - a\n",
+    "\n",
+    "\n",
+    "fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(10, 4), sharex=True, sharey=True)\n",
+    "\n",
+    "ax1.plot([0.0, 10.0], [line1(0.0), line1(10.0)], label=\"$a+b=10$\")\n",
+    "ax1.plot([0.0, 10.0], [line2(0.0), line2(10.0)], label=\"$a+2b=12$\")\n",
+    "ax1.set_ylabel(\"b\")\n",
+    "ax1.set_xlabel(\"a\")\n",
+    "ax1.legend()\n",
+    "ax1.set_title(\"Complete Non-Singular system\")\n",
+    "ax1.set_aspect(\"equal\")\n",
+    "\n",
+    "ax2.plot([0.0, 10.0], [line1(0.0), line1(10.0)], label=\"$a+b=10$\")\n",
+    "ax2.plot(\n",
+    "    [0.0, 10.0],\n",
+    "    [line3(0.0), line3(10.0)],\n",
+    "    dashes=[2, 3],\n",
+    "    linewidth=\"3\",\n",
+    "    label=\"$2a+2b=20$\",\n",
+    ")\n",
+    "ax2.set_ylabel(\"b\")\n",
+    "ax2.set_xlabel(\"a\")\n",
+    "ax2.legend()\n",
+    "ax2.set_title(\"Redudant Singular system\")\n",
+    "ax2.set_aspect(\"equal\")\n",
+    "\n",
+    "ax3.plot([0.0, 10.0], [line1(0.0), line1(10.0)], label=\"$a+b=10$\")\n",
+    "ax3.plot([0.0, 10.0], [line4(0.0), line4(10.0)], label=\"$2a+2b=24$\")\n",
+    "ax3.set_ylabel(\"b\")\n",
+    "ax3.set_xlabel(\"a\")\n",
+    "ax3.legend()\n",
+    "ax3.set_title(\"Contradictory Singular system\")\n",
+    "ax3.set_aspect(\"equal\")\n",
+    "\n",
+    "plt.tight_layout()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "It turns out that to distinguish between singular and non-singular, the constants can be removed.\n",
+    "\n",
+    "| Complete | Redundant | Contradictory |\n",
+    "|---|---|---|\n",
+    "| $\\begin{cases} a + b = 10  \\\\ a + 2b = 12 \\end{cases}$ | $\\begin{cases} a + b = 10  \\\\ 2a + 2b = 20 \\end{cases}$ | $\\begin{cases} a + b = 10  \\\\ 2a + 2b = 24 \\end{cases}$ |\n",
+    "\n",
+    "Becomes\n",
+    "\n",
+    "| Non-Singular | Singular |\n",
+    "|---|---|\n",
+    "| $\\begin{cases} a + b = 0 \\\\ a + 2b = 0 \\end{cases}$ | $\\begin{cases} a + b = 0 \\\\ 2a + 2b = 0 \\end{cases}$ |\n",
+    "\n",
+    "And this is where the notion of **Non-singular** and **Singular** matrices comes in.\n",
+    "\n",
+    "| Non-Singular | Singular |\n",
+    "|---|---|\n",
+    "| $\\begin{bmatrix} 1 & 1 \\\\ 1 & 2 \\end{bmatrix}$ $\\begin{bmatrix} 0 \\\\ 0 \\end{bmatrix}$ | $\\begin{bmatrix} 1 & 1 \\\\ 2 & 2 \\end{bmatrix}$ $\\begin{bmatrix} 0 \\\\ 0 \\end{bmatrix}$ |\n",
+    "\n",
+    "&nbsp;\n",
+    "> 🔑 **Singular**: the rows are linearly dependent\n",
+    "\n",
+    "> 🔑 **Non-singular**: the rows are linearly independent\n",
+    "\n",
+    "When the rows are linearly indpendendent, there is no constant you can multiply a row by to obtain the second row. \n",
+    "\n",
+    "A different interpretation is that each row carries new information that we cannot derive from any other rows.\n",
+    "\n",
+    "In contrast, the information provided by the rows of a singular matrix are either redundant or contradictory."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Singularity and the determinant"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "> 🔑 **Singular**: determinant is zero\n",
+    "\n",
+    "> 🔑 **Non-singular**: determinant is non-zero\n",
+    "\n",
+    "To see how we get to the formula for the determinant and why it's 0 for singular matrices.\n",
+    "\n",
+    "$A := \\begin{bmatrix}\n",
+    "a & b \\\\\n",
+    "c & d\n",
+    "\\end{bmatrix}$\n",
+    "\n",
+    "We saw earlier that $A$ is singular if $(a+b)k = c+d$ for $k > 0$ (linear dependency).\n",
+    "\n",
+    "In particular we saw $\\begin{bmatrix} 1 & 1 \\\\ 2 & 2 \\end{bmatrix}$ is singular because $(1+1)k = 2+2$ for $k=2$.\n",
+    "\n",
+    "Equivalently\n",
+    "\n",
+    "$A := \n",
+    "\\begin{cases}\n",
+    "ax + by = 0 \\\\\n",
+    "cx + dy = 0\n",
+    "\\end{cases} \\rightarrow\n",
+    "\\begin{cases}\n",
+    "k_1ax = cx \\\\\n",
+    "k_2by = dy\n",
+    "\\end{cases} \\rightarrow\n",
+    "\\begin{cases}\n",
+    "k_1 = \\cfrac{c}{a} \\\\\n",
+    "k_2 = \\cfrac{d}{b}\n",
+    "\\end{cases} if k_1 = k_2 = k > 0 \\rightarrow\n",
+    "\\cfrac{c}{a} = \\cfrac{d}{b} \\rightarrow \n",
+    "bc = ad\n",
+    "$\n",
+    "\n",
+    "and finally\n",
+    "\n",
+    "$\\det A = ad - bc$\n",
+    "\n",
+    "$A$ is singular if $ad - bc$ is 0, which implies that $k > 0$\n",
+    "\n",
+    "The determinant has the following properties.\n",
+    "\n",
+    "> 🔑 $\\det A \\times \\det B = \\det AB$\n",
+    "\n",
+    "> 🔑 $\\det A^{-1} = \\cfrac{1}{\\det A}$\n",
+    "\n",
+    "The second one actually can be derived from the first property.\n",
+    "\n",
+    "$\\det AA^{-1} = \\det A \\times \\det A^{-1}$\n",
+    "\n",
+    "$\\det I = \\det A \\times \\det A^{-1}$\n",
+    "\n",
+    "$\\cfrac{\\det I}{\\det A} = \\det A^{-1}$\n",
+    "\n",
+    "$\\cfrac{1}{\\det A} = \\det A^{-1}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's verify the first property, the second property and also that $\\det I = 1$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "A = np.array([[5, 3], [2, 1]])\n",
+    "B = np.array([[1, -1], [3, 4]])\n",
+    "\n",
+    "assert np.isclose(np.linalg.det(A) * np.linalg.det(B), np.linalg.det(np.matmul(A, B)))\n",
+    "assert np.isclose(np.linalg.det(np.linalg.inv(A)), 1 / np.linalg.det(A))\n",
+    "assert np.isclose(np.linalg.det(np.linalg.inv(B)), 1 / np.linalg.det(B))\n",
+    "assert np.linalg.det(np.identity(2)) == 1.0"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Singularity and rank"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can think the rank of a matrix in terms of how non-singular a matrix is.\n",
+    "\n",
+    "A 2-D matrix has solution in a 2-D space.\n",
+    "\n",
+    "When a matrix is non-singular, we get a point as the solution; and since a point has 0 dimensions, the rank is 2. \n",
+    "\n",
+    "When a matrix is singular, we get a line as the solution or the whole space. A line has dimension 1 and the whole space has dimension 2, so the rank is 1 and 0, respectively.\n",
+    "\n",
+    "Similarly to what we saw for the determinant of matrix, the rank relates to the amount of linearly independent rows of a matrix.\n",
+    "\n",
+    "> 🔑 The rank of a matrix is the number of linearly independent rows\n",
+    "\n",
+    "Although this can help develop an intuition of what the rank of a matrix represents, it doesn't help determine it, especially for large matrices or non-obvious linear dependencies.\n",
+    "\n",
+    "One method to determine the rank of a matrix is through the reduced row-echelon form (rref) of a matrix.\n",
+    "\n",
+    "Let's consider the matrix\n",
+    "\n",
+    "$\\begin{bmatrix}5&&1\\\\4&&-3\\end{bmatrix}$\n",
+    "\n",
+    "We can obtain the row echelon form via row operations:\n",
+    "- switching any two rows\n",
+    "- multiplying (dividing) a row by a nonzero constant\n",
+    "- adding (subtracting) one row to another\n",
+    "\n",
+    "Row operations are such that they don't alter the singularity or non-singularity of a matrix, nor its rank.\n",
+    "\n",
+    "1. Divide each row by the leftmost non-zero coefficient\n",
+    "\n",
+    "$\\begin{bmatrix}1&&\\cfrac{1}{5}\\\\1&&-\\cfrac{3}{4}\\end{bmatrix}$\n",
+    "\n",
+    "2. Subtract the first row from the second row\n",
+    "\n",
+    "$\\begin{bmatrix}1&&\\cfrac{1}{5}\\\\0&&-\\cfrac{3}{4}-\\cfrac{1}{5}\\end{bmatrix}$\n",
+    "\n",
+    "3. Divide the last row by the leftmost non-zero coefficient\n",
+    "\n",
+    "$\\begin{bmatrix}1&&\\cfrac{1}{5}\\\\0&&1\\end{bmatrix}$\n",
+    "\n",
+    "4. Multiply the second row by $\\cfrac{1}{5}$ and subtract it from the first row\n",
+    "\n",
+    "$\\begin{bmatrix}1&&0\\\\0&&1\\end{bmatrix}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Or we can use the `rref` method of the `Matrix` data structure from the `sympy` package."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "sympy.Matrix([[5, 1], [1, -3]]).rref(pivots=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's try to calculate the rref of a singular matrix: a 3x3 matrix where **all** rows are linearly dependent."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "sympy.Matrix([[1, 2, 3], [3, 6, 9], [2, 4, 6]]).rref(pivots=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's try another singular matrix, where only 2 rows are linearly dependent."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "sympy.Matrix([[1, 2, 3], [3, 6, 9], [1, 2, 4]]).rref(pivots=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The rref form is characterized by the presence of pivots.\n",
+    "\n",
+    "> 🔑 A pivot is the first non-zero entry of each row in a row-echelon form.\n",
+    "\n",
+    "And it turns out the pivots help us determine the rank of a matrix.\n",
+    "\n",
+    "> 🔑 The rank of a matrix is the number of pivots of its row-echelon form"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Solving a system of equations (week 2)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can solve this system by elimination or substitution.\n",
+    "\n",
+    "$\\begin{cases}\n",
+    "5a + b = 17 \\\\\n",
+    "4a - 3b = 6\n",
+    "\\end{cases}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Elimination method"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "1. \n",
+    "$\\begin{cases}\n",
+    "a + 0.2b = 3.4 \\\\\n",
+    "a - 0.75b = 1.5\n",
+    "\\end{cases}$\n",
+    "\n",
+    "2. \n",
+    "$\\begin{cases}\n",
+    "a + 0.2b = 3.4 \\\\\n",
+    "a - 0.75b = 1.5\n",
+    "\\end{cases}$\n",
+    "\n",
+    "Eliminate $a$\n",
+    "\n",
+    "3. \n",
+    "$\\begin{cases}\n",
+    "a + 0.2b = 3.4 \\\\\n",
+    "0 - 0.95b = -1.9\n",
+    "\\end{cases}$\n",
+    "\n",
+    "4. \n",
+    "$\\begin{cases}\n",
+    "a + 0.2b = 3.4 \\\\\n",
+    "b = 2.\n",
+    "\\end{cases}$\n",
+    "\n",
+    "5. \n",
+    "$\\begin{cases}\n",
+    "a = 3. \\\\\n",
+    "b = 2.\n",
+    "\\end{cases}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Substitution method"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "1. \n",
+    "$\\begin{cases}\n",
+    "a + 0.2b = 3.4 \\\\\n",
+    "a - 0.75b = 1.5\n",
+    "\\end{cases}$\n",
+    "\n",
+    "2. \n",
+    "$\\begin{cases}\n",
+    "a = 3.4 - 0.2b \\\\\n",
+    "a = 1.5 + 0.75b\n",
+    "\\end{cases}$\n",
+    "\n",
+    "Substitute $a$\n",
+    "\n",
+    "3. \n",
+    "$\\begin{cases}\n",
+    "a = 3.4 - 0.2b \\\\\n",
+    "3.4 - 0.2b - 1.5 - 0.75b = 0\n",
+    "\\end{cases}$\n",
+    "\n",
+    "4. \n",
+    "$\\begin{cases}\n",
+    "a = 3.4 - 0.2b \\\\\n",
+    "1.9 - 0.95b = 0\n",
+    "\\end{cases}$\n",
+    "\n",
+    "5. \n",
+    "$\\begin{cases}\n",
+    "a = 3.4 - 0.2b \\\\\n",
+    "b = 2.\n",
+    "\\end{cases}$\n",
+    "\n",
+    "6. \n",
+    "$\\begin{cases}\n",
+    "a = 3. \\\\\n",
+    "b = 2.\n",
+    "\\end{cases}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's check the solution."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "a = 3.0\n",
+    "b = 2.0\n",
+    "\n",
+    "assert 5.0 * a + b == 17.0\n",
+    "assert 4.0 * a - 3.0 * b == 6.0\n",
+    "assert np.allclose(\n",
+    "    np.linalg.solve(np.array([[5.0, 1.0], [4.0, -3.0]]), np.array([17.0, 6.0])),\n",
+    "    np.array([a, b]),\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's build an elimination algorithm using this system as an example.\n",
+    "\n",
+    "$\\begin{cases}\n",
+    "a + b + 2c = 12 \\\\\n",
+    "3a - 3b - c = 2 \\\\\n",
+    "2a - b + 6c = 24\n",
+    "\\end{cases}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "a = np.array([[1, 1, 2], [3, -3, -1], [2, -1, 6]], dtype=\"float32\")\n",
+    "b = np.array([12, 2, 24], dtype=\"float32\")\n",
+    "\n",
+    "\n",
+    "def solve_by_elimination(a: np.array, b: np.array) -> np.array:\n",
+    "    c = np.hstack((a, b.reshape(-1, 1)))\n",
+    "    for i in range(c.shape[0] - 1):\n",
+    "        # normalize row i\n",
+    "        c[i:, :] /= c[i:, i].reshape(-1, 1)\n",
+    "        # remove row i from row i+1, i+2, etc...\n",
+    "        c = np.vstack((c[: i + 1, :], c[i + 1 :,] - c[i, :]))\n",
+    "    for i in range(c.shape[0] - 1, -1, -1):\n",
+    "        # bring solved (if any) to RHS\n",
+    "        c[i, -1] -= np.sum(c[i, (i + 1) : -1])\n",
+    "        c[i, (i + 1) : -1] = 0\n",
+    "        # divide whole row by coefficient of variable\n",
+    "        c[i, :] /= c[i, i]\n",
+    "        # replace solution across the system\n",
+    "        c[:i, i] *= c[i, -1]\n",
+    "    return c[:, -1]\n",
+    "\n",
+    "\n",
+    "solve_by_elimination(a, b)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's check the solution."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "assert np.allclose(solve_by_elimination(a, b), np.linalg.solve(a, b))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's try it with another one."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "a = np.array(\n",
+    "    [[2, -1, 1, 1], [1, 2, -1, -1], [-1, 2, 2, 2], [1, -1, 2, 1]], dtype=\"float32\"\n",
+    ")\n",
+    "b = np.array([6, 3, 14, 8], dtype=\"float32\")\n",
+    "assert np.allclose(solve_by_elimination(a, b), np.linalg.solve(a, b))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Vectors (week 3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's consider these two vectors:\n",
+    "\n",
+    "$\\vec{a}=\\begin{bmatrix}1\\\\3\\end{bmatrix}$ and $\\vec{b}=\\begin{bmatrix}4\\\\1\\end{bmatrix}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "a = np.array([1, 3])\n",
+    "b = np.array([4, 1])\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0],\n",
+    "    [0, 0],\n",
+    "    [a[0], b[0]],\n",
+    "    [a[1], b[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:orange\"],\n",
+    ")\n",
+    "a_deg = math.degrees(math.atan2(a[1], a[0]))\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "arc = mpl.patches.Arc((0, 0), 1, 1, angle=0, theta1=b_deg, theta2=a_deg)\n",
+    "plt.gca().add_patch(arc)\n",
+    "plt.annotate(\"$\\\\vec{a}$\", [a[0] / 2 - 0.5, a[1] / 2], color=\"tab:blue\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\vec{b}$\", [b[0] / 2, b[1] / 2 - 0.7], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\theta$\", [0.4, 0.4], fontsize=10)\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.title(\"Vectors $\\\\vec{a}$ and $\\\\vec{b}$ and their angle $\\\\theta$\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### The angle between vectors"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To calculate $\\theta$ we can use the **Law of Cosines**\n",
+    "\n",
+    "> 📐 $\\|\\vec{c}\\|^2 = \\|\\vec{a}\\|^2 + \\|\\vec{b}\\|^2 - 2\\|\\vec{a}\\|\\|\\vec{b}\\|\\cos\\theta$\n",
+    "\n",
+    "which relates the lengths of the sides of a triangle to the cosine of one of its angles."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We don't have $\\vec{c}$ though, but we can demonstrate that $\\vec{c} = \\vec{b} - \\vec{a}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "a = np.array([1, 3])\n",
+    "b = np.array([4, 1])\n",
+    "c = b - a\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0, 0, a[0]],\n",
+    "    [0, 0, 0, a[1]],\n",
+    "    [a[0], b[0], c[0], c[0]],\n",
+    "    [a[1], b[1], c[1], c[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:orange\", \"tab:pink\", \"tab:pink\"],\n",
+    "    alpha=[1.0, 1.0, 1.0, 0.3],\n",
+    ")\n",
+    "a_deg = math.degrees(math.atan2(a[1], a[0]))\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "arc = mpl.patches.Arc((0, 0), 1, 1, angle=0, theta1=b_deg, theta2=a_deg)\n",
+    "plt.gca().add_patch(arc)\n",
+    "plt.annotate(\"$\\\\vec{a}$\", [a[0] / 2 - 0.5, a[1] / 2], color=\"tab:blue\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\vec{b}$\", [b[0] / 2, b[1] / 2 - 0.7], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\vec{c}$\", [c[0] / 2, c[1] / 2 - 0.6], color=\"tab:pink\", fontsize=12)\n",
+    "plt.annotate(\n",
+    "    \"$\\\\vec{c}$ from tip of $\\\\vec{a}$\",\n",
+    "    [b[0] / 2, a[1] - 0.5],\n",
+    "    color=\"tab:pink\",\n",
+    "    fontsize=12,\n",
+    ")\n",
+    "plt.annotate(\"$\\\\theta$\", [0.4, 0.4], fontsize=10)\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.title(\"Proof $\\\\vec{c} = \\\\vec{b} - \\\\vec{a}$\")\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "> 🔑 Vectors are unique in that they maintain their direction and magnitude regardless of where they \"start\" or \"end\" in space. Vectors are typically drawn starting from the origin to clearly depict their direction and magnitude. However, the true essence of a vector is that it represents a direction and magnitude in space and can be shifted anywhere. When we compute $\\vec{c} = \\vec{b} - \\vec{a}$ we're calculating the vector that starts from the tip of $\\vec{a}$ nd goes to the tip of $\\vec{b}$. We can draw it starting from the origin or starting from the tip of $\\vec{a}$.\n",
+    "\n",
+    "Now, that we've established $\\vec{c} = \\vec{b} - \\vec{a}$, let's isolate $\\cos\\theta$ from the cosine formula \n",
+    "\n",
+    "$\\|\\vec{c}\\|^2 = \\|\\vec{a}\\|^2 + \\|\\vec{b}\\|^2 - 2\\|\\vec{a}\\|\\|\\vec{b}\\|\\cos\\theta$.\n",
+    "\n",
+    "$\\|\\vec{c}\\|^2 = \\vec{c} \\cdot \\vec{c}$\n",
+    "\n",
+    "$\\|\\vec{c}\\|^2 = (\\vec{b} - \\vec{a}) \\cdot (\\vec{b} - \\vec{a})$\n",
+    "\n",
+    "$\\|\\vec{c}\\|^2 = \\vec{b} \\cdot \\vec{b} + \\vec{a} \\cdot \\vec{a} - 2\\vec{a} \\cdot \\vec{b}$\n",
+    "\n",
+    "$\\|\\vec{c}\\|^2 = \\|\\vec{b}\\|^2 + \\|\\vec{a}\\|^2 - 2\\vec{a} \\cdot \\vec{b}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's verify what we've derived so far"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "assert np.isclose(np.linalg.norm(c) ** 2, np.dot(c, c))\n",
+    "assert np.isclose(np.linalg.norm(c) ** 2, np.dot(b - a, b - a))\n",
+    "assert np.isclose(\n",
+    "    np.linalg.norm(c) ** 2, np.dot(b, b) + np.dot(a, a) - 2 * np.dot(a, b)\n",
+    ")\n",
+    "assert np.isclose(\n",
+    "    np.linalg.norm(c) ** 2,\n",
+    "    np.linalg.norm(b) ** 2 + np.linalg.norm(a) ** 2 - 2 * np.dot(a, b),\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's substitute it into the cosine formula\n",
+    "\n",
+    "$\\|\\vec{b}\\|^2 + \\|\\vec{a}\\|^2 - 2\\vec{a} \\cdot \\vec{b} = \\|\\vec{a}\\|^2 + \\|\\vec{b}\\|^2 - 2\\|\\vec{a}\\|\\|\\vec{b}\\|\\cos\\theta$\n",
+    "\n",
+    "$- 2\\vec{a} \\cdot \\vec{b} = - 2\\|\\vec{a}\\|\\|\\vec{b}\\|\\cos\\theta$\n",
+    "\n",
+    "$\\cfrac{- 2\\vec{a} \\cdot \\vec{b}}{- 2\\|\\vec{a}\\|\\|\\vec{b}\\|} = \\cos\\theta$\n",
+    "\n",
+    "> 📐 $\\cfrac{\\vec{a} \\cdot \\vec{b}}{\\|\\vec{a}\\|\\|\\vec{b}\\|} = \\cos\\theta$\n",
+    "\n",
+    "The numerator is the dot product of $\\vec{a}$ and $\\vec{b}$. The denominator is a normalization scalar.\n",
+    "\n",
+    "We can actually rewrite it as\n",
+    "\n",
+    "$\\cfrac{\\vec{a}}{\\|\\vec{a}\\|} \\cdot \\cfrac{\\vec{b}}{\\|\\vec{b}\\|} = \\cos\\theta$\n",
+    "\n",
+    "where $\\cfrac{\\vec{a}}{\\|\\vec{a}\\|}$ and $\\cfrac{\\vec{b}}{\\|\\vec{b}\\|}$ are the unit vectors of $\\vec{a}$ and $\\vec{b}$.\n",
+    "\n",
+    "And we can verify that the two are indeed the same."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "assert np.isclose(\n",
+    "    np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)),\n",
+    "    np.dot(a / np.linalg.norm(a), b / np.linalg.norm(b)),\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Once we have $\\cos\\theta$ we can calculate $\\theta$ with the inverse cosine function."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "cos_theta = np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))\n",
+    "print(f\"cos(theta): {cos_theta:.2f}\")\n",
+    "print(f\"theta (radians): {np.arccos(cos_theta):.2f}\")\n",
+    "print(\n",
+    "    f\"theta (degrees): {np.degrees(np.arccos(cos_theta)):.2f}\\N{DEGREE SIGN}\"\n",
+    ")  # or multiply radians by 180/math.pi"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "a = np.array([1, 3])\n",
+    "b = np.array([4, 1])\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0],\n",
+    "    [0, 0],\n",
+    "    [a[0], b[0]],\n",
+    "    [a[1], b[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:orange\"],\n",
+    ")\n",
+    "a_deg = math.degrees(math.atan2(a[1], a[0]))\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "arc = mpl.patches.Arc((0, 0), 1, 1, angle=0, theta1=b_deg, theta2=a_deg)\n",
+    "plt.gca().add_patch(arc)\n",
+    "plt.annotate(\"$\\\\vec{a}$\", [a[0] / 2 - 0.5, a[1] / 2], color=\"tab:blue\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\vec{b}$\", [b[0] / 2, b[1] / 2 - 0.7], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\n",
+    "    f\"{np.degrees(np.arccos(cos_theta)):.1f}\\N{DEGREE SIGN}\", [0.4, 0.4], fontsize=10\n",
+    ")\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Vector projections"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now, let's say we want to project $\\vec{b}$ onto $\\vec{a}$.\n",
+    "\n",
+    "> 🔑 The vector projection of $\\vec{b}$ onto $\\vec{a}$ (denoted as $\\|\\overrightarrow{proj_{a}b}\\|$) is a vector with the same direction as $\\vec{a}$ and a magnitude such that the tip of $\\vec{b}$ lies perpedincularly onto $\\vec{a}$. \n",
+    "\n",
+    "It's like $\\vec{b}$ casting its shadow onto $\\vec{a}$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "a = np.array([1, 3])\n",
+    "b = np.array([4, 1])\n",
+    "proj_b = (np.dot(a, b) / np.linalg.norm(a)) * (a / np.linalg.norm(a))\n",
+    "d = b - proj_b\n",
+    "\n",
+    "img = plt.imread(\"docs/_static/flashlight.jpg\")\n",
+    "angle = math.degrees(math.atan2(a[1], a[0])) - 90\n",
+    "imgbox = mpl.offsetbox.OffsetImage(\n",
+    "    rotate(img, angle, reshape=False, cval=255), zoom=0.05\n",
+    ")\n",
+    "imgabb = mpl.offsetbox.AnnotationBbox(imgbox, (5, 0.5), xycoords=\"data\", frameon=False)\n",
+    "angle = math.degrees(math.atan2(a[1], a[0]))\n",
+    "\n",
+    "shadow = plt.Polygon(\n",
+    "    [proj_b, b, [0, 0]],\n",
+    "    closed=True,\n",
+    "    fill=True,\n",
+    "    edgecolor=\"gray\",\n",
+    "    facecolor=\"gray\",\n",
+    "    alpha=0.2,\n",
+    ")\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0],\n",
+    "    [0, 0],\n",
+    "    [a[0], b[0]],\n",
+    "    [a[1], b[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:orange\"],\n",
+    ")\n",
+    "a_deg = math.degrees(math.atan2(a[1], a[0]))\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "arc = mpl.patches.Arc((0, 0), 1, 1, angle=0, theta1=b_deg, theta2=a_deg)\n",
+    "plt.gca().add_patch(arc)\n",
+    "plt.gca().add_artist(imgabb)\n",
+    "plt.gca().add_patch(shadow)\n",
+    "plt.annotate(\"$\\\\vec{a}$\", [a[0] / 2 - 0.5, a[1] / 2], color=\"tab:blue\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\vec{b}$\", [b[0] / 2, b[1] / 2 - 0.7], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\theta$\", [0.4, 0.4], fontsize=10)\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.title(\"Projection as the 'shadow' cast by the vector\")\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "\n",
+    "\n",
+    "The definition of $\\cos \\theta$ in a right triangle is $adjacent / hypotenuse$.\n",
+    "\n",
+    "<img src=\"https://ichef.bbci.co.uk/images/ic/1280xn/p0dktj82.png\" width=\"30%\">"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The $hypotenuse$ is the length of vector we want to project ($\\|\\vec{b}\\|$).\n",
+    "\n",
+    "The $adjacent$ is the length of such projection ($\\|\\overrightarrow{proj_{a}b}\\|$).\n",
+    "\n",
+    "So, by definition:\n",
+    "\n",
+    "$\\cos\\theta = \\cfrac{\\|\\overrightarrow{proj_{a}b}\\|}{\\|\\vec{b}\\|}$\n",
+    "\n",
+    "and, the **length** of the projection of $\\vec{b}$ is:\n",
+    "\n",
+    "$\\|\\overrightarrow{proj_{a}b}\\| = \\|\\vec{b}\\|\\cos\\theta$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYHv2gl3xCjoh66VBZOxWU7R3ycaKBEQJLcHeyU-pc9kCcZq_q8WfNjEqE9FK83dtVnpo&usqp=CAU)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In the image above, we can see an interesting fact.\n",
+    "\n",
+    "If the length of the vector we want to project is 1, then the length of the projection is $\\cos\\theta$.\n",
+    "\n",
+    "$\\|\\overrightarrow{proj_{a}b}\\| = \\cos\\theta$ when $\\|\\vec{b}\\| = 1$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "It turns out we don't need $\\cos\\theta$ to calculate the length of the projection.\n",
+    "\n",
+    "We can substitute the definition of $\\cos\\theta$ into the definition of the length of the projection.\n",
+    "\n",
+    "Definition of $\\cos\\theta$:\n",
+    "\n",
+    "$\\cfrac{\\vec{a} \\cdot \\vec{b}}{\\|\\vec{a}\\|\\|\\vec{b}\\|} = \\cos\\theta$\n",
+    "\n",
+    "Definition of length of the projection:\n",
+    "\n",
+    "$\\|\\overrightarrow{proj_{a}b}\\| = \\|\\vec{b}\\|\\cos\\theta$\n",
+    "\n",
+    "So it becomes:\n",
+    "\n",
+    "$\\|\\overrightarrow{proj_{a}b}\\| = \\|\\vec{b}\\|\\cfrac{\\vec{a} \\cdot \\vec{b}}{\\|\\vec{a}\\|\\|\\vec{b}\\|}$\n",
+    "\n",
+    "which simplifies to\n",
+    "\n",
+    "$\\|\\overrightarrow{proj_{a}b}\\| = \\cfrac{\\vec{a} \\cdot \\vec{b}}{\\|\\vec{a}\\|}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "What about the direction?\n",
+    "\n",
+    "By definition the projection of $\\vec{b}$ onto $\\vec{a}$ must have the same direction as $\\vec{a}$.\n",
+    "\n",
+    "> 🔑 A unit vector has direction $\\langle a_1, a_2, ..., a_n \\rangle \\in\\mathbb{R}^n$ and length of 1 ($\\|\\vec{a}\\|=1$).\n",
+    "\n",
+    "Let $\\|\\overrightarrow{proj_{a}b}\\|$ be the length of the projection and $\\cfrac{\\vec{a}}{\\|\\vec{a}\\|}$ be the unit vector of $\\vec{a}$, we get that\n",
+    "\n",
+    "$\\overrightarrow{proj_{a}b} = \\|\\overrightarrow{proj_{a}b}\\| \\cfrac{\\vec{a}}{\\|\\vec{a}\\|}$\n",
+    "\n",
+    "Finally we can substitute the definition of $\\|\\overrightarrow{proj_{a}b}\\|$ and we obtain the formula of the **projection of $\\vec{b}$ onto $\\vec{a}$**:\n",
+    "\n",
+    "> 📐  $\\overrightarrow{proj_{a}b} = \\cfrac{\\vec{a} \\cdot \\vec{b}}{\\|\\vec{a}\\|} \\cfrac{\\vec{a}}{\\|\\vec{a}\\|}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "a = np.array([1, 3])\n",
+    "b = np.array([4, 1])\n",
+    "proj_b = (np.dot(a, b) / np.linalg.norm(a)) * (a / np.linalg.norm(a))\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0, 0],\n",
+    "    [0, 0, 0],\n",
+    "    [a[0], b[0], proj_b[0]],\n",
+    "    [a[1], b[1], proj_b[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:orange\", \"tab:green\"],\n",
+    "    alpha=[0.5, 1.0, 1.0],\n",
+    ")\n",
+    "plt.plot([proj_b[0], b[0]], [proj_b[1], b[1]], \"k--\", alpha=0.5)\n",
+    "a_deg = math.degrees(math.atan2(a[1], a[0]))\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "arc = mpl.patches.Arc((0, 0), 1, 1, angle=0, theta1=b_deg, theta2=a_deg)\n",
+    "plt.gca().add_patch(arc)\n",
+    "plt.annotate(\n",
+    "    \"$\\\\vec{a}$\",\n",
+    "    [a[0] / 2 - 0.1, a[1] / 2 + 1],\n",
+    "    color=\"tab:blue\",\n",
+    "    fontsize=12,\n",
+    "    alpha=0.5,\n",
+    ")\n",
+    "plt.annotate(\"$\\\\vec{b}$\", [b[0] / 2, b[1] / 2 - 0.7], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\n",
+    "    \"$\\\\vec{proj_{a}b}$\",\n",
+    "    [proj_b[0] / 2 - 1.1, proj_b[1] / 2],\n",
+    "    color=\"tab:green\",\n",
+    "    fontsize=12,\n",
+    ")\n",
+    "plt.annotate(\"$\\\\theta$\", [0.4, 0.4], fontsize=10)\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.title(\"Projection of $\\\\vec{b}$ onto $\\\\vec{a}$\")\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can see that $\\overrightarrow{proj_{a}b}$ (adjacent) and $\\vec{b}$ (hypotenuse) form a right triangle."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "a = np.linalg.norm(proj_b)\n",
+    "h = np.linalg.norm(b)\n",
+    "o = np.linalg.norm(proj_b - b)\n",
+    "\n",
+    "cos_theta = a / h\n",
+    "sin_theta = o / h"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "From the Pythagorean theorem we have\n",
+    "\n",
+    "$h^2 = o^2 + a^2$\n",
+    "\n",
+    "Equivalently:\n",
+    "\n",
+    "$1 = (\\cfrac{o}{h})^2 + (\\cfrac{a}{h})^2$\n",
+    "\n",
+    "$1 = \\cos\\theta^2 + \\sin\\theta^2$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's verify it."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "assert h**2 == o**2 + a**2\n",
+    "assert 1 == (o / h) ** 2 + (a / h) ** 2\n",
+    "assert 1 == cos_theta**2 + sin_theta**2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can also verify that the angles of the triangle sum up to 180.\n",
+    "\n",
+    "We already have one angle, and one is 90 by definition. We only need the one between $\\vec{b}$ and its adjacent $\\vec{proj_b} - \\vec{b}$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "a = np.array([1, 3])\n",
+    "b = np.array([4, 1])\n",
+    "proj_b = (np.dot(a, b) / np.linalg.norm(a)) * (a / np.linalg.norm(a))\n",
+    "c = proj_b - b\n",
+    "\n",
+    "a_deg = math.degrees(math.atan2(a[1], a[0]))\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "arc_1 = mpl.patches.Arc((0, 0), 1, 1, angle=0, theta1=b_deg, theta2=a_deg)\n",
+    "plt.gca().add_patch(arc_1)\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "c_deg = math.degrees(math.atan2(c[1], c[0]))\n",
+    "arc_2 = mpl.patches.Arc((b[0], b[1]), 1, 1, angle=0, theta1=-180 - b_deg, theta2=-c_deg)\n",
+    "plt.gca().add_patch(arc_2)\n",
+    "arc_3 = plt.Rectangle(\n",
+    "    proj_b,\n",
+    "    -0.3,\n",
+    "    -0.3,\n",
+    "    angle=a_deg,\n",
+    "    fill=False,\n",
+    "    edgecolor=\"k\",\n",
+    ")\n",
+    "plt.gca().add_patch(arc_3)\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0, 0],\n",
+    "    [0, 0, 0],\n",
+    "    [a[0], b[0], proj_b[0]],\n",
+    "    [a[1], b[1], proj_b[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:orange\", \"tab:green\"],\n",
+    "    alpha=[0.5, 1.0, 1.0],\n",
+    ")\n",
+    "plt.plot([proj_b[0], b[0]], [proj_b[1], b[1]], \"k--\", alpha=0.5)\n",
+    "\n",
+    "plt.annotate(\n",
+    "    \"$\\\\vec{a}$\",\n",
+    "    [a[0] / 2 - 0.1, a[1] / 2 + 1],\n",
+    "    color=\"tab:blue\",\n",
+    "    fontsize=12,\n",
+    "    alpha=0.5,\n",
+    ")\n",
+    "plt.annotate(\"$\\\\vec{b}$\", [b[0] / 2, b[1] / 2 - 0.7], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\n",
+    "    \"$\\\\vec{proj_{a}b}$\",\n",
+    "    [proj_b[0] / 2 - 1.1, proj_b[1] / 2],\n",
+    "    color=\"tab:green\",\n",
+    "    fontsize=12,\n",
+    ")\n",
+    "plt.annotate(\n",
+    "    f\"{np.degrees(np.arccos(cos_theta)):.1f}\\N{DEGREE SIGN}\", [0.4, 0.4], fontsize=10\n",
+    ")\n",
+    "plt.annotate(\"$\\\\theta_3$\", [3.0, 0.95], fontsize=10)\n",
+    "plt.annotate(\"90\\N{DEGREE SIGN}\", [0.9, 1.4], fontsize=10)\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's find $\\cos\\theta_3$ and verify that the sum of the 3 angles is 180."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "theta_1_deg = np.degrees(np.arccos(cos_theta))\n",
+    "\n",
+    "a = np.linalg.norm(proj_b - b)\n",
+    "h = np.linalg.norm(b)\n",
+    "o = np.linalg.norm(proj_b)\n",
+    "\n",
+    "cos_theta_2 = a / h\n",
+    "theta_2_deg = np.degrees(np.arccos(cos_theta_2))\n",
+    "\n",
+    "theta_3_deg = 90\n",
+    "\n",
+    "assert theta_1_deg + theta_2_deg + theta_3_deg == 180"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's consider a different pair of vectors\n",
+    "\n",
+    "$\\vec{a}=\\begin{bmatrix}-2\\\\3\\end{bmatrix}$ and $\\vec{b}=\\begin{bmatrix}4\\\\1\\end{bmatrix}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "a = np.array([-2, 3])\n",
+    "b = np.array([4, 1])\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0],\n",
+    "    [0, 0],\n",
+    "    [a[0], b[0]],\n",
+    "    [a[1], b[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:orange\"],\n",
+    ")\n",
+    "a_deg = math.degrees(math.atan2(a[1], a[0]))\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "arc = mpl.patches.Arc((0, 0), 1, 1, angle=0, theta1=b_deg, theta2=a_deg)\n",
+    "plt.gca().add_patch(arc)\n",
+    "plt.annotate(\"$\\\\vec{a}$\", [a[0] / 2 - 0.7, a[1] / 2], color=\"tab:blue\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\vec{b}$\", [b[0] / 2, b[1] / 2 + 0.3], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\theta$\", [0.1, 0.6], fontsize=10)\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can use the 'shadow' metaphor to get an intuition of what the projection of $\\vec{b}$ onto $\\vec{a}$ might look like."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "a = np.array([-2, 3])\n",
+    "b = np.array([4, 1])\n",
+    "proj_b = (np.dot(a, b) / np.linalg.norm(a)) * (a / np.linalg.norm(a))\n",
+    "d = b - proj_b\n",
+    "\n",
+    "img = plt.imread(\"docs/_static/flashlight.jpg\")\n",
+    "angle = math.degrees(math.atan2(a[1], a[0])) - 90\n",
+    "imgbox = mpl.offsetbox.OffsetImage(\n",
+    "    rotate(img, angle, reshape=False, cval=255), zoom=0.05\n",
+    ")\n",
+    "imgabb = mpl.offsetbox.AnnotationBbox(imgbox, (5, 1.5), xycoords=\"data\", frameon=False)\n",
+    "angle = math.degrees(math.atan2(a[1], a[0]))\n",
+    "\n",
+    "shadow = plt.Polygon(\n",
+    "    [proj_b, b, [0, 0]],\n",
+    "    closed=True,\n",
+    "    fill=True,\n",
+    "    edgecolor=\"gray\",\n",
+    "    facecolor=\"gray\",\n",
+    "    alpha=0.2,\n",
+    ")\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0],\n",
+    "    [0, 0],\n",
+    "    [a[0], b[0]],\n",
+    "    [a[1], b[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:orange\"],\n",
+    ")\n",
+    "a_deg = math.degrees(math.atan2(a[1], a[0]))\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "arc = mpl.patches.Arc((0, 0), 1, 1, angle=0, theta1=b_deg, theta2=a_deg)\n",
+    "plt.gca().add_patch(arc)\n",
+    "plt.gca().add_artist(imgabb)\n",
+    "plt.gca().add_patch(shadow)\n",
+    "plt.annotate(\"$\\\\vec{a}$\", [a[0] / 2 - 0.7, a[1] / 2], color=\"tab:blue\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\vec{b}$\", [b[0] / 2, b[1] / 2 + 0.3], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\n",
+    "    f\"{np.degrees(np.arccos(cos_theta)):.1f}\\N{DEGREE SIGN}\", [0.1, 0.6], fontsize=10\n",
+    ")\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.title(\"Projection as the 'shadow' cast by the vector\")\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "a = np.array([-2, 3])\n",
+    "b = np.array([4, 1])\n",
+    "proj_b = (np.dot(a, b) / np.linalg.norm(a)) * (a / np.linalg.norm(a))\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0, 0],\n",
+    "    [0, 0, 0],\n",
+    "    [a[0], b[0], proj_b[0]],\n",
+    "    [a[1], b[1], proj_b[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:orange\", \"tab:green\"],\n",
+    ")\n",
+    "plt.plot([proj_b[0], b[0]], [proj_b[1], b[1]], \"k--\", alpha=0.5)\n",
+    "a_deg = math.degrees(math.atan2(a[1], a[0]))\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "arc = mpl.patches.Arc((0, 0), 1, 1, angle=0, theta1=b_deg, theta2=a_deg)\n",
+    "plt.gca().add_patch(arc)\n",
+    "plt.annotate(\"$\\\\vec{a}$\", [a[0] / 2 - 0.7, a[1] / 2], color=\"tab:blue\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\vec{b}$\", [b[0] / 2, b[1] / 2 + 0.3], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\n",
+    "    \"$\\\\vec{proj_{a}b}$\",\n",
+    "    [proj_b[0] / 2 - 1.2, proj_b[1] / 2 - 0.2],\n",
+    "    color=\"tab:green\",\n",
+    "    fontsize=12,\n",
+    ")\n",
+    "plt.annotate(\n",
+    "    f\"{np.degrees(np.arccos(cos_theta)):.1f}\\N{DEGREE SIGN}\", [0.1, 0.6], fontsize=10\n",
+    ")\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.title(\"Projection of $\\\\vec{b}$ onto $\\\\vec{a}$\")\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Geometric intuition of Dot product"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's revisit the definition of $\\cos\\theta$ which we obtained from the **Law of Cosines**.\n",
+    "\n",
+    "> 📐 $\\cfrac{\\vec{a} \\cdot \\vec{b}}{\\|\\vec{a}\\|\\|\\vec{b}\\|} = \\cos\\theta$\n",
+    "\n",
+    "If we move $\\|\\vec{a}\\|\\|\\vec{b}\\|$ back to the RHS we get\n",
+    "\n",
+    "$\\vec{a} \\cdot \\vec{b} = \\|\\vec{a}\\|\\|\\vec{b}\\|\\cos\\theta$\n",
+    "\n",
+    "And when $\\cos\\theta > 0$ we can substitute $\\|\\vec{b}\\|\\cos\\theta$ with $\\|\\overrightarrow{proj_{a}b}\\|$ (whose equivalence was obtained from the general definition $\\cos \\theta = adjacent / hypotenuse$)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "$\\vec{a} \\cdot \\vec{b} = \\|\\vec{a}\\| \\|\\overrightarrow{proj_{a}b}\\|$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "> 🔑 When $\\vec{a}$ and $\\vec{b}$ \"agree\" on the direction ($0° < \\theta < 90°$, that is $\\cos\\theta > 1$) the dot product between $\\vec{a}$ and $\\vec{b}$ is the length of $\\vec{a}$ times the length of projection $\\vec{b}$ onto $\\vec{a}$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's verify it."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "a = np.array([1, 3])\n",
+    "b = np.array([4, 1])\n",
+    "\n",
+    "cos_theta = np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))\n",
+    "proj_b = np.linalg.norm(b) * cos_theta * a / np.linalg.norm(a)\n",
+    "\n",
+    "assert cos_theta > 0\n",
+    "assert np.isclose(np.dot(a, b), np.linalg.norm(a) * np.linalg.norm(proj_b))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's imagine $\\vec{b}$ was **parallel** to $\\vec{a}$, that is, $\\cos\\theta = 1$ (0° angle).\n",
+    "\n",
+    "Then $\\vec{b} = \\overrightarrow{proj_{a}b}$. In other words, $\\vec{b}$ is already projected onto $\\vec{a}$.\n",
+    "\n",
+    "In this case\n",
+    "\n",
+    "$\\vec{a} \\cdot \\vec{b} = \\|\\vec{a}\\|\\|\\vec{b}\\|$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "a = np.array([1, 3])\n",
+    "b = np.array([4, 1])\n",
+    "\n",
+    "cos_theta = np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))\n",
+    "proj_b = np.linalg.norm(b) * cos_theta * a / np.linalg.norm(a)\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0],\n",
+    "    [0, 0],\n",
+    "    [a[0], proj_b[0]],\n",
+    "    [a[1], proj_b[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:green\"],\n",
+    ")\n",
+    "plt.annotate(\n",
+    "    \"$\\\\vec{a}$\",\n",
+    "    [a[0] / 2 - 0.1, a[1] / 2 + 1],\n",
+    "    color=\"tab:blue\",\n",
+    "    fontsize=12,\n",
+    ")\n",
+    "plt.annotate(\n",
+    "    \"$\\\\vec{proj_{a}b}$\",\n",
+    "    [proj_b[0] / 2 - 1.1, proj_b[1] / 2],\n",
+    "    color=\"tab:green\",\n",
+    "    fontsize=12,\n",
+    ")\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's see the case when this equivalence doesn't hold.\n",
+    "\n",
+    "$\\vec{a} \\cdot \\vec{b} = \\|\\vec{a}\\| \\|\\overrightarrow{proj_{a}b}\\|$\n",
+    "\n",
+    "But this does.\n",
+    "\n",
+    "$\\vec{a} \\cdot \\vec{b} = \\|\\vec{a}\\|\\|\\vec{b}\\|\\cos\\theta$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "a = np.array([-2, 3])\n",
+    "b = np.array([4, 1])\n",
+    "\n",
+    "cos_theta = np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))\n",
+    "proj_b = np.linalg.norm(b) * cos_theta * a / np.linalg.norm(a)\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0, 0],\n",
+    "    [0, 0, 0],\n",
+    "    [a[0], b[0], proj_b[0]],\n",
+    "    [a[1], b[1], proj_b[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:orange\", \"tab:green\"],\n",
+    ")\n",
+    "plt.plot([proj_b[0], b[0]], [proj_b[1], b[1]], \"k--\", alpha=0.5)\n",
+    "a_deg = math.degrees(math.atan2(a[1], a[0]))\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "arc = mpl.patches.Arc((0, 0), 1, 1, angle=0, theta1=b_deg, theta2=a_deg)\n",
+    "plt.gca().add_patch(arc)\n",
+    "plt.annotate(\"$\\\\vec{a}$\", [a[0] / 2 - 0.7, a[1] / 2], color=\"tab:blue\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\vec{b}$\", [b[0] / 2, b[1] / 2 + 0.3], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\n",
+    "    \"$\\\\vec{proj_{a}b}$\",\n",
+    "    [proj_b[0] / 2 - 1.2, proj_b[1] / 2 - 0.2],\n",
+    "    color=\"tab:green\",\n",
+    "    fontsize=12,\n",
+    ")\n",
+    "plt.annotate(\n",
+    "    f\"{np.degrees(np.arccos(cos_theta)):.1f}\\N{DEGREE SIGN}\", [0.1, 0.6], fontsize=10\n",
+    ")\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.title(\"Projection of $\\\\vec{b}$ onto $\\\\vec{a}$\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Since the angle is more than 90°, $\\cos\\theta < 0$.\n",
+    "\n",
+    "So $\\vec{a} \\cdot \\vec{b}$ will be negative.\n",
+    "\n",
+    "But $\\|\\vec{a}\\| \\|\\overrightarrow{proj_{a}b}\\|$ is always positive."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "print(f\"Dot product: {np.dot(a, proj_b):.2f}\")\n",
+    "print(\n",
+    "    f\"Norm of a times norm of projection: {np.linalg.norm(a) * np.linalg.norm(proj_b):.2f}\"\n",
+    ")\n",
+    "print(\n",
+    "    f\"Norm of a times norm of b times cos theta: {np.linalg.norm(a) * np.linalg.norm(b) * cos_theta:.2f}\"\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Linear transformations (week 3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's define some transformation matrices.\n",
+    "\n",
+    "Horizontal scaling by 2:\n",
+    "\n",
+    "$A_1=\\begin{bmatrix}2&&0\\\\0&&1\\end{bmatrix}$\n",
+    "\n",
+    "Horizontal reflection:\n",
+    "\n",
+    "$A_2=\\begin{bmatrix}-1&&0\\\\0&&1\\end{bmatrix}$\n",
+    "\n",
+    "Rotation by 90 degrees clockwise:\n",
+    "\n",
+    "$A_3=\\begin{bmatrix}0&&1\\\\-1&&0\\end{bmatrix}$\n",
+    "\n",
+    "Horizontal shear by 0.5:\n",
+    "\n",
+    "$A_4=\\begin{bmatrix}1&&0.5\\\\0&&1\\end{bmatrix}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "hscaling = np.array([[2, 0], [0, 1]])\n",
+    "reflection_yaxis = np.array([[-1, 0], [0, 1]])\n",
+    "rotation_90_clockwise = np.array([[0, 1], [-1, 0]])\n",
+    "shear_x = np.array([[1, 0.5], [0, 1]])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's apply these transformations to the basis vectors\n",
+    "\n",
+    "$\\vec{e_1}=\\begin{bmatrix}1\\\\0\\end{bmatrix}$ and $\\vec{e_2}=\\begin{bmatrix}0\\\\1\\end{bmatrix}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "e1 = np.array([1, 0])\n",
+    "e2 = np.array([0, 1])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "A transformation is applied by multiplying $A_k$ by $e_i$.\n",
+    "\n",
+    "For $e_1$ we have:\n",
+    "\n",
+    "$\n",
+    "\\begin{bmatrix}2&&0\\\\0&&1\\end{bmatrix}\n",
+    "\\begin{bmatrix}1\\\\0\\end{bmatrix} = \n",
+    "\\begin{bmatrix}2 \\times 1 + 0 \\times 0\\\\0 \\times 1 + 1 \\times 0\\end{bmatrix} =\n",
+    "\\begin{bmatrix}2\\\\0\\end{bmatrix}\n",
+    "$\n",
+    "\n",
+    "For $e_2$ we have:\n",
+    "\n",
+    "$\n",
+    "\\begin{bmatrix}2&&0\\\\0&&1\\end{bmatrix}\n",
+    "\\begin{bmatrix}0\\\\1\\end{bmatrix} = \n",
+    "\\begin{bmatrix}2 \\times 0 + 0 \\times 1\\\\0 \\times 0 + 1 \\times 1\\end{bmatrix} =\n",
+    "\\begin{bmatrix}0\\\\1\\end{bmatrix}\n",
+    "$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's verify it."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "display(\n",
+    "    Math(\n",
+    "        \"T(\\\\vec{e_1})=\"\n",
+    "        + sympy.latex(sympy.Matrix(list(hscaling @ e1)))\n",
+    "        + \"T(\\\\vec{e_2})=\"\n",
+    "        + sympy.latex(sympy.Matrix(list(hscaling @ e2)))\n",
+    "    )\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's visualize it."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "def plot_transformation(\n",
+    "    T: callable, title: str, ax: plt.axes, basis=None, lim=5\n",
+    ") -> None:\n",
+    "    \"\"\"Plot linear transformations of standard basis vectors in 2D.\"\"\"\n",
+    "    if basis is None:\n",
+    "        e1 = np.array([[1], [0]])\n",
+    "        e2 = np.array([[0], [1]])\n",
+    "    else:\n",
+    "        e1, e2 = basis\n",
+    "    zero = np.zeros(1, dtype=\"int\")\n",
+    "    c = \"tab:blue\"\n",
+    "    c_t = \"tab:orange\"\n",
+    "    ax.set_xticks(np.arange(-lim, lim))\n",
+    "    ax.set_yticks(np.arange(-lim, lim))\n",
+    "    ax.set_xlim(-lim, lim)\n",
+    "    ax.set_ylim(-lim, lim)\n",
+    "    _plot_vectors(e1, e2, c, ax)\n",
+    "    ax.plot(\n",
+    "        [zero, e2[0], e1[0] + e2[0], e1[0]],\n",
+    "        [zero, e2[1], e1[1] + e2[1], e1[1]],\n",
+    "        color=c,\n",
+    "    )\n",
+    "    _make_labels(e1, \"$e_1$\", c, y_offset=(-0.2, 1.0), ax=ax)\n",
+    "    _make_labels(e2, \"$e_2$\", c, y_offset=(-0.2, 1.0), ax=ax)\n",
+    "    e1_t = T(e1)\n",
+    "    e2_t = T(e2)\n",
+    "    _plot_vectors(e1_t, e2_t, c_t, ax)\n",
+    "    ax.plot(\n",
+    "        [zero, e2_t[0], e1_t[0] + e2_t[0], e1_t[0]],\n",
+    "        [zero, e2_t[1], e1_t[1] + e2_t[1], e1_t[1]],\n",
+    "        color=c_t,\n",
+    "    )\n",
+    "    _make_labels(e1_t, \"$T(e_1)$\", c_t, y_offset=(0.0, 1.0), ax=ax)\n",
+    "    _make_labels(e2_t, \"$T(e_2)$\", c_t, y_offset=(0.0, 1.0), ax=ax)\n",
+    "    ax.set_aspect(\"equal\")\n",
+    "    ax.set_title(title)\n",
+    "\n",
+    "\n",
+    "def _make_labels(e, text, color, y_offset, ax):\n",
+    "    e_sgn = 0.4 * np.array([[1] if i == 0 else i for i in np.sign(e)])\n",
+    "    return ax.text(\n",
+    "        e[0] - 0.2 + e_sgn[0],\n",
+    "        e[1] + y_offset[0] + y_offset[1] * e_sgn[1],\n",
+    "        text,\n",
+    "        fontsize=12,\n",
+    "        color=color,\n",
+    "    )\n",
+    "\n",
+    "\n",
+    "def _plot_vectors(e1, e2, color, ax):\n",
+    "    ax.quiver(\n",
+    "        [0, 0],\n",
+    "        [0, 0],\n",
+    "        [e1[0], e2[0]],\n",
+    "        [e1[1], e2[1]],\n",
+    "        color=color,\n",
+    "        angles=\"xy\",\n",
+    "        scale_units=\"xy\",\n",
+    "        scale=1,\n",
+    "    )\n",
+    "\n",
+    "\n",
+    "def T(A, v):\n",
+    "    \"\"\"Apply linear transformation.\"\"\"\n",
+    "    w = A @ v\n",
+    "    return w\n",
+    "\n",
+    "\n",
+    "fig, axs = plt.subplots(nrows=2, ncols=3, figsize=(3 * 4, 2 * 4))\n",
+    "ax1, ax2, ax3, ax4, ax5, ax6 = axs.flatten()\n",
+    "plot_transformation(partial(T, hscaling), title=\"Horizontal scaling by 2\", ax=ax1)\n",
+    "plot_transformation(partial(T, reflection_yaxis), title=\"Horizontal reflection\", ax=ax2)\n",
+    "plot_transformation(\n",
+    "    partial(T, rotation_90_clockwise), title=\"Rotation by 90 degrees clockwise\", ax=ax3\n",
+    ")\n",
+    "plot_transformation(partial(T, shear_x), title=\"Horizontal shear by 0.5\", ax=ax4)\n",
+    "plot_transformation(\n",
+    "    partial(T, rotation_90_clockwise @ shear_x), title=\"Rotation and shear\", ax=ax5\n",
+    ")\n",
+    "plot_transformation(\n",
+    "    partial(T, shear_x @ rotation_90_clockwise), title=\"Shear and rotation\", ax=ax6\n",
+    ")\n",
+    "plt.tight_layout()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Linear transformations and rank"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Since linear transformations are matrices, they can be singular and non-singular and also have a rank."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "non_sing_tr = np.array([[3, 1], [1, 2]])\n",
+    "sing_tr = np.array([[1, 1], [2, 2]])\n",
+    "\n",
+    "fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(2 * 4, 1 * 4))\n",
+    "plot_transformation(\n",
+    "    partial(T, non_sing_tr), title=\"Non-singular transformation\", ax=ax1\n",
+    ")\n",
+    "plot_transformation(partial(T, sing_tr), title=\"Singular transformation\", ax=ax2)\n",
+    "plt.tight_layout()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can also verify that the first linear transformations has rank 2, while the second one has rank 1.\n",
+    "\n",
+    "So the first linear trasformations doesn't reduce the amount of information of the original matrix, while the second one does as it has reduced the rank from 2 to 1, that is transforms a matrix with 2 lineraly independent rows to one with only 1 linearly indepenent row.\n",
+    "\n",
+    "> 🔑 The singularity of a linear transformation determines whether there is dimensionality reduction\n",
+    "\n",
+    "> 🔑 The rank of a linear transformation quantifies the dimensionality reduction"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "m, p = sympy.Matrix(non_sing_tr).rref()\n",
+    "print(\"Number of pivots (rank):\", len(p))\n",
+    "m"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "m, p = sympy.Matrix(sing_tr).rref()\n",
+    "print(\"Number of pivots (rank):\", len(p))\n",
+    "m"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Linear transformations and determinant"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "A linear transformation also has a determinant.\n",
+    "\n",
+    "> 🔑 The determinant of a linear transformation is the area or volume of the transformed basis vectors"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's consider thes non-singular transformations\n",
+    "\n",
+    "$\\begin{bmatrix}3&&1\\\\1&&2\\end{bmatrix}$\n",
+    "\n",
+    "whose determinant is 5.\n",
+    "\n",
+    "If we apply it to the basis vectors (whose area is 1) we get a parallelogram with area 5."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "fig, ax = plt.subplots()\n",
+    "plot_transformation(partial(T, non_sing_tr), title=\"Non-singular transformation\", ax=ax)\n",
+    "t_e1 = partial(T, non_sing_tr)(e1)\n",
+    "t_e2 = partial(T, non_sing_tr)(e2)\n",
+    "b_area = plt.Rectangle(\n",
+    "    [0, 0],\n",
+    "    1,\n",
+    "    1,\n",
+    "    fill=True,\n",
+    "    facecolor=\"tab:blue\",\n",
+    "    alpha=0.2,\n",
+    ")\n",
+    "t_area = plt.Polygon(\n",
+    "    [[0, 0], t_e1, t_e1 + t_e2, t_e2],\n",
+    "    closed=True,\n",
+    "    fill=True,\n",
+    "    facecolor=\"tab:orange\",\n",
+    "    alpha=0.2,\n",
+    ")\n",
+    "plt.gca().add_patch(b_area)\n",
+    "plt.gca().add_patch(t_area)\n",
+    "plt.title(\"Determinant as the area of the parallelogram\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To verify it, we can use the formula for the area of a triangle $A_t = \\cfrac{bh}{2}$. For a parallelogram it's just $A_p = bh$.\n",
+    "\n",
+    "To calculate $A_p = bh$ we only need $\\vec{h}$, because $b = \\|T(\\vec{e_1})\\|$.\n",
+    "\n",
+    "To find $\\vec{h}$ we can project $T(\\vec{e_2})$ onto $T(\\vec{e_1})$ and subtract the projection from $T(\\vec{e_2})$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "t_e1 = partial(T, non_sing_tr)(e1)\n",
+    "t_e2 = partial(T, non_sing_tr)(e2)\n",
+    "proj_t_e2 = (np.dot(t_e1, t_e2) / np.linalg.norm(t_e1)) * (t_e1 / np.linalg.norm(t_e1))\n",
+    "h = t_e2 - proj_t_e2\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0, 0, proj_t_e2[0], t_e1[0]],\n",
+    "    [0, 0, 0, proj_t_e2[1], t_e1[1]],\n",
+    "    [t_e1[0], t_e2[0], proj_t_e2[0], h[0], h[0]],\n",
+    "    [t_e1[1], t_e2[1], proj_t_e2[1], h[1], h[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    fc=[\"tab:orange\", \"tab:orange\", \"tab:pink\", \"none\", \"none\"],\n",
+    "    ec=[\"none\", \"none\", \"none\", \"tab:green\", \"tab:green\"],\n",
+    "    ls=[\"solid\", \"solid\", \"solid\", \"dashed\", \"dashed\"],\n",
+    "    linewidth=1,\n",
+    ")\n",
+    "t_area = plt.Polygon(\n",
+    "    [[0, 0], t_e1, t_e1 + t_e2, t_e2],\n",
+    "    closed=True,\n",
+    "    fill=True,\n",
+    "    facecolor=\"tab:orange\",\n",
+    "    alpha=0.2,\n",
+    ")\n",
+    "plt.gca().add_patch(t_area)\n",
+    "plt.plot(\n",
+    "    [0, t_e2[0], t_e1[0] + t_e2[0], t_e1[0]],\n",
+    "    [0, t_e2[1], t_e2[1] + t_e1[1], t_e1[1]],\n",
+    "    color=\"tab:orange\",\n",
+    ")\n",
+    "plt.annotate(\"$T(e_1)$\", [t_e1[0], t_e1[1] - 0.4], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\"$T(e_2)$\", [t_e2[0], t_e2[1] + 0.4], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\n",
+    "    \"$proj_{T_(e_1)}T(e_2)$\",\n",
+    "    [proj_t_e2[0] - 1.0, proj_t_e2[1] - 1.0],\n",
+    "    color=\"tab:pink\",\n",
+    "    fontsize=12,\n",
+    ")\n",
+    "plt.annotate(\n",
+    "    \"$h$\",\n",
+    "    [t_e2[0] + 0.5, t_e2[1] - 0.8],\n",
+    "    color=\"tab:green\",\n",
+    "    fontsize=12,\n",
+    ")\n",
+    "plt.xticks(np.arange(-5, 5))\n",
+    "plt.yticks(np.arange(-5, 5))\n",
+    "plt.xlim(-5, 5)\n",
+    "plt.ylim(-5, 5)\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.title(\"The height of the triangles/parallelogram\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now that we have $\\vec{h}$, let's calculate $A_p$ and verify it's the same as the determinant of the linear transformation."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "assert np.isclose(np.linalg.norm(t_e1) * np.linalg.norm(h), np.linalg.det(non_sing_tr))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Eigenvalues and Eigenvectors (week 4)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Basis\n",
+    "\n",
+    "> 🔑 A **basis** of a space is a set of linearly independent vectors that spans the space.\n",
+    "\n",
+    "In a 1-D space, we can only have one element in the basis; in a 2-D space, we can only have two elements in the basis, and so on.\n",
+    "\n",
+    "> 🔑 The **span** of a basis is the space consisting of *all* linear combinations of the basis.\n",
+    "\n",
+    "Metaphorically, the span of a basis is any point in a space that can be reached by walking only in the directions defined by the basis."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "plt.quiver(\n",
+    "    [0, 4 * -0.8, 0, 0],\n",
+    "    [0, 4 * 0.5, 0, 0],\n",
+    "    [\n",
+    "        4 * -0.8,\n",
+    "        -3 * -0.3,\n",
+    "        -0.3,\n",
+    "        -0.8,\n",
+    "    ],\n",
+    "    [4 * 0.5, -3 * 0.8, 0.8, 0.5],\n",
+    "    angles=\"xy\",\n",
+    "    fc=[\"none\", \"none\", \"tab:blue\", \"tab:blue\"],\n",
+    "    ec=[\"tab:orange\", \"tab:orange\", \"none\", \"none\"],\n",
+    "    ls=[\"dashed\", \"dashed\", \"solid\", \"solid\"],\n",
+    "    linewidth=1,\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    ")\n",
+    "end_point = np.array([4 * -0.8, 4 * 0.5]) - np.array([3 * -0.3, 3 * 0.8])\n",
+    "plt.scatter(end_point[0], end_point[1], s=20, c=\"tab:blue\")\n",
+    "plt.xticks(np.arange(-5, 5))\n",
+    "plt.yticks(np.arange(-5, 5))\n",
+    "plt.xlim(-5, 5)\n",
+    "plt.ylim(-5, 5)\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.title(\n",
+    "    \"The span of a basis is any point in the space\\nthat can be reached by 'walking' in the directions\\ndefined by the basis\"\n",
+    ")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Eigenvalues"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's consider the following linear transformations:\n",
+    "\n",
+    "$A_1 = \\begin{bmatrix}2&&1\\\\0&&3\\end{bmatrix}$\n",
+    "\n",
+    "$A_2 = \\begin{bmatrix}3&&0\\\\0&&3\\end{bmatrix}$\n",
+    "\n",
+    "$A_3 = \\begin{bmatrix}2&&0\\\\0&&2\\end{bmatrix}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can demonstrate that although $A_1$ and $A_2$ are different transformations, they are indeed the same for infinitely many points. \n",
+    "\n",
+    "And the same can be demonstrated for $A_1$ and $A_3$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "A1 = np.array([[2, 1], [0, 3]])\n",
+    "A2 = np.array([[3, 0], [0, 3]])\n",
+    "A3 = np.array([[2, 0], [0, 2]])\n",
+    "e_set = set(product([-1, 0, 1], [-1, 0, 1])) - set([(0, 0)])\n",
+    "\n",
+    "fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(10, 5))\n",
+    "for e in e_set:\n",
+    "    ax1.scatter(e[0], e[1], c=\"tab:blue\")\n",
+    "    ax2.scatter(e[0], e[1], c=\"tab:blue\")\n",
+    "    t_e1 = A1 @ e\n",
+    "    ax1.scatter(t_e1[0], t_e1[1], c=\"tab:orange\", alpha=0.5)\n",
+    "    ax2.scatter(t_e1[0], t_e1[1], c=\"tab:orange\", alpha=0.5)\n",
+    "    t_e2 = A2 @ e\n",
+    "    ax1.scatter(t_e2[0], t_e2[1], c=\"tab:green\", alpha=0.5)\n",
+    "    t_e3 = A3 @ e\n",
+    "    ax2.scatter(t_e3[0], t_e3[1], c=\"tab:green\", alpha=0.5)\n",
+    "ax1.plot([-5, 5], [-5, 5], color=\"tab:orange\", alpha=0.5)\n",
+    "ax1.plot([-5, 5], [-5, 5], color=\"tab:green\", alpha=0.5)\n",
+    "ax2.plot([-5, 5], [0, 0], color=\"tab:orange\", alpha=0.5)\n",
+    "ax2.plot([-5, 5], [0, 0], color=\"tab:green\", alpha=0.5)\n",
+    "ax1.set_xticks(np.arange(-5, 5))\n",
+    "ax1.set_yticks(np.arange(-5, 5))\n",
+    "ax2.set_xticks(np.arange(-5, 5))\n",
+    "ax2.set_yticks(np.arange(-5, 5))\n",
+    "ax1.set_xlim(-5, 5)\n",
+    "ax1.set_ylim(-5, 5)\n",
+    "ax2.set_xlim(-5, 5)\n",
+    "ax2.set_ylim(-5, 5)\n",
+    "ax1.set_aspect(\"equal\")\n",
+    "ax2.set_aspect(\"equal\")\n",
+    "ax1.set_title(\"$A_1$ and $A_2$ are the same for all the points on the line\")\n",
+    "ax2.set_title(\"$A_1$ and $A_3$ are the same for all the points on the line\")\n",
+    "plt.legend(\n",
+    "    [\"original\", \"$A_1$ transformation\", \"$A_2$ or $A_3$ transformation\"],\n",
+    "    bbox_to_anchor=(1.01, 0.99),\n",
+    ")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "With some imagination, we can see that the blue square on the left-hand side gets sheared horizontally with $A_1$ and gets blown out with $A_2$.\n",
+    "\n",
+    "We can also see that the points (1, 1) and (-1, -1) go to (3, 3) and (-3, -3) respectively with both $A_1$ and $A_2$.\n",
+    "\n",
+    "Similarly, the points (1, 0) and (-1, 0) go to (2, 0) and (-2, 0) respectively with both $A_1$ and $A_3$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can verify that the difference between $A_1$ and $A_2$ (and $A_1$ and $A_3$) are singular transformations."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "display(\n",
+    "    Math(\n",
+    "        \"A_1 - A_2=\"\n",
+    "        + sympy.latex(sympy.Matrix(A1 - A2))\n",
+    "        + \"A_1 - A_3=\"\n",
+    "        + sympy.latex(sympy.Matrix(A1 - A3))\n",
+    "    )\n",
+    ")\n",
+    "assert np.linalg.det(A1 - A2) == 0\n",
+    "assert np.linalg.det(A1 - A3) == 0"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The first system of equations is singular and it has infinitely many solution all of which lie on the line $y =  x$.\n",
+    "\n",
+    "$\\begin{cases}-x+y=0\\\\0x+0y=0\\end{cases} = \\begin{cases}y=x\\\\0=0\\end{cases}$\n",
+    "\n",
+    "The second system of equations is also singular and it has infinitely many solutions all of which lie on the line $y = 0$.\n",
+    "\n",
+    "$\\begin{cases}0x+y=0\\\\0x+y=0\\end{cases} = \\begin{cases}y=0\\\\y=0\\end{cases}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "It turns out that $A_2$ and $A_3$ have the eigenvalues 2 and 3 of the matrix $A_1$ along their diagonals.\n",
+    "\n",
+    "Formally, $\\lambda$ is an eigenvalue of $A_1$ if\n",
+    "\n",
+    "$\\begin{bmatrix}2&&1\\\\0&&3\\end{bmatrix} - \\lambda\\begin{bmatrix}1&&0\\\\0&&1\\end{bmatrix} = \\begin{bmatrix}0\\\\0\\end{bmatrix}$\n",
+    "\n",
+    "or more compactly\n",
+    "\n",
+    "$\\begin{bmatrix}2-\\lambda&&1\\\\0&&3-\\lambda\\end{bmatrix} = \\begin{bmatrix}0\\\\0\\end{bmatrix}$\n",
+    "\n",
+    "To find the value(s) of $\\lambda$ we can use the formula for the determinant, and leverage the fact that it must be zero.\n",
+    "\n",
+    "$(2-\\lambda) \\times (3-\\lambda) - 1 \\times 0 = 0$\n",
+    "\n",
+    "$(2-\\lambda) \\times (3-\\lambda) = 1 \\times 0$\n",
+    "\n",
+    "Finally we apply the Zero-Factor Property (if the product of two factors is zero, then at least one of the factors must be zero):\n",
+    "\n",
+    "$(2-\\lambda) = 0 \\Rightarrow \\lambda = 2$\n",
+    "\n",
+    "$(3-\\lambda) = 0 \\Rightarrow \\lambda = 3$\n",
+    "\n",
+    "> 🔑 $\\det(A - \\lambda I)$ is called the charateristic polynomial\n",
+    "\n",
+    "> 🔑 The values of $\\lambda$ for which the charateristic polynomial is zero are called roots of the charateristic polynomial\n",
+    "\n",
+    "> 🔑 The eigenvalues are the roots of the charateristic polynomial\n",
+    "\n",
+    "So basically, to find the eigenvalues of $A$ we look at the charateristic polynomial $\\det(A - \\lambda I)$ and find the roots, that is we solve $\\det(A - \\lambda I) = 0$ for $\\lambda$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Eigenvectors"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "> 🔑 An eigenvector is any vector whose direction is not changed by a linear transformation and it's only stretched by the eigenvalues.\n",
+    "\n",
+    "Formally, $\\vec{v}$ is an eigenvector of $A$ if\n",
+    "\n",
+    "$Av = \\lambda I v$\n",
+    "\n",
+    "$(A - \\lambda I)v = 0$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's continue the example from the previous secion and find the eigenvectors.\n",
+    "\n",
+    "We basically need to find $\\vec{v}$ in this system.\n",
+    "\n",
+    "$\\begin{bmatrix}2-\\lambda&&1\\\\0&&3-\\lambda\\end{bmatrix} \\begin{bmatrix}v_1\\\\v_2\\end{bmatrix} = \\begin{bmatrix}0\\\\0\\end{bmatrix}$\n",
+    "\n",
+    "For $\\lambda=2$ we have\n",
+    "\n",
+    "$\\begin{bmatrix}0&&1\\\\0&&1\\end{bmatrix} \\begin{bmatrix}v_1\\\\v_2\\end{bmatrix} = \\begin{bmatrix}0\\\\0\\end{bmatrix}$.\n",
+    "\n",
+    "The coefficient matrix can be converted to the row-echelon form (after $R2 = R2 - R1$)\n",
+    "\n",
+    "$\\begin{bmatrix}0&&1\\\\0&&0\\end{bmatrix} \\begin{bmatrix}v_1\\\\v_2\\end{bmatrix} = \\begin{bmatrix}0\\\\0\\end{bmatrix}$\n",
+    "\n",
+    "to obtain the following system of equations\n",
+    "\n",
+    "$\\begin{cases}v_2=0\\\\0=0\\end{cases}$\n",
+    "\n",
+    "which has solution $\\vec{v} = \\langle1, 0\\rangle$ or any multiple.\n",
+    "\n",
+    "For $\\lambda=3$ we have\n",
+    "\n",
+    "$\\begin{bmatrix}-1&&1\\\\0&&0\\end{bmatrix} \\begin{bmatrix}v_1\\\\v_2\\end{bmatrix} = \\begin{bmatrix}0\\\\0\\end{bmatrix}$,\n",
+    "\n",
+    "which is already in row-echelon form, so we only need to solve the following system of equations\n",
+    "\n",
+    "$\\begin{cases}-v_1+v_2=0\\\\0=0\\end{cases}$\n",
+    "\n",
+    "$\\begin{cases}v_2=v_1\\\\0=0\\end{cases}$\n",
+    "\n",
+    "to find the solution is $\\vec{v} = \\langle1, 1\\rangle$ or any multiple."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "A = np.array([[2, 1], [0, 3]])\n",
+    "evecs = [np.array([[1], [0]]), np.array([[1], [1]])]\n",
+    "lambdas = [2, 3]\n",
+    "\n",
+    "for lam, evc in zip(lambdas, evecs):\n",
+    "    assert np.array_equal((A - lam * np.identity(2)) @ evc, np.zeros((2, 1)))\n",
+    "    assert np.array_equal(A @ evc, lam * evc)\n",
+    "\n",
+    "fig, ax = plt.subplots()\n",
+    "plot_transformation(\n",
+    "    partial(T, A),\n",
+    "    title=\"$e_1$ and $e_2$ are the eigenvectors of $A$.\\nTheir directions are unchanged after $T()$.\",\n",
+    "    ax=ax,\n",
+    "    basis=evecs,\n",
+    "    lim=6,\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's consider anothe matrix.\n",
+    "\n",
+    "$A = \\begin{bmatrix}9&&4\\\\4&&3\\end{bmatrix}$\n",
+    "\n",
+    "To find the eigenvalues we solve\n",
+    "\n",
+    "$(9-\\lambda)(3-\\lambda)-16=0$\n",
+    "\n",
+    "$\\lambda^2-12\\lambda+27-16=0$\n",
+    "\n",
+    "$(1-\\lambda)(11-\\lambda)=0$\n",
+    "\n",
+    "So the eigenvalues are $\\lambda=1$ and $\\lambda=11$.\n",
+    "\n",
+    "For $\\lambda=1$ the eigenvector is given by\n",
+    "\n",
+    "$\\begin{bmatrix}8&&4\\\\4&&2\\end{bmatrix} \\begin{bmatrix}v_1\\\\v_2\\end{bmatrix} = \\begin{bmatrix}0\\\\0\\end{bmatrix}$.\n",
+    "\n",
+    "The coefficient matrix can be converted to the row-echelon form (after $R1 = 0.125R1$, $R2 = 0.25R2$, $R2 = R2 - R1$)\n",
+    "\n",
+    "$\\begin{bmatrix}1&&0.5\\\\0&&0\\end{bmatrix} \\begin{bmatrix}v_1\\\\v_2\\end{bmatrix} = \\begin{bmatrix}0\\\\0\\end{bmatrix}$\n",
+    "\n",
+    "to obtain the following system of equations\n",
+    "\n",
+    "$\\begin{cases}v_1+0.5v_2=0\\\\0=0\\end{cases}$\n",
+    "\n",
+    "$\\begin{cases}v_1=-0.5v_2\\\\0=0\\end{cases}$\n",
+    "\n",
+    "which has solution $\\vec{v} = \\langle-0.5, 1\\rangle$ or any multiple.\n",
+    "\n",
+    "For $\\lambda = 11$ the eigenvector is given by\n",
+    "\n",
+    "$\\begin{bmatrix}-2&&4\\\\4&&-8\\end{bmatrix} \\begin{bmatrix}v_1\\\\v_2\\end{bmatrix}  = \\begin{bmatrix}0\\\\0\\end{bmatrix}$.\n",
+    "\n",
+    "The coefficient matrix can be converted to the row-echelon form (after $R1=-0.5R1$, $R2=-0.5R2$ and $R2 = R2 - R1$)\n",
+    "\n",
+    "$\\begin{bmatrix}1&&-2\\\\0&&0\\end{bmatrix} \\begin{bmatrix}v_1\\\\v_2\\end{bmatrix}  = \\begin{bmatrix}0\\\\0\\end{bmatrix}$\n",
+    "\n",
+    "to obtain the following system of equations\n",
+    "\n",
+    "$\\begin{cases}v_1-2v_2=0\\\\0=0\\end{cases}$\n",
+    "\n",
+    "$\\begin{cases}v_1=2v_2\\\\0=0\\end{cases}$\n",
+    "\n",
+    "which has solution $\\vec{v} = \\langle2, 1\\rangle$ or any multiple."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "A = np.array([[9, 4], [4, 3]])\n",
+    "lambdas = [1, 11]\n",
+    "evecs = [np.array([[-0.5], [1]]), np.array([[0.5], [0.25]])]\n",
+    "\n",
+    "for lam, evc in zip(lambdas, evecs):\n",
+    "    assert np.array_equal((A - lam * np.identity(2)) @ evc, np.zeros((2, 1)))\n",
+    "    assert np.array_equal(A @ evc, lam * evc)\n",
+    "\n",
+    "fig, ax = plt.subplots()\n",
+    "plot_transformation(\n",
+    "    partial(T, A),\n",
+    "    title=\"$e_1$ and $e_2$ are the eigenvectors of $A$.\\nTheir directions are unchanged after $T()$.\",\n",
+    "    ax=ax,\n",
+    "    basis=evecs,\n",
+    "    lim=8,\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Principal Componenent Analysis (extra)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's apply all the learnings in this notebook to a simple example of PCA.\n",
+    "\n",
+    "We'll see applications of:\n",
+    "- singular and non-singular matrices\n",
+    "- determinants\n",
+    "- dot products\n",
+    "- linear transformations\n",
+    "- eigenvectors and eigenvalues\n",
+    "- vector projections\n",
+    "\n",
+    "This was inspired by Luis Serrano's [YT video](https://www.youtube.com/watch?v=g-Hb26agBFg) on PCA."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "rng = np.random.default_rng(1)\n",
+    "\n",
+    "x1 = np.array([[1], [2], [3], [3], [5], [6]])\n",
+    "x2 = (\n",
+    "    10\n",
+    "    + np.array([[1], [2], [3], [3], [5], [6]]) * 15\n",
+    "    + rng.normal(0.0, 30.0, 6).reshape(-1, 1)\n",
+    ")\n",
+    "X = np.hstack([x1, x2])\n",
+    "\n",
+    "for r in range(X.shape[0]):\n",
+    "    plt.quiver(\n",
+    "        [0],\n",
+    "        [0],\n",
+    "        [X[r][0]],\n",
+    "        [X[r][1]],\n",
+    "        angles=\"xy\",\n",
+    "        scale=1,\n",
+    "        scale_units=\"xy\",\n",
+    "        color=\"tab:blue\",\n",
+    "    )\n",
+    "plt.xlim(0, X[:, 0].max() * 1.05)\n",
+    "plt.ylim(0, X[:, 1].max() * 1.05)\n",
+    "plt.xlabel(\"$x_1$\")\n",
+    "plt.ylabel(\"$x_2$\")\n",
+    "plt.title(\"Samples as vectors\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's standardize the data."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "Z = (X - np.mean(X, axis=0)) / np.std(X, axis=0)\n",
+    "for r in range(Z.shape[0]):\n",
+    "    plt.quiver(\n",
+    "        [0],\n",
+    "        [0],\n",
+    "        [Z[r][0]],\n",
+    "        [Z[r][1]],\n",
+    "        angles=\"xy\",\n",
+    "        scale=1,\n",
+    "        scale_units=\"xy\",\n",
+    "        color=\"tab:blue\",\n",
+    "    )\n",
+    "plt.xlim(Z[:, 0].min() * 1.2, Z[:, 0].max() * 1.2)\n",
+    "plt.ylim(Z[:, 1].min() * 1.2, Z[:, 1].max() * 1.2)\n",
+    "plt.xlabel(\"$x_1$\")\n",
+    "plt.ylabel(\"$x_2$\")\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.title(\"Effect of standardization on the vectors\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's calculate the covariance matrix, whose eigenvectors represent the directions of the maximum variance (or better maximum correlation since we're using standardized data)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "cov = np.cov(Z[:, 0], Z[:, 1], bias=True)\n",
+    "cov_evecs = np.linalg.eig(cov)[1]\n",
+    "cov_v1 = cov_evecs[:, 0]\n",
+    "cov_v2 = cov_evecs[:, 1]\n",
+    "print(f\"Determinant of transformation: {np.linalg.det(cov):.2f}\")\n",
+    "print(f\"Dot product of eigenvectors: {np.dot(cov_v1, cov_v2):.2f}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can see that the covariance matrix represent a non-singular linear transformation.\n",
+    "\n",
+    "We can also see that the eigenvectors are orthogonal because their dot product is 0.\n",
+    "\n",
+    "> 🔑 The eigenvectors of a symmetric matrix are orthogonal\n",
+    "\n",
+    "Another property of symmetric matrices is that their transformation always entails some sort of stretching, which means that the eigenvalues are always real numbers (not complex numbers like in the case of rotations)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's visualize the effect of the linear transformation induced by the covariance matrix."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "fig, ax = plt.subplots()\n",
+    "plot_transformation(\n",
+    "    partial(T, cov),\n",
+    "    title=\"Covariance matrix as a linear transformation\",\n",
+    "    basis=(cov_v1.reshape(-1, 1), cov_v2.reshape(-1, 1)),\n",
+    "    ax=ax,\n",
+    "    lim=3,\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To better see the effect of the transformation, we've used a basis that its parallel to the eigenbasis of the transformation.\n",
+    "\n",
+    "$COV_{x_1x_2} = \\begin{bmatrix}1&&0.8\\\\0.8&&1\\end{bmatrix}$\n",
+    "\n",
+    "$\\vec{v_1} = \\begin{bmatrix}0.7\\\\0.7\\end{bmatrix}$\n",
+    "\n",
+    "$\\vec{v_2} = \\begin{bmatrix}-0.7\\\\0.7\\end{bmatrix}$\n",
+    "\n",
+    "$COV_{x_1x_2} \\cdot \\vec{v_1} = \\begin{bmatrix}1 \\times 0.7 + 0.8 \\times 0.7\\\\0.8 \\times 0.7 + 1 \\times 0.7\\end{bmatrix} = \\begin{bmatrix}1.3\\\\1.3\\end{bmatrix}$\n",
+    "\n",
+    "$COV_{x_1x_2} \\cdot \\vec{v_2} = \\begin{bmatrix}1 \\times -0.7 + 0.8 \\times 0.7\\\\0.8 \\times -0.7 + 1 \\times 0.7\\end{bmatrix} = \\begin{bmatrix}-0.14\\\\0.14\\end{bmatrix}$\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's overlay the eigenvectors on the data."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "for r in range(Z.shape[0]):\n",
+    "    plt.quiver(\n",
+    "        [0],\n",
+    "        [0],\n",
+    "        [Z[r][0]],\n",
+    "        [Z[r][1]],\n",
+    "        angles=\"xy\",\n",
+    "        scale=1,\n",
+    "        scale_units=\"xy\",\n",
+    "        color=\"tab:blue\",\n",
+    "    )\n",
+    "plt.quiver(\n",
+    "    [0, 0],\n",
+    "    [0, 0],\n",
+    "    [cov_v1[0], cov_v2[0]],\n",
+    "    [cov_v1[1], cov_v2[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale=1,\n",
+    "    scale_units=\"xy\",\n",
+    "    color=\"tab:orange\",\n",
+    ")\n",
+    "plt.xlabel(\"$x_1$\")\n",
+    "plt.ylabel(\"$x_2$\")\n",
+    "plt.xlim(Z[:, 0].min() * 1.2, Z[:, 0].max() * 1.2)\n",
+    "plt.ylim(Z[:, 1].min() * 1.2, Z[:, 1].max() * 1.2)\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.title(\"Eigenvectors of the covariance matrix on the data\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's see the principal components (eigenvectors times eigenvalues). Of course, the first principal component is the one with the highest magnitude (eigenvalue).\n",
+    "\n",
+    "Given the nature of this data (positively correlated) we expect the first principal component to be the one corresponding to the eigenvector with signs [+, +] or [-, -]."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "eigvls, eigvcs = np.linalg.eig(cov)\n",
+    "rank = np.argsort(-eigvls)\n",
+    "eigvls = eigvls[rank]\n",
+    "eigvcs = eigvcs[:, rank]\n",
+    "pc = eigvcs * eigvls\n",
+    "\n",
+    "for r in range(Z.shape[0]):\n",
+    "    plt.quiver(\n",
+    "        [0],\n",
+    "        [0],\n",
+    "        [Z[r][0]],\n",
+    "        [Z[r][1]],\n",
+    "        angles=\"xy\",\n",
+    "        scale=1,\n",
+    "        scale_units=\"xy\",\n",
+    "        color=\"tab:blue\",\n",
+    "    )\n",
+    "plt.quiver(\n",
+    "    [0, 0],\n",
+    "    [0, 0],\n",
+    "    [pc[:, 0][0], pc[:, 1][0]],\n",
+    "    [pc[:, 0][1], pc[:, 1][1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale=1,\n",
+    "    scale_units=\"xy\",\n",
+    "    color=\"tab:orange\",\n",
+    ")\n",
+    "plt.annotate(\"PC1\", pc[:, 0], color=\"tab:orange\")\n",
+    "plt.annotate(\"PC2\", pc[:, 1], color=\"tab:orange\")\n",
+    "plt.xlabel(\"$x_1$\")\n",
+    "plt.ylabel(\"$x_2$\")\n",
+    "plt.xlim(Z[:, 0].min() * 1.2, Z[:, 0].max() * 1.2)\n",
+    "plt.ylim(Z[:, 1].min() * 1.2, Z[:, 1].max() * 1.2)\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.title(\"Eigenvectors stretched by their eigenvalues\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's project all the vectors onto the first principal component."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "n_components = 1\n",
+    "proj_norm = np.dot(Z, eigvcs[:, :n_components])  # (6, 2) @ (2, 1) -> (6, 1)\n",
+    "proj = np.dot(proj_norm, eigvcs[:, :n_components].T)  # (6, 1) @ (1, 2) -> (6, 2)\n",
+    "plt.plot([Z[:, 0], proj[:, 0]], [Z[:, 1], proj[:, 1]], \"--\", color=\"tab:blue\")\n",
+    "for r in range(Z.shape[0]):\n",
+    "    plt.quiver(\n",
+    "        [0],\n",
+    "        [0],\n",
+    "        [Z[r][0]],\n",
+    "        [Z[r][1]],\n",
+    "        angles=\"xy\",\n",
+    "        scale=1,\n",
+    "        scale_units=\"xy\",\n",
+    "        color=\"tab:blue\",\n",
+    "    )\n",
+    "plt.quiver(\n",
+    "    [0, 0],\n",
+    "    [0, 0],\n",
+    "    [pc[:, 0][0], -pc[:, 0][0]],\n",
+    "    [pc[:, 0][1], -pc[:, 0][0]],\n",
+    "    angles=\"xy\",\n",
+    "    scale=1,\n",
+    "    scale_units=\"xy\",\n",
+    "    color=\"tab:orange\",\n",
+    ")\n",
+    "plt.scatter(proj[:, 0], proj[:, 1], color=\"tab:orange\")\n",
+    "plt.xlabel(\"$x_1$\")\n",
+    "plt.ylabel(\"$x_2$\")\n",
+    "plt.xlim(Z[:, 0].min() * 1.2, Z[:, 0].max() * 1.2)\n",
+    "plt.ylim(Z[:, 1].min() * 1.2, Z[:, 1].max() * 1.2)\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.title(\"Projections to the eigenvector with the largest eigenvalue\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Support Vector Machine (extra)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Another interesting application to illustrate the importance of linear algebra is SVM."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "rng = np.random.default_rng(1)\n",
+    "group_1_centroid = [-2, -2]\n",
+    "group_2_centroid = [2, 2]\n",
+    "X = np.r_[\n",
+    "    rng.standard_normal((20, 2)) + group_1_centroid,\n",
+    "    rng.standard_normal((20, 2)) + group_2_centroid,\n",
+    "]\n",
+    "y = np.array([-1] * 20 + [1] * 20)\n",
+    "\n",
+    "plt.scatter(X[:, 0], X[:, 1], c=np.where(y == -1, \"tab:orange\", \"tab:blue\"))\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.xlabel(\"$x_1$\")\n",
+    "plt.ylabel(\"$x_2$\")\n",
+    "plt.xlim(-5, 5)\n",
+    "plt.ylim(-5, 5)\n",
+    "plt.title(\"Data with 2 classes (perfect linear separation)\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We need to find a line such that\n",
+    "\n",
+    "$h(x_i) = \\begin{cases}1 &\\text{if }w_1x^i_1+b \\ge 0\\\\-1 &\\text{otherwise }\\end{cases} \\text{for } i = 1, \\dots, m$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "def decision_boundary(x1, b, w):\n",
+    "    return (-w[0] * x1 - b) / w[1]\n",
+    "\n",
+    "\n",
+    "plt.scatter(X[:, 0], X[:, 1], c=np.where(y == -1, \"tab:orange\", \"tab:blue\"))\n",
+    "x1 = np.linspace(-4, 4, 100)\n",
+    "plt.plot(\n",
+    "    x1,\n",
+    "    decision_boundary(x1, b=0.2, w=np.array([0.5, -1])),\n",
+    "    color=\"k\",\n",
+    "    linestyle=\"dotted\",\n",
+    "    label=\"DB 1\",\n",
+    ")\n",
+    "plt.plot(\n",
+    "    x1,\n",
+    "    decision_boundary(x1, b=-0.1, w=np.array([-0.6, -1])),\n",
+    "    color=\"k\",\n",
+    "    linestyle=\"dashed\",\n",
+    "    label=\"DB 2\",\n",
+    ")\n",
+    "plt.plot(\n",
+    "    x1,\n",
+    "    decision_boundary(x1, b=-0.5, w=np.array([0.2, -1])),\n",
+    "    color=\"k\",\n",
+    "    linestyle=\"dashdot\",\n",
+    "    label=\"DB 3\",\n",
+    ")\n",
+    "plt.legend()\n",
+    "plt.xlabel(\"$x_1$\")\n",
+    "plt.ylabel(\"$x_2$\")\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.xlim(-5, 5)\n",
+    "plt.ylim(-5, 5)\n",
+    "plt.title(\"Random Decision Boundaries\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Intuitevely, we know DB 2 ($x_2 = -0.1 - 0.6x_1$) is the best one of the three, but why?\n",
+    "\n",
+    "We haven't seen this during the course, but the normalized distance between a point and a line is\n",
+    "\n",
+    "> 📐 $d = \\cfrac{|w_1x_1 + w_2x_2 + b|}{\\sqrt{w_1^2 + w_2^2}} = \\cfrac{|w \\cdot x + b|}{\\|w\\|}$\n",
+    "\n",
+    "<img src=\"https://i.ytimg.com/vi/tngPrM2d-OM/maxresdefault.jpg\" width=30%>\n",
+    "\n",
+    "$x_2 = -0.1 - 0.6x_1$ can be rewritten as $-0.6x_1 -1x_2 -0.1 = 0$ so we can get\n",
+    "\n",
+    "$d = \\cfrac{|-0.6x_1 -1x_2 -0.1|}{\\sqrt{-0.6^2 + -1^2}}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "It turns out that the formula for $d$ (distance between a point and a line) has a vector projection proof.\n",
+    "\n",
+    "Let the point $P = (x^0_1, x^0_2)$ and let the given line have equation $w_1x_1 + w_2x_2 + b = 0$.  \n",
+    "\n",
+    "Also, let $Q = (x^1_1, x^1_2)$  be any point on this line and let the vector $\\vec{w} = \\langle w_1, w_2 \\rangle$ starting at point $Q$.\n",
+    "\n",
+    "For example, $Q$ could be $(x_1, -0.1 - 0.6x_1)$, and by arbitrarily fixing $x_1 = 0$ we get $Q = (0, -0.1)$.\n",
+    "\n",
+    "The vector $\\vec{w}$ is perpendicular to the line.\n",
+    "\n",
+    "The distance $d$ from the point $P$ to the line is equal to the length of the orthogonal projection of $\\overrightarrow{QP}$ onto $\\vec{w}$.\n",
+    "\n",
+    "$d = \\|\\overrightarrow{proj_{w}QP}\\| = \\cfrac{(\\vec{P} - \\vec{Q}) \\cdot \\vec{w}}{\\|\\vec{w}\\|} \\cfrac{\\vec{w}}{\\|\\vec{w}\\|}$\n",
+    "\n",
+    "The only difference to what we saw earlier during the course is that the vector $\\vec{P}$ starts at point $Q$ (a point on the line) and not the origin."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "w = np.array([-0.6, -1.0])\n",
+    "P = X[0]\n",
+    "Q = np.array([0, decision_boundary(0, b=-0.1, w=w)])\n",
+    "proj_P = (np.dot(P - Q, w) / np.linalg.norm(w)) * (w / np.linalg.norm(w))\n",
+    "\n",
+    "x1 = np.linspace(-4, 4, 100)\n",
+    "plt.plot(\n",
+    "    x1,\n",
+    "    decision_boundary(x1, b=-0.1, w=w),\n",
+    "    color=\"k\",\n",
+    "    linestyle=\"dashed\",\n",
+    "    label=\"DB 2\",\n",
+    ")\n",
+    "arc = plt.Rectangle(\n",
+    "    Q,\n",
+    "    -0.2,\n",
+    "    -0.2,\n",
+    "    angle=np.degrees(np.arctan(w[0])),\n",
+    "    fill=False,\n",
+    "    edgecolor=\"k\",\n",
+    ")\n",
+    "plt.gca().add_patch(arc)\n",
+    "plt.quiver(\n",
+    "    [\n",
+    "        Q[0],\n",
+    "        Q[0],\n",
+    "        P[0],\n",
+    "        Q[0],\n",
+    "    ],\n",
+    "    [\n",
+    "        Q[1],\n",
+    "        Q[1],\n",
+    "        P[1],\n",
+    "        Q[1],\n",
+    "    ],\n",
+    "    [\n",
+    "        P[0],\n",
+    "        proj_P[0],\n",
+    "        -proj_P[0],\n",
+    "        w[0],\n",
+    "    ],\n",
+    "    [\n",
+    "        P[1],\n",
+    "        proj_P[1],\n",
+    "        -proj_P[1],\n",
+    "        w[1],\n",
+    "    ],\n",
+    "    angles=\"xy\",\n",
+    "    scale=1,\n",
+    "    scale_units=\"xy\",\n",
+    "    fc=[\"tab:blue\", \"tab:green\", \"none\", \"tab:orange\"],\n",
+    "    ec=[\"none\", \"none\", \"k\", \"none\"],\n",
+    "    ls=[\"solid\", \"solid\", \"dashed\", \"solid\"],\n",
+    "    linewidth=1,\n",
+    ")\n",
+    "plt.text(X[0, 0] - 0.3, X[0, 1] - 0.3, \"$P$\", color=\"tab:blue\", fontsize=12)\n",
+    "plt.text(w[0] - 0.3, w[1], \"$w$\", color=\"tab:orange\", fontsize=12)\n",
+    "plt.text(\n",
+    "    proj_P[0] - 0.3, proj_P[1] - 0.3, \"$proj_{n}P$\", color=\"tab:green\", fontsize=12\n",
+    ")\n",
+    "plt.text(-3, 2.5, \"$w_1x_1 + w_2x_2 + b = 0$\", color=\"k\", fontsize=12)\n",
+    "plt.text(-1.75, -0.5, \"$d$\", color=\"k\", fontsize=12)\n",
+    "plt.text(Q[0] + 0.1, Q[1] + 0.1, \"$Q$\", color=\"k\", fontsize=12)\n",
+    "plt.title(\"Projection proof of $d$\")\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.xlim(-4, 4)\n",
+    "plt.ylim(-4, 4)\n",
+    "plt.xlabel(\"$x_1$\")\n",
+    "plt.ylabel(\"$x_2$\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's verify it."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "d = np.abs(P @ w.reshape(-1, 1) + -0.1) / np.linalg.norm(w)\n",
+    "proof_d = np.linalg.norm(proj_P)\n",
+    "assert np.isclose(d, proof_d)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The smallest distance among all data points to the decision boundary is called margin.\n",
+    "\n",
+    "$\\gamma(w, b) = \\min\\cfrac{|wx_i+b|}{\\|w\\|}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "def margin(X, b, w):\n",
+    "    return np.min(np.abs(X @ w.reshape(-1, 1) + b) / np.linalg.norm(w))\n",
+    "\n",
+    "\n",
+    "print(f\"Margin of decision boundary 1: {margin(X, b=0.2, w=np.array([0.5, -1])):.2f}\")\n",
+    "print(f\"Margin of decision boundary 2: {margin(X, b=-0.1, w=np.array([-0.6, -1])):.2f}\")\n",
+    "print(f\"Margin of decision boundary 3: {margin(X, b=-0.5, w=np.array([0.2, -1])):.2f}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This confirms our intuition that the DB 2 was the best of the three."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "def margin_loc(X, b, w):\n",
+    "    return np.argmin(np.abs(X @ w.reshape(-1, 1) + b) / np.linalg.norm(w))\n",
+    "\n",
+    "\n",
+    "s1 = margin_loc(X, b=0.2, w=np.array([0.5, -1]))\n",
+    "s2 = margin_loc(X, b=-0.1, w=np.array([-0.6, -1]))\n",
+    "s3 = margin_loc(X, b=-0.5, w=np.array([0.2, -1]))\n",
+    "\n",
+    "plt.scatter(\n",
+    "    X[[s1, s2, s3], 0],\n",
+    "    X[[s1, s2, s3], 1],\n",
+    "    c=np.where(y[[s1, s2, s3]] == -1, \"tab:orange\", \"tab:blue\"),\n",
+    ")\n",
+    "\n",
+    "plt.scatter(X[:, 0], X[:, 1], c=np.where(y == -1, \"tab:orange\", \"tab:blue\"), alpha=0.1)\n",
+    "\n",
+    "x1 = np.linspace(-4, 4, 100)\n",
+    "plt.plot(\n",
+    "    x1,\n",
+    "    decision_boundary(x1, b=0.2, w=np.array([0.5, -1])),\n",
+    "    color=\"k\",\n",
+    "    linestyle=\"dotted\",\n",
+    "    label=\"DB 1\",\n",
+    ")\n",
+    "plt.plot(\n",
+    "    x1,\n",
+    "    decision_boundary(x1, b=-0.1, w=np.array([-0.6, -1])),\n",
+    "    color=\"k\",\n",
+    "    linestyle=\"dashed\",\n",
+    "    label=\"DB 2\",\n",
+    ")\n",
+    "plt.plot(\n",
+    "    x1,\n",
+    "    decision_boundary(x1, b=-0.5, w=np.array([0.2, -1])),\n",
+    "    color=\"k\",\n",
+    "    linestyle=\"dashdot\",\n",
+    "    label=\"DB 3\",\n",
+    ")\n",
+    "\n",
+    "\n",
+    "def quiver_to_boundary(X, y, b, w, s):\n",
+    "    Q = np.array([0, decision_boundary(0, b=b, w=w)])\n",
+    "    proj = (np.dot(X[s] - Q, w) / np.linalg.norm(w)) * (w / np.linalg.norm(w))\n",
+    "    plt.quiver(\n",
+    "        [X[s][0]],\n",
+    "        [X[s][1]],\n",
+    "        [-proj[0]],\n",
+    "        [-proj[1]],\n",
+    "        angles=\"xy\",\n",
+    "        scale=1,\n",
+    "        scale_units=\"xy\",\n",
+    "        color=np.where(y[[s]] == -1, \"tab:orange\", \"tab:blue\"),\n",
+    "    )\n",
+    "\n",
+    "\n",
+    "quiver_to_boundary(X, y, b=0.2, w=np.array([0.5, -1]), s=s1)\n",
+    "quiver_to_boundary(X, y, b=-0.1, w=np.array([-0.6, -1]), s=s2)\n",
+    "quiver_to_boundary(X, y, b=-0.5, w=np.array([0.2, -1]), s=s3)\n",
+    "\n",
+    "plt.legend()\n",
+    "plt.xlabel(\"$x_1$\")\n",
+    "plt.ylabel(\"$x_2$\")\n",
+    "plt.title(\"Points responsible for the margin of each decision boundary\")\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.xlim(-5, 5)\n",
+    "plt.ylim(-5, 5)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The primary objective of SVM is to find a decision boundary that maximizes the margin between two classes. \n",
+    "\n",
+    "But that alone is not sufficient. We also need to ensure that the points lie on the correct side of the boundary.\n",
+    "\n",
+    "It becomes a constrained optimization problem.\n",
+    "\n",
+    "$\\max \\gamma(w, b) \\text{ such that } y_i(w \\cdot x_i + b) \\ge 0$\n",
+    "\n",
+    "Let's substitute the definition of margin and we get\n",
+    "\n",
+    "$\\max \\min\\cfrac{|wx_i+b|}{\\|w\\|} \\text{ s.t. } y_i(w \\cdot x_i + b) \\ge 0$\n",
+    "\n",
+    "Without a constraint on $w$ and $b$, we would have infinite possible values for these parameters that would give the same separating decision boundary due to its scale invariance.\n",
+    "\n",
+    "We can set a scale for $w$ and $b$ by adding the additional constraint $\\min|wx_i+b| = 1$.\n",
+    "\n",
+    "In other words, the scale of the values of $w$ and $b$ will be such that the smallest distance between the points and the decision boundary is $\\cfrac{1}{\\|w\\|}$.\n",
+    "\n",
+    "Why is the constant set to 1 and not another number?\n",
+    "\n",
+    "Well, because this allows us to remove it from $\\max \\min\\cfrac{|wx_i+b|}{\\|w\\|} \\Longrightarrow \\max \\cfrac{1}{\\|w\\|} \\text{ s.t. } \\min|wx_i+b| = 1$.\n",
+    "\n",
+    "So after putting it all together we have\n",
+    "\n",
+    "$\\max \\cfrac{1}{\\|w\\|} \\text{ s.t. } y_i(w \\cdot x_i + b) \\ge 0 \\text{ and } \\min|wx_i+b| = 1$.\n",
+    "\n",
+    "We can combine the two constraints into one and obtain\n",
+    "\n",
+    "$\\max \\cfrac{1}{\\|w\\|} \\text{ s.t. } y_i(w \\cdot x_i + b) \\ge 1$.\n",
+    "\n",
+    "Furthermore, $\\max\\cfrac{1}{\\|w\\|}$ is equivalent to $\\min\\|w\\|$, which is equivalent $\\min \\|w\\|^2$ and we can rewrite as dot product.\n",
+    "\n",
+    "$\\min w \\cdot w \\text{ s.t. } y_i(w \\cdot x_i + b) \\ge 1$\n",
+    "\n",
+    "To simplify the optimization even further we can introduce a factor of $\\cfrac{1}{2}$ so that the derivative becomes $w$ instead of $2w$.\n",
+    "\n",
+    "$\\min \\cfrac{1}{2} w \\cdot w \\text{ s.t. } y_i(w \\cdot x_i + b) \\ge 1$\n",
+    "\n",
+    "During the optimization for SVM, we must estimate all 3 parameters: $w_1$, $w_2$ and $b$. \n",
+    "\n",
+    "This may seem counterintuitive given that a line inherently has only 2 degrees of freedom (slope and intercept).\n",
+    "\n",
+    "However, the constraint $\\min|wx_i+b| = 1$ ensures that only one scale-invariant decision boundary can be selected, making $w_1$, $w_2$ and $b$ uniquely identifiable.\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "def hard_loss(params):\n",
+    "    w = params[: X.shape[1]]\n",
+    "    return 0.5 * np.dot(w, w)\n",
+    "\n",
+    "\n",
+    "def hard_constraint(params, X, y, i):\n",
+    "    w = params[: X.shape[1]]\n",
+    "    b = params[X.shape[1]]\n",
+    "    return y[i] * (np.dot(w, X[i]) + b) - 1\n",
+    "\n",
+    "\n",
+    "def parallel_thru_point(x1, w, p):\n",
+    "    return p[1] - w[0] * (x1 - p[0]) / w[1]\n",
+    "\n",
+    "\n",
+    "hard_initial = np.random.uniform(0, 1, 3)\n",
+    "hard_cons = [\n",
+    "    {\"type\": \"ineq\", \"fun\": hard_constraint, \"args\": (X, y, i)}\n",
+    "    for i in range(X.shape[0])\n",
+    "]\n",
+    "\n",
+    "hard_result = minimize(fun=hard_loss, x0=hard_initial, constraints=hard_cons)\n",
+    "\n",
+    "if np.allclose(hard_initial, hard_result.x):\n",
+    "    raise ValueError(\"Initial values close to final estimates\")\n",
+    "\n",
+    "w = hard_result.x[: X.shape[1]]\n",
+    "b = hard_result.x[X.shape[1]]\n",
+    "sv = X[np.isclose(np.abs(X @ w.reshape(-1, 1) + b), 1.0, atol=1e-6).squeeze()]\n",
+    "\n",
+    "# plot data\n",
+    "plt.scatter(X[:, 0], X[:, 1], c=np.where(y == -1, \"tab:orange\", \"tab:blue\"))\n",
+    "# plot decision boundary\n",
+    "x1 = np.linspace(-4, 4, 100)\n",
+    "plt.plot(x1, (-w[0] * x1 - b) / w[1], color=\"k\", alpha=0.5)\n",
+    "# plot parallels thru support vectors\n",
+    "plt.plot(\n",
+    "    x1, parallel_thru_point(x1, w, sv[0]), color=\"k\", linestyle=\"dashed\", alpha=0.25\n",
+    ")\n",
+    "plt.plot(\n",
+    "    x1, parallel_thru_point(x1, w, sv[1]), color=\"k\", linestyle=\"dashed\", alpha=0.25\n",
+    ")\n",
+    "# highlight support vectors\n",
+    "plt.scatter(\n",
+    "    sv[:, 0],\n",
+    "    sv[:, 1],\n",
+    "    s=80,\n",
+    "    facecolors=\"none\",\n",
+    "    edgecolors=\"y\",\n",
+    "    color=\"y\",\n",
+    ")\n",
+    "# plot margin\n",
+    "Q = np.array([0, decision_boundary(0, b=b, w=w)])\n",
+    "proj_sv = (np.dot(sv[0] - Q, w) / np.linalg.norm(w)) * (w / np.linalg.norm(w))\n",
+    "plt.quiver(\n",
+    "    [Q[0], Q[0]],\n",
+    "    [Q[1], Q[1]],\n",
+    "    [proj_sv[0], -proj_sv[0]],\n",
+    "    [proj_sv[1], -proj_sv[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale=1,\n",
+    "    scale_units=\"xy\",\n",
+    "    color=\"k\",\n",
+    "    alpha=0.5,\n",
+    ")\n",
+    "plt.annotate(r\"$\\dfrac{1}{\\|w\\|}$\", [Q[0] - 1.1, Q[1]], color=\"grey\")\n",
+    "\n",
+    "plt.xlabel(\"$x_1$\")\n",
+    "plt.ylabel(\"$x_2$\")\n",
+    "plt.title(\"SVM Decision Boundary\")\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.xlim(-5, 5)\n",
+    "plt.ylim(-5, 5)\n",
+    "plt.show()\n",
+    "\n",
+    "print(f\"Accuracy: {np.mean(np.sign(X @ w + b) == y):.0%}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's verify that $\\min|wx_i+b| = 1$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "assert np.isclose(margin(X, b=b, w=w) * np.linalg.norm(w), 1.0)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This was a very simple example where the classes are perfectly separated, so that we could use the hard margin implementation."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "rng = np.random.default_rng(1)\n",
+    "group_1_centroid = [-1, -1]\n",
+    "group_2_centroid = [1, 1]\n",
+    "X = np.r_[\n",
+    "    rng.standard_normal((20, 2)) + group_1_centroid,\n",
+    "    rng.standard_normal((20, 2)) + group_2_centroid,\n",
+    "]\n",
+    "y = np.array([-1] * 20 + [1] * 20)\n",
+    "\n",
+    "plt.scatter(X[:, 0], X[:, 1], c=np.where(y == -1, \"tab:orange\", \"tab:blue\"))\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.xlabel(\"$x_1$\")\n",
+    "plt.ylabel(\"$x_2$\")\n",
+    "plt.title(\"Data with 2 classes (imperfect linear separation)\")\n",
+    "plt.xlim(-5, 5)\n",
+    "plt.ylim(-5, 5)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "hard_initial = np.random.uniform(0, 1, 3)\n",
+    "hard_cons = [\n",
+    "    {\"type\": \"ineq\", \"fun\": hard_constraint, \"args\": (X, y, i)} for i in range(X.shape[0])\n",
+    "]\n",
+    "\n",
+    "hard_result = minimize(fun=hard_loss, x0=hard_initial, constraints=hard_cons)\n",
+    "\n",
+    "try:\n",
+    "    if np.allclose(hard_initial, hard_result.x):\n",
+    "        raise ValueError(\"Initial values close to final estimates\")\n",
+    "except ValueError as e:\n",
+    "    print(\"ValueError:\", e)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "With this data the hard margin optimizer doesn't work.\n",
+    "\n",
+    "We need to give it some slack.\n",
+    "\n",
+    "Let's introduce the slack variables $\\zeta_i$\n",
+    "\n",
+    "$\\min \\cfrac{1}{2} w \\cdot w \\text{ s.t. } y_i(w \\cdot x_i + b) \\ge 1 - \\zeta_i$\n",
+    "\n",
+    "This way we allow for violations of the constraint. More specifically $\\zeta_i$ can take the following values:\n",
+    "\n",
+    "$\\zeta_i=0$: The point $x_i$ is correctly classified and outside the margin.\n",
+    "\n",
+    "$0<\\zeta_i \\le 1$: The point $x_i$ is correctly classified *but* within the margin.\n",
+    "\n",
+    "$\\zeta_i>1$: The point $x_i$ is misclassified.\n",
+    "\n",
+    "Thus, $\\zeta_i$ is constrained to be non-negative:\n",
+    "\n",
+    "$\\min \\cfrac{1}{2} w \\cdot w \\text{ s.t. } y_i(w \\cdot x_i + b) \\ge 1 - \\zeta_i \\text{ and } \\zeta_i \\ge 0$\n",
+    "\n",
+    "The problem is that a large enough $\\zeta_i$ defeats the purpose of the constraint.\n",
+    "\n",
+    "We can then penalize solutions that have large values of $\\zeta_i$. Namely, we can add an L1 regularization for $\\zeta_i$ and a regularization parameter $C$.\n",
+    "\n",
+    "$\\min \\cfrac{1}{2} w \\cdot w + C\\sum^m_i\\zeta_i \\text{ s.t. } y_i(w \\cdot x_i + b) \\ge 1 - \\zeta_i \\text{ and } \\zeta_i \\ge 0$\n",
+    "\n",
+    "$C$ provides a trade-off between maximizing the margin (prioritizing generalization) and minimizing misclassification.\n",
+    "\n",
+    "In the extreme case where $C = 0$, the objective function to be maximized is the same as in the hard margin SVM.\n",
+    "\n",
+    "However, there is effectively no constraint on classification accuracy, as the slack variables are free to get as large as needed.\n",
+    "\n",
+    "With a large $C$, solutions with large $\\zeta_i$ values are heavily penalized. This leads to a narrowe margin and to overfitting because fewer misclassifications are allowed.\n",
+    "\n",
+    "A small $C$ allows for a wider margin, but at the cost of permitting more misclassifications."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "def soft_margin_svm(X, y, C):\n",
+    "    def soft_loss(params):\n",
+    "        w = params[: X.shape[1]]\n",
+    "        z = params[X.shape[1] + 1 :]\n",
+    "        return 0.5 * np.dot(w, w) + C * np.sum(z)\n",
+    "\n",
+    "    def soft_constraint(params, X, y, i):\n",
+    "        w = params[: X.shape[1]]\n",
+    "        b = params[X.shape[1]]\n",
+    "        zi = params[X.shape[1] + 1 + i]\n",
+    "        return y[i] * (np.dot(w, X[i]) + b) - 1 + zi\n",
+    "\n",
+    "    soft_initial = np.random.uniform(0, 1, X.shape[1] + 1 + X.shape[0])\n",
+    "    soft_cons = [\n",
+    "        {\"type\": \"ineq\", \"fun\": soft_constraint, \"args\": (X, y, i)}\n",
+    "        for i in range(X.shape[0])\n",
+    "    ]\n",
+    "    bounds_w = [(None, None)] * X.shape[1]\n",
+    "    bounds_b = [(None, None)]\n",
+    "    bounds_z = [(0, None)] * X.shape[0]\n",
+    "    bounds = bounds_w + bounds_b + bounds_z\n",
+    "\n",
+    "    soft_result = minimize(\n",
+    "        fun=soft_loss, x0=soft_initial, constraints=soft_cons, bounds=bounds\n",
+    "    )\n",
+    "\n",
+    "    if np.allclose(soft_initial, soft_result.x):\n",
+    "        raise ValueError(\"Initial values close to final estimates\")\n",
+    "\n",
+    "    w = soft_result.x[: X.shape[1]]\n",
+    "    b = soft_result.x[X.shape[1]]\n",
+    "    z = soft_result.x[X.shape[1] + 1 :]\n",
+    "    # indices of within-margin zetas sorted by farthest to closest\n",
+    "    svz = np.argwhere((z > 1e-6) & (z <= 1)).squeeze()[\n",
+    "        np.argsort(z[(z > 1e-6) & (z <= 1)])\n",
+    "    ]\n",
+    "    zX = X[svz]\n",
+    "    # within margin support vectors farthest from decision boundary (one per class)\n",
+    "    sv = np.vstack((zX[y[svz] > 0][0], zX[y[svz] < 0][0]))\n",
+    "\n",
+    "    # plot data\n",
+    "    plt.scatter(X[:, 0], X[:, 1], c=np.where(y == -1, \"tab:orange\", \"tab:blue\"))\n",
+    "    # plot decision boundary\n",
+    "    x1 = np.linspace(-4, 4, 100)\n",
+    "    plt.plot(x1, (-w[0] * x1 - b) / w[1], color=\"k\", alpha=0.5)\n",
+    "    # plot parallels thru support vectors\n",
+    "    plt.plot(\n",
+    "        x1, parallel_thru_point(x1, w, sv[0]), color=\"k\", linestyle=\"dashed\", alpha=0.25\n",
+    "    )\n",
+    "    plt.plot(\n",
+    "        x1, parallel_thru_point(x1, w, sv[1]), color=\"k\", linestyle=\"dashed\", alpha=0.25\n",
+    "    )\n",
+    "    # highlight support vectors\n",
+    "    plt.scatter(\n",
+    "        zX[:, 0],\n",
+    "        zX[:, 1],\n",
+    "        s=80,\n",
+    "        facecolors=\"none\",\n",
+    "        edgecolors=\"y\",\n",
+    "        color=\"y\",\n",
+    "    )\n",
+    "    # plot margin\n",
+    "    Q = np.array([0, decision_boundary(0, b=b, w=w)])\n",
+    "    proj_svp = (np.dot(sv[0] - Q, w) / np.linalg.norm(w)) * (w / np.linalg.norm(w))\n",
+    "    proj_svn = (np.dot(sv[1] - Q, w) / np.linalg.norm(w)) * (w / np.linalg.norm(w))\n",
+    "    plt.quiver(\n",
+    "        [Q[0], Q[0]],\n",
+    "        [Q[1], Q[1]],\n",
+    "        [proj_svp[0], proj_svn[0]],\n",
+    "        [proj_svp[1], proj_svn[1]],\n",
+    "        angles=\"xy\",\n",
+    "        scale=1,\n",
+    "        scale_units=\"xy\",\n",
+    "        color=\"k\",\n",
+    "        alpha=0.5,\n",
+    "    )\n",
+    "\n",
+    "    plt.xlabel(\"$x_1$\")\n",
+    "    plt.ylabel(\"$x_2$\")\n",
+    "    plt.title(f\"Soft SVM Decision Boundary C={C:.2f}\")\n",
+    "    plt.gca().set_aspect(\"equal\")\n",
+    "    plt.xlim(-5, 5)\n",
+    "    plt.ylim(-5, 5)\n",
+    "    plt.show()\n",
+    "\n",
+    "    print(f\"Accuracy: {np.mean(np.sign(X @ w + b) == y):.0%}\")\n",
+    "\n",
+    "soft_margin_svm(X, y, C=1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mnotebook controller is DISPOSED. \n",
+      "\u001b[1;31mView Jupyter <a href='command:jupyter.viewOutput'>log</a> for further details."
+     ]
+    }
+   ],
+   "source": [
+    "soft_margin_svm(X, y, C=0.3)"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": ".venv",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.5"
+  },
+  "orig_nbformat": 4
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
