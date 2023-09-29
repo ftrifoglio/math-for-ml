@@ -1829,21 +1829,17 @@
     "\n",
     "For $e_1$ we have:\n",
     "\n",
-    "$\n",
-    "\\begin{bmatrix}2&&0\\\\0&&1\\end{bmatrix}\n",
+    "$\\begin{bmatrix}2&&0\\\\0&&1\\end{bmatrix}\n",
     "\\begin{bmatrix}1\\\\0\\end{bmatrix} = \n",
     "\\begin{bmatrix}2 \\times 1 + 0 \\times 0\\\\0 \\times 1 + 1 \\times 0\\end{bmatrix} =\n",
-    "\\begin{bmatrix}2\\\\0\\end{bmatrix}\n",
-    "$\n",
+    "\\begin{bmatrix}2\\\\0\\end{bmatrix}$\n",
     "\n",
     "For $e_2$ we have:\n",
     "\n",
-    "$\n",
-    "\\begin{bmatrix}2&&0\\\\0&&1\\end{bmatrix}\n",
+    "$\\begin{bmatrix}2&&0\\\\0&&1\\end{bmatrix}\n",
     "\\begin{bmatrix}0\\\\1\\end{bmatrix} = \n",
     "\\begin{bmatrix}2 \\times 0 + 0 \\times 1\\\\0 \\times 0 + 1 \\times 1\\end{bmatrix} =\n",
-    "\\begin{bmatrix}0\\\\1\\end{bmatrix}\n",
-    "$"
+    "\\begin{bmatrix}0\\\\1\\end{bmatrix}$"
    ]
   },
   {
