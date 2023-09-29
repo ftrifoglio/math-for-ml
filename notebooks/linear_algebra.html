@@ -543,7 +543,7 @@ title="Print to PDF"
 <p>In a singular (redundant) system the lines will be one over the other (ie parallalel with distant zero).</p>
 <p>In a singular (contradictory) system the lines will be parallel and distant from each other.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">line1</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
@@ -603,11 +603,8 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_6_0.png" src="../_images/notebooks_linear_algebra_6_0.png" />
+</div>
 </div>
 <p>It turns out that to distinguish between singular and non-singular, the constants can be removed.</p>
 <table class="table">
@@ -702,8 +699,8 @@ title="Print to PDF"
 <p><span class="math notranslate nohighlight">\(\cfrac{\det I}{\det A} = \det A^{-1}\)</span></p>
 <p><span class="math notranslate nohighlight">\(\cfrac{1}{\det A} = \det A^{-1}\)</span></p>
 <p>Let’s verify the first property, the second property and also that <span class="math notranslate nohighlight">\(\det I = 1\)</span></p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
@@ -715,16 +712,6 @@ title="Print to PDF"
 <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">==</span> <span class="mf">1.0</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
 </div>
 </section>
 <section id="Singularity-and-rank">
@@ -761,7 +748,7 @@ title="Print to PDF"
 <p><span class="math notranslate nohighlight">\(\begin{bmatrix}1&amp;&amp;0\\0&amp;&amp;1\end{bmatrix}\)</span></p>
 <p>Or we can use the <code class="docutils literal notranslate"><span class="pre">rref</span></code> method of the <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> data structure from the <code class="docutils literal notranslate"><span class="pre">sympy</span></code> package.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sympy</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">]])</span><span class="o">.</span><span class="n">rref</span><span class="p">(</span><span class="n">pivots</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -769,18 +756,16 @@ title="Print to PDF"
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<div class="math notranslate nohighlight">
+$\displaystyle \left[\begin{matrix}1 &amp; 0\\0 &amp; 1\end{matrix}\right]$</div></div>
 </div>
 <p>Let’s try to calculate the rref of a singular matrix: a 3x3 matrix where <strong>all</strong> rows are linearly dependent.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sympy</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span><span class="o">.</span><span class="n">rref</span><span class="p">(</span><span class="n">pivots</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -788,18 +773,16 @@ title="Print to PDF"
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<div class="math notranslate nohighlight">
+$\displaystyle \left[\begin{matrix}1 &amp; 2 &amp; 3\\0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0\end{matrix}\right]$</div></div>
 </div>
 <p>Let’s try another singular matrix, where only 2 rows are linearly dependent.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sympy</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span><span class="o">.</span><span class="n">rref</span><span class="p">(</span><span class="n">pivots</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -807,14 +790,12 @@ title="Print to PDF"
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<div class="math notranslate nohighlight">
+$\displaystyle \left[\begin{matrix}1 &amp; 2 &amp; 0\\0 &amp; 0 &amp; 1\\0 &amp; 0 &amp; 0\end{matrix}\right]$</div></div>
 </div>
 <p>The rref form is characterized by the presence of pivots.</p>
 <blockquote>
@@ -857,8 +838,8 @@ title="Print to PDF"
 <li><p><span class="math notranslate nohighlight">\(\begin{cases} a = 3. \\ b = 2. \end{cases}\)</span></p></li>
 </ol>
 <p>Let’s check the solution.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="mf">3.0</span>
@@ -873,20 +854,10 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
-</div>
 <p>Let’s build an elimination algorithm using this system as an example.</p>
 <p><span class="math notranslate nohighlight">\(\begin{cases} a + b + 2c = 12 \\ 3a - 3b - c = 2 \\ 2a - b + 6c = 24 \end{cases}\)</span></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span>
@@ -916,37 +887,26 @@ title="Print to PDF"
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
+array([3.757576 , 2.0606058, 3.0909092], dtype=float32)
 </pre></div></div>
 </div>
 <p>Let’s check the solution.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">solve_by_elimination</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
-</div>
 <p>Let’s try it with another one.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
@@ -957,16 +917,6 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
-</div>
 </section>
 </section>
 <section id="Vectors-(week-3)">
@@ -974,7 +924,7 @@ title="Print to PDF"
 <p>Let’s consider these two vectors:</p>
 <p><span class="math notranslate nohighlight">\(\vec{a}=\begin{bmatrix}1\\3\end{bmatrix}\)</span> and <span class="math notranslate nohighlight">\(\vec{b}=\begin{bmatrix}4\\1\end{bmatrix}\)</span></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
@@ -1009,11 +959,8 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_37_0.png" src="../_images/notebooks_linear_algebra_37_0.png" />
+</div>
 </div>
 <section id="The-angle-between-vectors">
 <h3>The angle between vectors<a class="headerlink" href="#The-angle-between-vectors" title="Permalink to this headline">#</a></h3>
@@ -1024,7 +971,7 @@ title="Print to PDF"
 <p>which relates the lengths of the sides of a triangle to the cosine of one of its angles.</p>
 <p>We don’t have <span class="math notranslate nohighlight">\(\vec{c}\)</span> though, but we can demonstrate that <span class="math notranslate nohighlight">\(\vec{c} = \vec{b} - \vec{a}\)</span></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
@@ -1068,11 +1015,8 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_41_0.png" src="../_images/notebooks_linear_algebra_41_0.png" />
+</div>
 </div>
 <blockquote>
 <div><p>🔑 Vectors are unique in that they maintain their direction and magnitude regardless of where they “start” or “end” in space. Vectors are typically drawn starting from the origin to clearly depict their direction and magnitude. However, the true essence of a vector is that it represents a direction and magnitude in space and can be shifted anywhere. When we compute <span class="math notranslate nohighlight">\(\vec{c} = \vec{b} - \vec{a}\)</span> we’re calculating the vector that starts from the tip of <span class="math notranslate nohighlight">\(\vec{a}\)</span> nd goes to the tip of
@@ -1085,8 +1029,8 @@ title="Print to PDF"
 <p><span class="math notranslate nohighlight">\(\|\vec{c}\|^2 = \vec{b} \cdot \vec{b} + \vec{a} \cdot \vec{a} - 2\vec{a} \cdot \vec{b}\)</span></p>
 <p><span class="math notranslate nohighlight">\(\|\vec{c}\|^2 = \|\vec{b}\|^2 + \|\vec{a}\|^2 - 2\vec{a} \cdot \vec{b}\)</span></p>
 <p>Let’s verify what we’ve derived so far</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
@@ -1101,16 +1045,6 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
-</div>
 <p>Let’s substitute it into the cosine formula</p>
 <p><span class="math notranslate nohighlight">\(\|\vec{b}\|^2 + \|\vec{a}\|^2 - 2\vec{a} \cdot \vec{b} = \|\vec{a}\|^2 + \|\vec{b}\|^2 - 2\|\vec{a}\|\|\vec{b}\|\cos\theta\)</span></p>
 <p><span class="math notranslate nohighlight">\(- 2\vec{a} \cdot \vec{b} = - 2\|\vec{a}\|\|\vec{b}\|\cos\theta\)</span></p>
@@ -1123,8 +1057,8 @@ title="Print to PDF"
 <p><span class="math notranslate nohighlight">\(\cfrac{\vec{a}}{\|\vec{a}\|} \cdot \cfrac{\vec{b}}{\|\vec{b}\|} = \cos\theta\)</span></p>
 <p>where <span class="math notranslate nohighlight">\(\cfrac{\vec{a}}{\|\vec{a}\|}\)</span> and <span class="math notranslate nohighlight">\(\cfrac{\vec{b}}{\|\vec{b}\|}\)</span> are the unit vectors of <span class="math notranslate nohighlight">\(\vec{a}\)</span> and <span class="math notranslate nohighlight">\(\vec{b}\)</span>.</p>
 <p>And we can verify that the two are indeed the same.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span>
@@ -1134,19 +1068,9 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
-</div>
 <p>Once we have <span class="math notranslate nohighlight">\(\cos\theta\)</span> we can calculate <span class="math notranslate nohighlight">\(\theta\)</span> with the inverse cosine function.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cos_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
@@ -1163,13 +1087,13 @@ title="Print to PDF"
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
+cos(theta): 0.54
+theta (radians): 1.00
+theta (degrees): 57.53°
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
@@ -1205,11 +1129,8 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_49_0.png" src="../_images/notebooks_linear_algebra_49_0.png" />
+</div>
 </div>
 </section>
 <section id="Vector-projections">
@@ -1220,7 +1141,7 @@ title="Print to PDF"
 </div></blockquote>
 <p>It’s like <span class="math notranslate nohighlight">\(\vec{b}\)</span> casting its shadow onto <span class="math notranslate nohighlight">\(\vec{a}\)</span>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
@@ -1276,14 +1197,11 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_52_0.png" src="../_images/notebooks_linear_algebra_52_0.png" />
+</div>
 </div>
 <p>The definition of <span class="math notranslate nohighlight">\(\cos \theta\)</span> in a right triangle is <span class="math notranslate nohighlight">\(adjacent / hypotenuse\)</span>.</p>
-<p><img alt="060c1c91f96944bd907c713bb19bc442" class="no-scaled-link" src="https://ichef.bbci.co.uk/images/ic/1280xn/p0dktj82.png" style="width: 30%;" /></p>
+<p><img alt="722457ed194244e58d420cba34484888" class="no-scaled-link" src="https://ichef.bbci.co.uk/images/ic/1280xn/p0dktj82.png" style="width: 30%;" /></p>
 <p>The <span class="math notranslate nohighlight">\(hypotenuse\)</span> is the length of vector we want to project (<span class="math notranslate nohighlight">\(\|\vec{b}\|\)</span>).</p>
 <p>The <span class="math notranslate nohighlight">\(adjacent\)</span> is the length of such projection (<span class="math notranslate nohighlight">\(\|\overrightarrow{proj_{a}b}\|\)</span>).</p>
 <p>So, by definition:</p>
@@ -1316,7 +1234,7 @@ title="Print to PDF"
 <div><p>📐 <span class="math notranslate nohighlight">\(\overrightarrow{proj_{a}b} = \cfrac{\vec{a} \cdot \vec{b}}{\|\vec{a}\|} \cfrac{\vec{a}}{\|\vec{a}\|}\)</span></p>
 </div></blockquote>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
@@ -1366,15 +1284,12 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_59_0.png" src="../_images/notebooks_linear_algebra_59_0.png" />
+</div>
 </div>
 <p>We can see that <span class="math notranslate nohighlight">\(\overrightarrow{proj_{a}b}\)</span> (adjacent) and <span class="math notranslate nohighlight">\(\vec{b}\)</span> (hypotenuse) form a right triangle.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">proj_b</span><span class="p">)</span>
@@ -1386,24 +1301,14 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
-</div>
 <p>From the Pythagorean theorem we have</p>
 <p><span class="math notranslate nohighlight">\(h^2 = o^2 + a^2\)</span></p>
 <p>Equivalently:</p>
 <p><span class="math notranslate nohighlight">\(1 = (\cfrac{o}{h})^2 + (\cfrac{a}{h})^2\)</span></p>
 <p><span class="math notranslate nohighlight">\(1 = \cos\theta^2 + \sin\theta^2\)</span></p>
 <p>Let’s verify it.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">h</span><span class="o">**</span><span class="mi">2</span> <span class="o">==</span> <span class="n">o</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">a</span><span class="o">**</span><span class="mi">2</span>
@@ -1412,20 +1317,10 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
-</div>
 <p>We can also verify that the angles of the triangle sum up to 180.</p>
 <p>We already have one angle, and one is 90 by definition. We only need the one between <span class="math notranslate nohighlight">\(\vec{b}\)</span> and its adjacent <span class="math notranslate nohighlight">\(\vec{proj_b} - \vec{b}\)</span>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
@@ -1494,15 +1389,12 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_66_0.png" src="../_images/notebooks_linear_algebra_66_0.png" />
+</div>
 </div>
 <p>Let’s find <span class="math notranslate nohighlight">\(\cos\theta_3\)</span> and verify that the sum of the 3 angles is 180.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">theta_1_deg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">cos_theta</span><span class="p">))</span>
@@ -1520,20 +1412,10 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
-</div>
 <p>Let’s consider a different pair of vectors</p>
 <p><span class="math notranslate nohighlight">\(\vec{a}=\begin{bmatrix}-2\\3\end{bmatrix}\)</span> and <span class="math notranslate nohighlight">\(\vec{b}=\begin{bmatrix}4\\1\end{bmatrix}\)</span></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
@@ -1567,15 +1449,12 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_70_0.png" src="../_images/notebooks_linear_algebra_70_0.png" />
+</div>
 </div>
 <p>We can use the ‘shadow’ metaphor to get an intuition of what the projection of <span class="math notranslate nohighlight">\(\vec{b}\)</span> onto <span class="math notranslate nohighlight">\(\vec{a}\)</span> might look like.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
@@ -1633,14 +1512,11 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_72_0.png" src="../_images/notebooks_linear_algebra_72_0.png" />
+</div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
@@ -1685,11 +1561,8 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_73_0.png" src="../_images/notebooks_linear_algebra_73_0.png" />
+</div>
 </div>
 </section>
 <section id="Geometric-intuition-of-Dot-product">
@@ -1706,8 +1579,8 @@ title="Print to PDF"
 <div><p>🔑 When <span class="math notranslate nohighlight">\(\vec{a}\)</span> and <span class="math notranslate nohighlight">\(\vec{b}\)</span> “agree” on the direction (<span class="math notranslate nohighlight">\(0° &lt; \theta &lt; 90°\)</span>, that is <span class="math notranslate nohighlight">\(\cos\theta &gt; 1\)</span>) the dot product between <span class="math notranslate nohighlight">\(\vec{a}\)</span> and <span class="math notranslate nohighlight">\(\vec{b}\)</span> is the length of <span class="math notranslate nohighlight">\(\vec{a}\)</span> times the length of projection <span class="math notranslate nohighlight">\(\vec{b}\)</span> onto <span class="math notranslate nohighlight">\(\vec{a}\)</span>.</p>
 </div></blockquote>
 <p>Let’s verify it.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
@@ -1721,22 +1594,12 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
-</div>
 <p>Let’s imagine <span class="math notranslate nohighlight">\(\vec{b}\)</span> was <strong>parallel</strong> to <span class="math notranslate nohighlight">\(\vec{a}\)</span>, that is, <span class="math notranslate nohighlight">\(\cos\theta = 1\)</span> (0° angle).</p>
 <p>Then <span class="math notranslate nohighlight">\(\vec{b} = \overrightarrow{proj_{a}b}\)</span>. In other words, <span class="math notranslate nohighlight">\(\vec{b}\)</span> is already projected onto <span class="math notranslate nohighlight">\(\vec{a}\)</span>.</p>
 <p>In this case</p>
 <p><span class="math notranslate nohighlight">\(\vec{a} \cdot \vec{b} = \|\vec{a}\|\|\vec{b}\|\)</span></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
@@ -1777,18 +1640,15 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_81_0.png" src="../_images/notebooks_linear_algebra_81_0.png" />
+</div>
 </div>
 <p>Let’s see the case when this equivalence doesn’t hold.</p>
 <p><span class="math notranslate nohighlight">\(\vec{a} \cdot \vec{b} = \|\vec{a}\| \|\overrightarrow{proj_{a}b}\|\)</span></p>
 <p>But this does.</p>
 <p><span class="math notranslate nohighlight">\(\vec{a} \cdot \vec{b} = \|\vec{a}\|\|\vec{b}\|\cos\theta\)</span></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
@@ -1834,17 +1694,14 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_83_0.png" src="../_images/notebooks_linear_algebra_83_0.png" />
+</div>
 </div>
 <p>Since the angle is more than 90°, <span class="math notranslate nohighlight">\(\cos\theta &lt; 0\)</span>.</p>
 <p>So <span class="math notranslate nohighlight">\(\vec{a} \cdot \vec{b}\)</span> will be negative.</p>
 <p>But <span class="math notranslate nohighlight">\(\|\vec{a}\| \|\overrightarrow{proj_{a}b}\|\)</span> is always positive.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dot product: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">proj_b</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1862,9 +1719,9 @@ title="Print to PDF"
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
+Dot product: -5.00
+Norm of a times norm of projection: 5.00
+Norm of a times norm of b times cos theta: -5.00
 </pre></div></div>
 </div>
 </section>
@@ -1880,8 +1737,8 @@ title="Print to PDF"
 <p><span class="math notranslate nohighlight">\(A_3=\begin{bmatrix}0&amp;&amp;1\\-1&amp;&amp;0\end{bmatrix}\)</span></p>
 <p>Horizontal shear by 0.5:</p>
 <p><span class="math notranslate nohighlight">\(A_4=\begin{bmatrix}1&amp;&amp;0.5\\0&amp;&amp;1\end{bmatrix}\)</span></p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hscaling</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
@@ -1891,36 +1748,16 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
-</div>
 <p>Let’s apply these transformations to the basis vectors</p>
 <p><span class="math notranslate nohighlight">\(\vec{e_1}=\begin{bmatrix}1\\0\end{bmatrix}\)</span> and <span class="math notranslate nohighlight">\(\vec{e_2}=\begin{bmatrix}0\\1\end{bmatrix}\)</span></p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">e1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 <span class="n">e2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
 </div>
 <p>A transformation is applied by multiplying <span class="math notranslate nohighlight">\(A_k\)</span> by <span class="math notranslate nohighlight">\(e_i\)</span>.</p>
 <p>For <span class="math notranslate nohighlight">\(e_1\)</span> we have:</p>
@@ -1935,7 +1772,7 @@ title="Print to PDF"
 <p>$</p>
 <p>Let’s verify it.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span>
@@ -1953,15 +1790,12 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<div class="math notranslate nohighlight">
+$\displaystyle T(\vec{e_1})=\left[\begin{matrix}2\\0\end{matrix}\right]T(\vec{e_2})=\left[\begin{matrix}0\\1\end{matrix}\right]$</div></div>
 </div>
 <p>Let’s visualize it.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_transformation</span><span class="p">(</span>
@@ -2055,17 +1889,14 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_95_0.png" src="../_images/notebooks_linear_algebra_95_0.png" />
+</div>
 </div>
 <section id="Linear-transformations-and-rank">
 <h3>Linear transformations and rank<a class="headerlink" href="#Linear-transformations-and-rank" title="Permalink to this headline">#</a></h3>
 <p>Since linear transformations are matrices, they can be singular and non-singular and also have a rank.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">non_sing_tr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
@@ -2085,11 +1916,8 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_98_0.png" src="../_images/notebooks_linear_algebra_98_0.png" />
+</div>
 </div>
 <p>We can also verify that the first linear transformations has rank 2, while the second one has rank 1.</p>
 <p>So the first linear trasformations doesn’t reduce the amount of information of the original matrix, while the second one does as it has reduced the rank from 2 to 1, that is transforms a matrix with 2 lineraly independent rows to one with only 1 linearly indepenent row.</p>
@@ -2100,7 +1928,7 @@ title="Print to PDF"
 <div><p>🔑 The rank of a linear transformation quantifies the dimensionality reduction</p>
 </div></blockquote>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">non_sing_tr</span><span class="p">)</span><span class="o">.</span><span class="n">rref</span><span class="p">()</span>
@@ -2109,18 +1937,24 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
+Number of pivots (rank): 2
 </pre></div></div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle \left[\begin{matrix}1 &amp; 0\\0 &amp; 1\end{matrix}\right]$</div></div>
+</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">sing_tr</span><span class="p">)</span><span class="o">.</span><span class="n">rref</span><span class="p">()</span>
@@ -2129,15 +1963,21 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
+Number of pivots (rank): 1
 </pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle \left[\begin{matrix}1 &amp; 1\\0 &amp; 0\end{matrix}\right]$</div></div>
 </div>
 </section>
 <section id="Linear-transformations-and-determinant">
@@ -2151,7 +1991,7 @@ title="Print to PDF"
 <p>whose determinant is 5.</p>
 <p>If we apply it to the basis vectors (whose area is 1) we get a parallelogram with area 5.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
@@ -2184,17 +2024,14 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_105_0.png" src="../_images/notebooks_linear_algebra_105_0.png" />
+</div>
 </div>
 <p>To verify it, we can use the formula for the area of a triangle <span class="math notranslate nohighlight">\(A_t = \cfrac{bh}{2}\)</span>. For a parallelogram it’s just <span class="math notranslate nohighlight">\(A_p = bh\)</span>.</p>
 <p>To calculate <span class="math notranslate nohighlight">\(A_p = bh\)</span> we only need <span class="math notranslate nohighlight">\(\vec{h}\)</span>, because <span class="math notranslate nohighlight">\(b = \|T(\vec{e_1})\|\)</span>.</p>
 <p>To find <span class="math notranslate nohighlight">\(\vec{h}\)</span> we can project <span class="math notranslate nohighlight">\(T(\vec{e_2})\)</span> onto <span class="math notranslate nohighlight">\(T(\vec{e_1})\)</span> and subtract the projection from <span class="math notranslate nohighlight">\(T(\vec{e_2})\)</span>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_e1</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">non_sing_tr</span><span class="p">)(</span><span class="n">e1</span><span class="p">)</span>
@@ -2256,30 +2093,17 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_107_0.png" src="../_images/notebooks_linear_algebra_107_0.png" />
+</div>
 </div>
 <p>Now that we have <span class="math notranslate nohighlight">\(\vec{h}\)</span>, let’s calculate <span class="math notranslate nohighlight">\(A_p\)</span> and verify it’s the same as the determinant of the linear transformation.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">t_e1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">h</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">non_sing_tr</span><span class="p">))</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
 </div>
 </section>
 </section>
@@ -2296,7 +2120,7 @@ title="Print to PDF"
 </div></blockquote>
 <p>Metaphorically, the span of a basis is any point in a space that can be reached by walking only in the directions defined by the basis.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
@@ -2335,11 +2159,8 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_112_0.png" src="../_images/notebooks_linear_algebra_112_0.png" />
+</div>
 </div>
 </section>
 <section id="Eigenvalues">
@@ -2351,7 +2172,7 @@ title="Print to PDF"
 <p>We can demonstrate that although <span class="math notranslate nohighlight">\(A_1\)</span> and <span class="math notranslate nohighlight">\(A_2\)</span> are different transformations, they are indeed the same for infinitely many points.</p>
 <p>And the same can be demonstrated for <span class="math notranslate nohighlight">\(A_1\)</span> and <span class="math notranslate nohighlight">\(A_3\)</span>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
@@ -2398,18 +2219,15 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_116_0.png" src="../_images/notebooks_linear_algebra_116_0.png" />
+</div>
 </div>
 <p>With some imagination, we can see that the blue square on the left-hand side gets sheared horizontally with <span class="math notranslate nohighlight">\(A_1\)</span> and gets blown out with <span class="math notranslate nohighlight">\(A_2\)</span>.</p>
 <p>We can also see that the points (1, 1) and (-1, -1) go to (3, 3) and (-3, -3) respectively with both <span class="math notranslate nohighlight">\(A_1\)</span> and <span class="math notranslate nohighlight">\(A_2\)</span>.</p>
 <p>Similarly, the points (1, 0) and (-1, 0) go to (2, 0) and (-2, 0) respectively with both <span class="math notranslate nohighlight">\(A_1\)</span> and <span class="math notranslate nohighlight">\(A_3\)</span>.</p>
 <p>We can verify that the difference between <span class="math notranslate nohighlight">\(A_1\)</span> and <span class="math notranslate nohighlight">\(A_2\)</span> (and <span class="math notranslate nohighlight">\(A_1\)</span> and <span class="math notranslate nohighlight">\(A_3\)</span>) are singular transformations.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span>
@@ -2429,11 +2247,8 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<div class="math notranslate nohighlight">
+$\displaystyle A_1 - A_2=\left[\begin{matrix}-1 &amp; 1\\0 &amp; 0\end{matrix}\right]A_1 - A_3=\left[\begin{matrix}0 &amp; 1\\0 &amp; 1\end{matrix}\right]$</div></div>
 </div>
 <p>The first system of equations is singular and it has infinitely many solution all of which lie on the line <span class="math notranslate nohighlight">\(y = x\)</span>.</p>
 <p><span class="math notranslate nohighlight">\(\begin{cases}-x+y=0\\0x+0y=0\end{cases} = \begin{cases}y=x\\0=0\end{cases}\)</span></p>
@@ -2484,7 +2299,7 @@ title="Print to PDF"
 <p><span class="math notranslate nohighlight">\(\begin{cases}v_2=v_1\\0=0\end{cases}\)</span></p>
 <p>to find the solution is <span class="math notranslate nohighlight">\(\vec{v} = \langle1, 1\rangle\)</span> or any multiple.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
@@ -2510,11 +2325,8 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_125_0.png" src="../_images/notebooks_linear_algebra_125_0.png" />
+</div>
 </div>
 <p>Let’s consider anothe matrix.</p>
 <p><span class="math notranslate nohighlight">\(A = \begin{bmatrix}9&amp;&amp;4\\4&amp;&amp;3\end{bmatrix}\)</span></p>
@@ -2540,7 +2352,7 @@ title="Print to PDF"
 <p><span class="math notranslate nohighlight">\(\begin{cases}v_1=2v_2\\0=0\end{cases}\)</span></p>
 <p>which has solution <span class="math notranslate nohighlight">\(\vec{v} = \langle2, 1\rangle\)</span> or any multiple.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
@@ -2566,11 +2378,8 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_127_0.png" src="../_images/notebooks_linear_algebra_127_0.png" />
+</div>
 </div>
 </section>
 </section>
@@ -2580,7 +2389,7 @@ title="Print to PDF"
 <p>We’ll see applications of: - singular and non-singular matrices - determinants - dot products - linear transformations - eigenvectors and eigenvalues - vector projections</p>
 <p>This was inspired by Luis Serrano’s <a class="reference external" href="https://www.youtube.com/watch?v=g-Hb26agBFg">YT video</a> on PCA.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -2617,15 +2426,12 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_130_0.png" src="../_images/notebooks_linear_algebra_130_0.png" />
+</div>
 </div>
 <p>Let’s standardize the data.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Z</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -2654,15 +2460,12 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_132_0.png" src="../_images/notebooks_linear_algebra_132_0.png" />
+</div>
 </div>
 <p>Let’s calculate the covariance matrix, whose eigenvectors represent the directions of the maximum variance (or better maximum correlation since we’re using standardized data).</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">Z</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Z</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">bias</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -2679,9 +2482,8 @@ title="Print to PDF"
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
+Determinant of transformation: 0.36
+Dot product of eigenvectors: 0.00
 </pre></div></div>
 </div>
 <p>We can see that the covariance matrix represent a non-singular linear transformation.</p>
@@ -2692,7 +2494,7 @@ title="Print to PDF"
 <p>Another property of symmetric matrices is that their transformation always entails some sort of stretching, which means that the eigenvalues are always real numbers (not complex numbers like in the case of rotations).</p>
 <p>Let’s visualize the effect of the linear transformation induced by the covariance matrix.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
@@ -2710,11 +2512,8 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_137_0.png" src="../_images/notebooks_linear_algebra_137_0.png" />
+</div>
 </div>
 <p>To better see the effect of the transformation, we’ve used a basis that its parallel to the eigenbasis of the transformation.</p>
 <p><span class="math notranslate nohighlight">\(COV_{x_1x_2} = \begin{bmatrix}1&amp;&amp;0.8\\0.8&amp;&amp;1\end{bmatrix}\)</span></p>
@@ -2724,7 +2523,7 @@ title="Print to PDF"
 <p><span class="math notranslate nohighlight">\(COV_{x_1x_2} \cdot \vec{v_2} = \begin{bmatrix}1 \times -0.7 + 0.8 \times 0.7\\0.8 \times -0.7 + 1 \times 0.7\end{bmatrix} = \begin{bmatrix}-0.14\\0.14\end{bmatrix}\)</span></p>
 <p>Let’s overlay the eigenvectors on the data.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
@@ -2762,16 +2561,13 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_140_0.png" src="../_images/notebooks_linear_algebra_140_0.png" />
+</div>
 </div>
 <p>Let’s see the principal components (eigenvectors times eigenvalues). Of course, the first principal component is the one with the highest magnitude (eigenvalue).</p>
 <p>Given the nature of this data (positively correlated) we expect the first principal component to be the one corresponding to the eigenvector with signs [+, +] or [-, -].</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eigvls</span><span class="p">,</span> <span class="n">eigvcs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">cov</span><span class="p">)</span>
@@ -2817,15 +2613,12 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_142_0.png" src="../_images/notebooks_linear_algebra_142_0.png" />
+</div>
 </div>
 <p>Let’s project all the vectors onto the first principal component.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_components</span> <span class="o">=</span> <span class="mi">1</span>
@@ -2868,18 +2661,15 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_144_0.png" src="../_images/notebooks_linear_algebra_144_0.png" />
+</div>
 </div>
 </section>
 <section id="Support-Vector-Machine-(extra)">
 <h2>Support Vector Machine (extra)<a class="headerlink" href="#Support-Vector-Machine-(extra)" title="Permalink to this headline">#</a></h2>
 <p>Another interesting application to illustrate the importance of linear algebra is SVM.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -2906,16 +2696,13 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_147_0.png" src="../_images/notebooks_linear_algebra_147_0.png" />
+</div>
 </div>
 <p>We need to find a line such that</p>
 <p><span class="math notranslate nohighlight">\(h(x_i) = \begin{cases}1 &amp;\text{if }w_1x^i_1+b \ge 0\\-1 &amp;\text{otherwise }\end{cases} \text{for } i = 1, \dots, m\)</span></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">decision_boundary</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
@@ -2960,18 +2747,15 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_149_0.png" src="../_images/notebooks_linear_algebra_149_0.png" />
+</div>
 </div>
 <p>Intuitevely, we know DB 2 (<span class="math notranslate nohighlight">\(x_2 = -0.1 - 0.6x_1\)</span>) is the best one of the three, but why?</p>
 <p>We haven’t seen this during the course, but the normalized distance between a point and a line is</p>
 <blockquote>
 <div><p>📐 <span class="math notranslate nohighlight">\(d = \cfrac{|w_1x_1 + w_2x_2 + b|}{\sqrt{w_1^2 + w_2^2}} = \cfrac{|w \cdot x + b|}{\|w\|}\)</span></p>
 </div></blockquote>
-<p><img alt="5774704a6dca4088a2998914a6a2c001" class="no-scaled-link" src="https://i.ytimg.com/vi/tngPrM2d-OM/maxresdefault.jpg" style="width: 30%;" /></p>
+<p><img alt="aa75a9892bdd4cf2bf5cedff58f49f28" class="no-scaled-link" src="https://i.ytimg.com/vi/tngPrM2d-OM/maxresdefault.jpg" style="width: 30%;" /></p>
 <p><span class="math notranslate nohighlight">\(x_2 = -0.1 - 0.6x_1\)</span> can be rewritten as <span class="math notranslate nohighlight">\(-0.6x_1 -1x_2 -0.1 = 0\)</span> so we can get</p>
 <p><span class="math notranslate nohighlight">\(d = \cfrac{|-0.6x_1 -1x_2 -0.1|}{\sqrt{-0.6^2 + -1^2}}\)</span></p>
 <p>It turns out that the formula for <span class="math notranslate nohighlight">\(d\)</span> (distance between a point and a line) has a vector projection proof.</p>
@@ -2983,7 +2767,7 @@ title="Print to PDF"
 <p><span class="math notranslate nohighlight">\(d = \|\overrightarrow{proj_{w}QP}\| = \cfrac{(\vec{P} - \vec{Q}) \cdot \vec{w}}{\|\vec{w}\|} \cfrac{\vec{w}}{\|\vec{w}\|}\)</span></p>
 <p>The only difference to what we saw earlier during the course is that the vector <span class="math notranslate nohighlight">\(\vec{P}\)</span> starts at point <span class="math notranslate nohighlight">\(Q\)</span> (a point on the line) and not the origin.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">])</span>
@@ -3063,15 +2847,12 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_152_0.png" src="../_images/notebooks_linear_algebra_152_0.png" />
+</div>
 </div>
 <p>Let’s verify it.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">P</span> <span class="o">@</span> <span class="n">w</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
@@ -3080,20 +2861,10 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
-</div>
 <p>The smallest distance among all data points to the decision boundary is called margin.</p>
 <p><span class="math notranslate nohighlight">\(\gamma(w, b) = \min\cfrac{|wx_i+b|}{\|w\|}\)</span></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">margin</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
@@ -3111,14 +2882,14 @@ title="Print to PDF"
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
+Margin of decision boundary 1: 0.06
+Margin of decision boundary 2: 1.10
+Margin of decision boundary 3: 0.34
 </pre></div></div>
 </div>
 <p>This confirms our intuition that the DB 2 was the best of the three.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">margin_loc</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
@@ -3195,11 +2966,8 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_158_0.png" src="../_images/notebooks_linear_algebra_158_0.png" />
+</div>
 </div>
 <p>The primary objective of SVM is to find a decision boundary that maximizes the margin between two classes.</p>
 <p>But that alone is not sufficient. We also need to ensure that the points lie on the correct side of the boundary.</p>
@@ -3224,7 +2992,7 @@ title="Print to PDF"
 <p>This may seem counterintuitive given that a line inherently has only 2 degrees of freedom (slope and intercept).</p>
 <p>However, the constraint <span class="math notranslate nohighlight">\(\min|wx_i+b| = 1\)</span> ensures that only one scale-invariant decision boundary can be selected, making <span class="math notranslate nohighlight">\(w_1\)</span>, <span class="math notranslate nohighlight">\(w_2\)</span> and <span class="math notranslate nohighlight">\(b\)</span> uniquely identifiable.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hard_loss</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
@@ -3306,38 +3074,33 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_linear_algebra_160_0.png" src="../_images/notebooks_linear_algebra_160_0.png" />
+</div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
+Accuracy: 100%
 </pre></div></div>
 </div>
 <p>Let’s verify that <span class="math notranslate nohighlight">\(\min|wx_i+b| = 1\)</span></p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">margin</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
-</div>
 <p>This was a very simple example where the classes are perfectly separated, so that we could use the hard margin implementation.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[60]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -3364,14 +3127,11 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
-</pre></div></div>
+<img alt="../_images/notebooks_linear_algebra_164_0.png" src="../_images/notebooks_linear_algebra_164_0.png" />
+</div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[61]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hard_initial</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
@@ -3394,9 +3154,7 @@ title="Print to PDF"
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
+ValueError: Initial values close to final estimates
 </pre></div></div>
 </div>
 <p>With this data the hard margin optimizer doesn’t work.</p>
@@ -3418,7 +3176,7 @@ title="Print to PDF"
 <p>With a large <span class="math notranslate nohighlight">\(C\)</span>, solutions with large <span class="math notranslate nohighlight">\(\zeta_i\)</span> values are heavily penalized. This leads to a narrowe margin and to overfitting because fewer misclassifications are allowed.</p>
 <p>A small <span class="math notranslate nohighlight">\(C\)</span> allows for a wider margin, but at the cost of permitting more misclassifications.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">soft_margin_svm</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
@@ -3512,32 +3270,42 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_linear_algebra_167_0.png" src="../_images/notebooks_linear_algebra_167_0.png" />
+</div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
+Accuracy: 98%
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[63]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">soft_margin_svm</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_linear_algebra_168_0.png" src="../_images/notebooks_linear_algebra_168_0.png" />
+</div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">notebook controller is DISPOSED.
-
-</span><span class="ansi-red-intense-fg ansi-bold">View Jupyter &lt;a href=&#39;command:jupyter.viewOutput&#39;&gt;log&lt;/a&gt; for further details.</span>
+Accuracy: 95%
 </pre></div></div>
 </div>
 </section>
