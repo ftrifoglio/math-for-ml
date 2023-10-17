@@ -12,13 +12,20 @@ extensions = [
     "sphinx_book_theme",
 ]
 
+nbsphinx_execute = "always"
+nbsphinx_allow_errors = True
+
 # -- Options for HTML output ---
 
 html_title = project
 html_theme = "sphinx_book_theme"
 html_baseurl = "https://fedassembly.github.io/math-for-ml/"
 html_static_path = ["_static"]
+html_css_files = ["custom.css"]
+html_js_files = ["custom.js"]
 html_theme_options = {
     "repository_url": "https://github.com/fedassembly/math-for-ml",
     "use_repository_button": True,
+    "show_toc_level": 3,
+    "extra_footer": """<div id="imageOverlay"><img id="overlayImage" src=""></div>""",
 }

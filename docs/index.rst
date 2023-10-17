@@ -9,3 +9,4 @@ These are not the official notebooks from the course. These are my personal note
    :hidden:
 
    Linear Algebra <notebooks/linear_algebra>
+   Calculus <notebooks/calculus>
