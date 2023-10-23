@@ -3,7 +3,13 @@ img {
     margin-left: auto !important;
     margin-right: auto !important;
 }
-img + em {
+.imgLink {
+    cursor: -moz-zoom-in;
+    cursor: -webkit-zoom-in;
+    cursor: zoom-in;
+    text-decoration: none;
+}
+a + em {
     display: block;
     color: gray;
     text-align: center;

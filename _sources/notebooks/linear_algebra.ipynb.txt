@@ -20,7 +20,7 @@
     "import matplotlib as mpl\n",
     "import matplotlib.pyplot as plt\n",
     "import numpy as np\n",
-    "import sympy\n",
+    "import sympy as sp\n",
     "from IPython.display import Math, display\n",
     "from scipy.ndimage import rotate\n",
     "from scipy.optimize import minimize\n",
@@ -154,7 +154,8 @@
     "|---|---|\n",
     "| $\\begin{bmatrix} 1 & 1 \\\\ 1 & 2 \\end{bmatrix}$ $\\begin{bmatrix} 0 \\\\ 0 \\end{bmatrix}$ | $\\begin{bmatrix} 1 & 1 \\\\ 2 & 2 \\end{bmatrix}$ $\\begin{bmatrix} 0 \\\\ 0 \\end{bmatrix}$ |\n",
     "\n",
-    "&nbsp;\n",
+    "<p>&nbsp;</p>\n",
+    "\n",
     "> 🔑 **Singular**: the rows are linearly dependent\n",
     "\n",
     "> 🔑 **Non-singular**: the rows are linearly independent\n",
@@ -181,9 +182,9 @@
     "\n",
     "> 🔑 **Non-singular**: determinant is non-zero\n",
     "\n",
-    "To see how we get to the formula for the determinant and why it's 0 for singular matrices.\n",
+    "To see how we get to the formula for the determinant and why it's 0 for singular matrices, let's consider the matrix $A$.\n",
     "\n",
-    "$A := \\begin{bmatrix}\n",
+    "$A = \\begin{bmatrix}\n",
     "a & b \\\\\n",
     "c & d\n",
     "\\end{bmatrix}$\n",
@@ -194,24 +195,27 @@
     "\n",
     "Equivalently\n",
     "\n",
-    "$A := \n",
+    "$A = \n",
     "\\begin{cases}\n",
     "ax + by = 0 \\\\\n",
     "cx + dy = 0\n",
-    "\\end{cases} \\rightarrow\n",
-    "\\begin{cases}\n",
+    "\\end{cases}$\n",
+    "\n",
+    "$=\\begin{cases}\n",
     "k_1ax = cx \\\\\n",
     "k_2by = dy\n",
-    "\\end{cases} \\rightarrow\n",
-    "\\begin{cases}\n",
+    "\\end{cases}$\n",
+    "\n",
+    "$=\\begin{cases}\n",
     "k_1 = \\cfrac{c}{a} \\\\\n",
     "k_2 = \\cfrac{d}{b}\n",
-    "\\end{cases} if k_1 = k_2 = k > 0 \\rightarrow\n",
-    "\\cfrac{c}{a} = \\cfrac{d}{b} \\rightarrow \n",
-    "bc = ad\n",
-    "$\n",
+    "\\end{cases}$\n",
     "\n",
-    "and finally\n",
+    "If $k_1 = k_2 = k > 0$, we obtain\n",
+    "\n",
+    "$\\cfrac{c}{a} = \\cfrac{d}{b}$\n",
+    "\n",
+    "We get rid of the fractions and we obtain the formula of the determinant of $A$\n",
     "\n",
     "$\\det A = ad - bc$\n",
     "\n",
@@ -315,7 +319,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Or we can use the `rref` method of the `Matrix` data structure from the `sympy` package."
+    "Or we can use the `rref` method of the `Matrix` data structure from the `sp` package."
    ]
   },
   {
@@ -324,7 +328,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "sympy.Matrix([[5, 1], [1, -3]]).rref(pivots=False)"
+    "sp.Matrix([[5, 1], [1, -3]]).rref(pivots=False)"
    ]
   },
   {
@@ -340,7 +344,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "sympy.Matrix([[1, 2, 3], [3, 6, 9], [2, 4, 6]]).rref(pivots=False)"
+    "sp.Matrix([[1, 2, 3], [3, 6, 9], [2, 4, 6]]).rref(pivots=False)"
    ]
   },
   {
@@ -356,7 +360,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "sympy.Matrix([[1, 2, 3], [3, 6, 9], [1, 2, 4]]).rref(pivots=False)"
+    "sp.Matrix([[1, 2, 3], [3, 6, 9], [1, 2, 4]]).rref(pivots=False)"
    ]
   },
   {
@@ -991,9 +995,9 @@
     "\n",
     "$\\overrightarrow{proj_{a}b} = \\|\\overrightarrow{proj_{a}b}\\| \\cfrac{\\vec{a}}{\\|\\vec{a}\\|}$\n",
     "\n",
-    "Finally, we can substitute the definition of $\\|\\overrightarrow{proj_{a}b}\\|$ and we obtain the formula of the **projection of $\\vec{b}$ onto $\\vec{a}$**:\n",
+    "Finally, we can substitute the definition of $\\|\\overrightarrow{proj_{a}b}\\|$ and we obtain the formula of the **projection of** $\\vec{b}$ **onto** $\\vec{a}$:\n",
     "\n",
-    "> 📐  $\\overrightarrow{proj_{a}b} = \\cfrac{\\vec{a} \\cdot \\vec{b}}{\\|\\vec{a}\\|} \\cfrac{\\vec{a}}{\\|\\vec{a}\\|}$"
+    "> 📐 $\\overrightarrow{proj_{a}b} = \\cfrac{\\vec{a} \\cdot \\vec{b}}{\\|\\vec{a}\\|} \\cfrac{\\vec{a}}{\\|\\vec{a}\\|}$"
    ]
   },
   {
@@ -1629,9 +1633,9 @@
     "display(\n",
     "    Math(\n",
     "        \"T(\\\\vec{e_1})=\"\n",
-    "        + sympy.latex(sympy.Matrix(list(hscaling @ e1)))\n",
+    "        + sp.latex(sp.Matrix(list(hscaling @ e1)))\n",
     "        + \"T(\\\\vec{e_2})=\"\n",
-    "        + sympy.latex(sympy.Matrix(list(hscaling @ e2)))\n",
+    "        + sp.latex(sp.Matrix(list(hscaling @ e2)))\n",
     "    )\n",
     ")"
    ]
@@ -1782,7 +1786,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "m, p = sympy.Matrix(non_sing_tr).rref()\n",
+    "m, p = sp.Matrix(non_sing_tr).rref()\n",
     "print(\"Number of pivots (rank):\", len(p))\n",
     "m"
    ]
@@ -1793,7 +1797,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "m, p = sympy.Matrix(sing_tr).rref()\n",
+    "m, p = sp.Matrix(sing_tr).rref()\n",
     "print(\"Number of pivots (rank):\", len(p))\n",
     "m"
    ]
@@ -2105,9 +2109,9 @@
     "display(\n",
     "    Math(\n",
     "        \"A_1 - A_2=\"\n",
-    "        + sympy.latex(sympy.Matrix(A1 - A2))\n",
+    "        + sp.latex(sp.Matrix(A1 - A2))\n",
     "        + \"A_1 - A_3=\"\n",
-    "        + sympy.latex(sympy.Matrix(A1 - A3))\n",
+    "        + sp.latex(sp.Matrix(A1 - A3))\n",
     "    )\n",
     ")\n",
     "assert np.linalg.det(A1 - A2) == 0\n",
@@ -2656,9 +2660,9 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "We need to find a line such that\n",
+    "We need to find a line $wx+b$ such that\n",
     "\n",
-    "$h(x_i) = \\begin{cases}1 &\\text{if }w_1x^i_1+b \\ge 0\\\\-1 &\\text{otherwise }\\end{cases} \\text{for } i = 1, \\dots, m$"
+    "$h(x_i) = \\begin{cases}1 &\\text{if }wx_i+b \\ge 0\\\\-1 &\\text{otherwise }\\end{cases} \\text{ for } i = 1, \\dots, m$"
    ]
   },
   {
@@ -2950,11 +2954,17 @@
     "\n",
     "It becomes a constrained optimization problem.\n",
     "\n",
-    "$\\max \\gamma(w, b) \\text{ such that } y_i(w \\cdot x_i + b) \\ge 0$\n",
+    "$\\begin{array}{l}\n",
+    "\\max \\limits_{w, b} \\gamma(w, b) \\\\ \n",
+    "\\text{subject to} \\quad y_i(w \\cdot x_i + b) \\ge 0 \\text{ } \\forall i = 1, \\dots, m\n",
+    "\\end{array}$\n",
     "\n",
     "Let's substitute the definition of margin and we get\n",
     "\n",
-    "$\\max \\min\\cfrac{|wx_i+b|}{\\|w\\|} \\text{ s.t. } y_i(w \\cdot x_i + b) \\ge 0$\n",
+    "$\\begin{array}{l}\n",
+    "\\max \\limits_{w, b} \\min\\cfrac{|wx_i+b|}{\\|w\\|} \\\\ \n",
+    "\\text{subject to} \\quad y_i(w \\cdot x_i + b) \\ge 0 \\text{ } \\forall i = 1, \\dots, m\n",
+    "\\end{array}$\n",
     "\n",
     "Without a constraint on $w$ and $b$, we would have infinite possible values for these parameters that would give the same separating decision boundary due to its scale invariance.\n",
     "\n",
@@ -2964,23 +2974,36 @@
     "\n",
     "Why is the constant set to 1 and not another number?\n",
     "\n",
-    "Well, because this allows us to remove it from $\\max \\min\\cfrac{|wx_i+b|}{\\|w\\|} \\Longrightarrow \\max \\cfrac{1}{\\|w\\|} \\text{ s.t. } \\min|wx_i+b| = 1$.\n",
+    "Well, because this allows us to remove it from $\\max \\limits_{w, b} \\min\\cfrac{|wx_i+b|}{\\|w\\|} \\Longrightarrow \\max \\limits_{w, b} \\cfrac{1}{\\|w\\|} \\text{ s.t. } \\min|wx_i+b| = 1$.\n",
     "\n",
     "So after putting it all together we have\n",
     "\n",
-    "$\\max \\cfrac{1}{\\|w\\|} \\text{ s.t. } y_i(w \\cdot x_i + b) \\ge 0 \\text{ and } \\min|wx_i+b| = 1$.\n",
+    "$\\begin{array}{l}\n",
+    "\\max \\limits_{w, b} \\cfrac{1}{\\|w\\|} \\\\ \n",
+    "\\text{subject to} \\quad y_i(w \\cdot x_i + b) \\ge 0 \\\\ \n",
+    "\\quad \\quad \\quad \\quad \\quad \\min|wx_i+b| = 1 \\quad \\forall i = 1, \\dots, m\n",
+    "\\end{array}$\n",
     "\n",
     "We can combine the two constraints into one and obtain\n",
     "\n",
-    "$\\max \\cfrac{1}{\\|w\\|} \\text{ s.t. } y_i(w \\cdot x_i + b) \\ge 1$.\n",
+    "$\\begin{array}{l}\n",
+    "\\max \\limits_{w, b} \\cfrac{1}{\\|w\\|} \\\\ \n",
+    "\\text{subject to} \\quad y_i(w \\cdot x_i + b) \\ge 1 \\quad \\forall i = 1, \\dots, m\n",
+    "\\end{array}$\n",
     "\n",
-    "Furthermore, $\\max\\cfrac{1}{\\|w\\|}$ is equivalent to $\\min\\|w\\|$, which is equivalent $\\min \\|w\\|^2$ and we can rewrite as dot product.\n",
+    "Furthermore, $\\max\\cfrac{1}{\\|w\\|}$ is equivalent to $\\min\\|w\\|$, which in turn is equivalent to $\\min \\|w\\|^2$ which we can rewrite as dot product.\n",
     "\n",
-    "$\\min w \\cdot w \\text{ s.t. } y_i(w \\cdot x_i + b) \\ge 1$\n",
+    "$\\begin{array}{l}\n",
+    "\\min \\limits_{w, b} w \\cdot w \\\\ \n",
+    "\\text{subject to} \\quad y_i(w \\cdot x_i + b) \\ge 1 \\quad \\forall i = 1, \\dots, m\n",
+    "\\end{array}$\n",
     "\n",
     "To simplify the optimization even further we can introduce a factor of $\\cfrac{1}{2}$ so that the derivative becomes $w$ instead of $2w$.\n",
     "\n",
-    "$\\min \\cfrac{1}{2} w \\cdot w \\text{ s.t. } y_i(w \\cdot x_i + b) \\ge 1$\n",
+    "$\\begin{array}{l}\n",
+    "\\min \\limits_{w, b} \\cfrac{1}{2} w \\cdot w \\\\\n",
+    "\\text{subject to} \\quad y_i(w \\cdot x_i + b) \\ge 1 \\quad \\forall i = 1, \\dots, m\n",
+    "\\end{array}$\n",
     "\n",
     "During the optimization for SVM, we must estimate all 3 parameters: $w_1$, $w_2$ and $b$. \n",
     "\n",
@@ -3156,7 +3179,10 @@
     "\n",
     "Let's introduce the slack variables $\\zeta_i$\n",
     "\n",
-    "$\\min \\cfrac{1}{2} w \\cdot w \\text{ s.t. } y_i(w \\cdot x_i + b) \\ge 1 - \\zeta_i$\n",
+    "$\\begin{array}{l}\n",
+    "\\min \\limits_{w, b, \\zeta} \\cfrac{1}{2} w \\cdot w \\\\ \n",
+    "\\text{subject to} \\quad y_i(w \\cdot x_i + b) \\ge 1 - \\zeta_i \\quad \\forall i = 1, \\dots, m\n",
+    "\\end{array}$\n",
     "\n",
     "This way we allow for violations of the constraint. More specifically $\\zeta_i$ can take the following values:\n",
     "\n",
@@ -3168,13 +3194,21 @@
     "\n",
     "Thus, $\\zeta_i$ is constrained to be non-negative:\n",
     "\n",
-    "$\\min \\cfrac{1}{2} w \\cdot w \\text{ s.t. } y_i(w \\cdot x_i + b) \\ge 1 - \\zeta_i \\text{ and } \\zeta_i \\ge 0$\n",
+    "$\\begin{array}{l}\n",
+    "\\min \\limits_{w, b, \\zeta} \\cfrac{1}{2} w \\cdot w \\\\ \n",
+    "\\text{subject to} \\quad y_i(w \\cdot x_i + b) \\ge 1 - \\zeta_i \\\\\n",
+    "\\quad \\quad \\quad \\quad \\quad \\zeta_i \\ge 0 \\quad \\forall i = 1, \\dots, m\n",
+    "\\end{array}$\n",
     "\n",
     "The problem is that a large enough $\\zeta_i$ defeats the purpose of the constraint.\n",
     "\n",
     "We can then penalize solutions that have large values of $\\zeta_i$. Namely, we can add an L1 regularization for $\\zeta_i$ and a regularization parameter $C$.\n",
     "\n",
-    "$\\min \\cfrac{1}{2} w \\cdot w + C\\sum^m_i\\zeta_i \\text{ s.t. } y_i(w \\cdot x_i + b) \\ge 1 - \\zeta_i \\text{ and } \\zeta_i \\ge 0$\n",
+    "$\\begin{array}{l}\n",
+    "\\min \\limits_{w, b, \\zeta} \\cfrac{1}{2} w \\cdot w + C\\sum^m_i\\zeta_i \\\\ \n",
+    "\\text{subject to} \\quad y_i(w \\cdot x_i + b) \\ge 1 - \\zeta_i \\\\ \n",
+    "\\quad \\quad \\quad \\quad \\quad \\zeta_i \\ge 0 \\quad \\forall i = 1, \\dots, m\n",
+    "\\end{array}$\n",
     "\n",
     "$C$ provides a trade-off between maximizing the margin (prioritizing generalization) and minimizing misclassification.\n",
     "\n",
@@ -3342,8 +3376,8 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "W = sympy.Matrix([[1, 2, -1], [1, 0, 1], [0, 1, 0]])\n",
-    "WI = W.row_join(sympy.Matrix.eye(3))\n",
+    "W = sp.Matrix([[1, 2, -1], [1, 0, 1], [0, 1, 0]])\n",
+    "WI = W.row_join(sp.Matrix.eye(3))\n",
     "WI"
    ]
   },
@@ -3443,7 +3477,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## Calculate the characteristic polynomial, eigenvalues and eigenvectors of $A$"
+    "### Calculate the characteristic polynomial, eigenvalues and eigenvectors of $A$"
    ]
   },
   {

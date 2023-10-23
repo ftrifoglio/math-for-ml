@@ -367,15 +367,15 @@ title="Print to PDF"
      </span>
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Calculate-the-characteristic-polynomial,-eigenvalues-and-eigenvectors-of-A">
+     Calculate the characteristic polynomial, eigenvalues and eigenvectors of
+     <span class="math notranslate nohighlight">
+      \(A\)
+     </span>
+    </a>
+   </li>
   </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#Calculate-the-characteristic-polynomial,-eigenvalues-and-eigenvectors-of-A">
-   Calculate the characteristic polynomial, eigenvalues and eigenvectors of
-   <span class="math notranslate nohighlight">
-    \(A\)
-   </span>
-  </a>
  </li>
 </ul>
 
@@ -519,15 +519,15 @@ title="Print to PDF"
      </span>
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Calculate-the-characteristic-polynomial,-eigenvalues-and-eigenvectors-of-A">
+     Calculate the characteristic polynomial, eigenvalues and eigenvectors of
+     <span class="math notranslate nohighlight">
+      \(A\)
+     </span>
+    </a>
+   </li>
   </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#Calculate-the-characteristic-polynomial,-eigenvalues-and-eigenvectors-of-A">
-   Calculate the characteristic polynomial, eigenvalues and eigenvectors of
-   <span class="math notranslate nohighlight">
-    \(A\)
-   </span>
-  </a>
  </li>
 </ul>
 
@@ -552,7 +552,7 @@ title="Print to PDF"
 <span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">sympy</span>
+<span class="kn">import</span> <span class="nn">sympy</span> <span class="k">as</span> <span class="nn">sp</span>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Math</span><span class="p">,</span> <span class="n">display</span>
 <span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">rotate</span>
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
@@ -715,9 +715,9 @@ title="Print to PDF"
 </tr>
 </tbody>
 </table>
-<p>  &gt; 🔑 <strong>Singular</strong>: the rows are linearly dependent</p>
-<blockquote>
-<div><p>🔑 <strong>Non-singular</strong>: the rows are linearly independent</p>
+<p></p><blockquote>
+<div><p>🔑 <strong>Singular</strong>: the rows are linearly dependent</p>
+<p>🔑 <strong>Non-singular</strong>: the rows are linearly independent</p>
 </div></blockquote>
 <p>When the rows are linearly independent, there is no constant you can multiply a row by to obtain the second row.</p>
 <p>A different interpretation is that each row carries new information that we cannot derive from any other rows.</p>
@@ -731,14 +731,17 @@ title="Print to PDF"
 <blockquote>
 <div><p>🔑 <strong>Non-singular</strong>: determinant is non-zero</p>
 </div></blockquote>
-<p>To see how we get to the formula for the determinant and why it’s 0 for singular matrices.</p>
-<p><span class="math notranslate nohighlight">\(A := \begin{bmatrix} a &amp; b \\ c &amp; d \end{bmatrix}\)</span></p>
+<p>To see how we get to the formula for the determinant and why it’s 0 for singular matrices, let’s consider the matrix <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(A = \begin{bmatrix} a &amp; b \\ c &amp; d \end{bmatrix}\)</span></p>
 <p>We saw earlier that <span class="math notranslate nohighlight">\(A\)</span> is singular if <span class="math notranslate nohighlight">\((a+b)k = c+d\)</span> for <span class="math notranslate nohighlight">\(k &gt; 0\)</span> (linear dependency).</p>
 <p>In particular we saw <span class="math notranslate nohighlight">\(\begin{bmatrix} 1 &amp; 1 \\ 2 &amp; 2 \end{bmatrix}\)</span> is singular because <span class="math notranslate nohighlight">\((1+1)k = 2+2\)</span> for <span class="math notranslate nohighlight">\(k=2\)</span>.</p>
 <p>Equivalently</p>
-<p>$A :=</p>
-<p>if k_1 = k_2 = k &gt; 0 <span class="math">\rightarrow</span> <span class="math">\cfrac{c}{a}</span> = <span class="math">\cfrac{d}{b}</span> :nbsphinx-math:<a href="#id1"><span class="problematic" id="id2">`</span></a>rightarrow ` bc = ad $</p>
-<p>and finally</p>
+<p><span class="math notranslate nohighlight">\(A = \begin{cases} ax + by = 0 \\ cx + dy = 0 \end{cases}\)</span></p>
+<p><span class="math notranslate nohighlight">\(=\begin{cases} k_1ax = cx \\ k_2by = dy \end{cases}\)</span></p>
+<p><span class="math notranslate nohighlight">\(=\begin{cases} k_1 = \cfrac{c}{a} \\ k_2 = \cfrac{d}{b} \end{cases}\)</span></p>
+<p>If <span class="math notranslate nohighlight">\(k_1 = k_2 = k &gt; 0\)</span>, we obtain</p>
+<p><span class="math notranslate nohighlight">\(\cfrac{c}{a} = \cfrac{d}{b}\)</span></p>
+<p>We get rid of the fractions and we obtain the formula of the determinant of <span class="math notranslate nohighlight">\(A\)</span></p>
 <p><span class="math notranslate nohighlight">\(\det A = ad - bc\)</span></p>
 <p><span class="math notranslate nohighlight">\(A\)</span> is singular if <span class="math notranslate nohighlight">\(ad - bc\)</span> is 0, which implies that <span class="math notranslate nohighlight">\(k &gt; 0\)</span></p>
 <p>The determinant has the following properties.</p>
@@ -801,12 +804,12 @@ title="Print to PDF"
 <li><p>Multiply the second row by <span class="math notranslate nohighlight">\(\cfrac{1}{5}\)</span> and subtract it from the first row</p></li>
 </ol>
 <p><span class="math notranslate nohighlight">\(\begin{bmatrix}1&amp;&amp;0\\0&amp;&amp;1\end{bmatrix}\)</span></p>
-<p>Or we can use the <code class="docutils literal notranslate"><span class="pre">rref</span></code> method of the <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> data structure from the <code class="docutils literal notranslate"><span class="pre">sympy</span></code> package.</p>
+<p>Or we can use the <code class="docutils literal notranslate"><span class="pre">rref</span></code> method of the <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> data structure from the <code class="docutils literal notranslate"><span class="pre">sp</span></code> package.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sympy</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">]])</span><span class="o">.</span><span class="n">rref</span><span class="p">(</span><span class="n">pivots</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">]])</span><span class="o">.</span><span class="n">rref</span><span class="p">(</span><span class="n">pivots</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -823,7 +826,7 @@ $\displaystyle \left[\begin{matrix}1 &amp; 0\\0 &amp; 1\end{matrix}\right]$</div
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sympy</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span><span class="o">.</span><span class="n">rref</span><span class="p">(</span><span class="n">pivots</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span><span class="o">.</span><span class="n">rref</span><span class="p">(</span><span class="n">pivots</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -840,7 +843,7 @@ $\displaystyle \left[\begin{matrix}1 &amp; 2 &amp; 3\\0 &amp; 0 &amp; 0\\0 &amp;
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sympy</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span><span class="o">.</span><span class="n">rref</span><span class="p">(</span><span class="n">pivots</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span><span class="o">.</span><span class="n">rref</span><span class="p">(</span><span class="n">pivots</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1251,14 +1254,14 @@ theta (degrees): 57.53°
 </div>
 </div>
 <p>The definition of <span class="math notranslate nohighlight">\(\cos \theta\)</span> in a right triangle is <span class="math notranslate nohighlight">\(adjacent / hypotenuse\)</span>.</p>
-<p><img alt="5adea3cd8bc34300bc6ee3e110b0650a" class="no-scaled-link" src="https://ichef.bbci.co.uk/images/ic/1280xn/p0dktj82.png" style="width: 300px;" /> <em>Source: www.bbc.co.uk/bitesize</em></p>
+<p><img alt="9c91397f062a44bdb5139f5109daab4c" class="no-scaled-link" src="https://ichef.bbci.co.uk/images/ic/1280xn/p0dktj82.png" style="width: 300px;" /> <em>Source: www.bbc.co.uk/bitesize</em></p>
 <p>The <span class="math notranslate nohighlight">\(hypotenuse\)</span> is the length of vector we want to project (<span class="math notranslate nohighlight">\(\|\vec{b}\|\)</span>).</p>
 <p>The <span class="math notranslate nohighlight">\(adjacent\)</span> is the length of such projection (<span class="math notranslate nohighlight">\(\|\overrightarrow{proj_{a}b}\|\)</span>).</p>
 <p>So, by definition:</p>
 <p><span class="math notranslate nohighlight">\(\cos\theta = \cfrac{\|\overrightarrow{proj_{a}b}\|}{\|\vec{b}\|}\)</span></p>
 <p>and, the <strong>length</strong> of the projection of <span class="math notranslate nohighlight">\(\vec{b}\)</span> is:</p>
 <p><span class="math notranslate nohighlight">\(\|\overrightarrow{proj_{a}b}\| = \|\vec{b}\|\cos\theta\)</span></p>
-<p><img alt="435c4b2fa5684ee294a878794e70cb4d" class="no-scaled-link" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYHv2gl3xCjoh66VBZOxWU7R3ycaKBEQJLcHeyU-pc9kCcZq_q8WfNjEqE9FK83dtVnpo&amp;usqp=CAU" style="width: 300px;" /> <em>Source: www.ncetm.org.uk</em></p>
+<p><img alt="cc421ea6d0324a2aa22030eebcd5fdab" class="no-scaled-link" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYHv2gl3xCjoh66VBZOxWU7R3ycaKBEQJLcHeyU-pc9kCcZq_q8WfNjEqE9FK83dtVnpo&amp;usqp=CAU" style="width: 300px;" /> <em>Source: www.ncetm.org.uk</em></p>
 <p>In the image above, we can see an interesting fact.</p>
 <p>If the length of the vector we want to project is 1, then the length of the projection is <span class="math notranslate nohighlight">\(\cos\theta\)</span>.</p>
 <p><span class="math notranslate nohighlight">\(\|\overrightarrow{proj_{a}b}\| = \cos\theta\)</span> when <span class="math notranslate nohighlight">\(\|\vec{b}\| = 1\)</span></p>
@@ -1279,7 +1282,7 @@ theta (degrees): 57.53°
 </div></blockquote>
 <p>Let <span class="math notranslate nohighlight">\(\|\overrightarrow{proj_{a}b}\|\)</span> be the length of the projection and <span class="math notranslate nohighlight">\(\cfrac{\vec{a}}{\|\vec{a}\|}\)</span> be the unit vector of <span class="math notranslate nohighlight">\(\vec{a}\)</span>, we get that</p>
 <p><span class="math notranslate nohighlight">\(\overrightarrow{proj_{a}b} = \|\overrightarrow{proj_{a}b}\| \cfrac{\vec{a}}{\|\vec{a}\|}\)</span></p>
-<p>Finally, we can substitute the definition of <span class="math notranslate nohighlight">\(\|\overrightarrow{proj_{a}b}\|\)</span> and we obtain the formula of the <strong>projection of :math:`vec{b}` onto :math:`vec{a}`</strong>:</p>
+<p>Finally, we can substitute the definition of <span class="math notranslate nohighlight">\(\|\overrightarrow{proj_{a}b}\|\)</span> and we obtain the formula of the <strong>projection of</strong> <span class="math notranslate nohighlight">\(\vec{b}\)</span> <strong>onto</strong> <span class="math notranslate nohighlight">\(\vec{a}\)</span>:</p>
 <blockquote>
 <div><p>📐 <span class="math notranslate nohighlight">\(\overrightarrow{proj_{a}b} = \cfrac{\vec{a} \cdot \vec{b}}{\|\vec{a}\|} \cfrac{\vec{a}}{\|\vec{a}\|}\)</span></p>
 </div></blockquote>
@@ -1823,9 +1826,9 @@ Norm of a times norm of b times cos theta: -5.00
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span>
     <span class="n">Math</span><span class="p">(</span>
         <span class="s2">&quot;T(</span><span class="se">\\</span><span class="s2">vec</span><span class="si">{e_1}</span><span class="s2">)=&quot;</span>
-        <span class="o">+</span> <span class="n">sympy</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">hscaling</span> <span class="o">@</span> <span class="n">e1</span><span class="p">)))</span>
+        <span class="o">+</span> <span class="n">sp</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">hscaling</span> <span class="o">@</span> <span class="n">e1</span><span class="p">)))</span>
         <span class="o">+</span> <span class="s2">&quot;T(</span><span class="se">\\</span><span class="s2">vec</span><span class="si">{e_2}</span><span class="s2">)=&quot;</span>
-        <span class="o">+</span> <span class="n">sympy</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">hscaling</span> <span class="o">@</span> <span class="n">e2</span><span class="p">)))</span>
+        <span class="o">+</span> <span class="n">sp</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">hscaling</span> <span class="o">@</span> <span class="n">e2</span><span class="p">)))</span>
     <span class="p">)</span>
 <span class="p">)</span>
 </pre></div>
@@ -1972,7 +1975,7 @@ $\displaystyle T(\vec{e_1})=\left[\begin{matrix}2\\0\end{matrix}\right]T(\vec{e_
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">non_sing_tr</span><span class="p">)</span><span class="o">.</span><span class="n">rref</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">non_sing_tr</span><span class="p">)</span><span class="o">.</span><span class="n">rref</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of pivots (rank):&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
 <span class="n">m</span>
 </pre></div>
@@ -1998,7 +2001,7 @@ $\displaystyle \left[\begin{matrix}1 &amp; 0\\0 &amp; 1\end{matrix}\right]$</div
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">sing_tr</span><span class="p">)</span><span class="o">.</span><span class="n">rref</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">sing_tr</span><span class="p">)</span><span class="o">.</span><span class="n">rref</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of pivots (rank):&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
 <span class="n">m</span>
 </pre></div>
@@ -2274,9 +2277,9 @@ $\displaystyle \left[\begin{matrix}1 &amp; 1\\0 &amp; 0\end{matrix}\right]$</div
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span>
     <span class="n">Math</span><span class="p">(</span>
         <span class="s2">&quot;A_1 - A_2=&quot;</span>
-        <span class="o">+</span> <span class="n">sympy</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">A1</span> <span class="o">-</span> <span class="n">A2</span><span class="p">))</span>
+        <span class="o">+</span> <span class="n">sp</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">A1</span> <span class="o">-</span> <span class="n">A2</span><span class="p">))</span>
         <span class="o">+</span> <span class="s2">&quot;A_1 - A_3=&quot;</span>
-        <span class="o">+</span> <span class="n">sympy</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">A1</span> <span class="o">-</span> <span class="n">A3</span><span class="p">))</span>
+        <span class="o">+</span> <span class="n">sp</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">A1</span> <span class="o">-</span> <span class="n">A3</span><span class="p">))</span>
     <span class="p">)</span>
 <span class="p">)</span>
 <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">A1</span> <span class="o">-</span> <span class="n">A2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
@@ -2742,8 +2745,8 @@ Dot product of eigenvectors: 0.00
 <img alt="../_images/notebooks_linear_algebra_140_0.png" src="../_images/notebooks_linear_algebra_140_0.png" />
 </div>
 </div>
-<p>We need to find a line such that</p>
-<p><span class="math notranslate nohighlight">\(h(x_i) = \begin{cases}1 &amp;\text{if }w_1x^i_1+b \ge 0\\-1 &amp;\text{otherwise }\end{cases} \text{for } i = 1, \dots, m\)</span></p>
+<p>We need to find a line <span class="math notranslate nohighlight">\(wx+b\)</span> such that</p>
+<p><span class="math notranslate nohighlight">\(h(x_i) = \begin{cases}1 &amp;\text{if }wx_i+b \ge 0\\-1 &amp;\text{otherwise }\end{cases} \text{ for } i = 1, \dots, m\)</span></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
 </pre></div>
@@ -2798,7 +2801,7 @@ Dot product of eigenvectors: 0.00
 <blockquote>
 <div><p>📐 <span class="math notranslate nohighlight">\(d = \cfrac{|w_1x_1 + w_2x_2 + b|}{\sqrt{w_1^2 + w_2^2}} = \cfrac{|w \cdot x + b|}{\|w\|}\)</span></p>
 </div></blockquote>
-<p><img alt="574de8fd71104cee89f9b3a5e05b75c5" class="no-scaled-link" src="https://www.w3schools.blog/wp-content/uploads/2019/11/word-image-1024x577.png" style="width: 300px;" /> <em>Source: www.w3schools.blog</em></p>
+<p><img alt="9031b2eb8f3e4924a5be3438e95fdbc3" class="no-scaled-link" src="https://www.w3schools.blog/wp-content/uploads/2019/11/word-image-1024x577.png" style="width: 300px;" /> <em>Source: www.w3schools.blog</em></p>
 <p><span class="math notranslate nohighlight">\(x_2 = -0.1 - 0.6x_1\)</span> can be rewritten as <span class="math notranslate nohighlight">\(-0.6x_1 -1x_2 -0.1 = 0\)</span> so we can get</p>
 <p><span class="math notranslate nohighlight">\(d = \cfrac{|-0.6x_1 -1x_2 -0.1|}{\sqrt{-0.6^2 + -1^2}}\)</span></p>
 <p>It turns out that the formula for <span class="math notranslate nohighlight">\(d\)</span> (distance between a point and a line) has a vector projection proof.</p>
@@ -3015,22 +3018,22 @@ Margin of decision boundary 3: 0.34
 <p>The primary objective of SVM is to find a decision boundary that maximizes the margin between two classes.</p>
 <p>But that alone is not sufficient. We also need to ensure that the points lie on the correct side of the boundary.</p>
 <p>It becomes a constrained optimization problem.</p>
-<p><span class="math notranslate nohighlight">\(\max \gamma(w, b) \text{ such that } y_i(w \cdot x_i + b) \ge 0\)</span></p>
+<p><span class="math notranslate nohighlight">\(\begin{array}{l} \max \limits_{w, b} \gamma(w, b) \\ \text{subject to} \quad y_i(w \cdot x_i + b) \ge 0 \text{ } \forall i = 1, \dots, m \end{array}\)</span></p>
 <p>Let’s substitute the definition of margin and we get</p>
-<p><span class="math notranslate nohighlight">\(\max \min\cfrac{|wx_i+b|}{\|w\|} \text{ s.t. } y_i(w \cdot x_i + b) \ge 0\)</span></p>
+<p><span class="math notranslate nohighlight">\(\begin{array}{l} \max \limits_{w, b} \min\cfrac{|wx_i+b|}{\|w\|} \\ \text{subject to} \quad y_i(w \cdot x_i + b) \ge 0 \text{ } \forall i = 1, \dots, m \end{array}\)</span></p>
 <p>Without a constraint on <span class="math notranslate nohighlight">\(w\)</span> and <span class="math notranslate nohighlight">\(b\)</span>, we would have infinite possible values for these parameters that would give the same separating decision boundary due to its scale invariance.</p>
 <p>We can set a scale for <span class="math notranslate nohighlight">\(w\)</span> and <span class="math notranslate nohighlight">\(b\)</span> by adding the additional constraint <span class="math notranslate nohighlight">\(\min|wx_i+b| = 1\)</span>.</p>
 <p>In other words, the scale of the values of <span class="math notranslate nohighlight">\(w\)</span> and <span class="math notranslate nohighlight">\(b\)</span> will be such that the smallest distance between the points and the decision boundary is <span class="math notranslate nohighlight">\(\cfrac{1}{\|w\|}\)</span>.</p>
 <p>Why is the constant set to 1 and not another number?</p>
-<p>Well, because this allows us to remove it from <span class="math notranslate nohighlight">\(\max \min\cfrac{|wx_i+b|}{\|w\|} \Longrightarrow \max \cfrac{1}{\|w\|} \text{ s.t. } \min|wx_i+b| = 1\)</span>.</p>
+<p>Well, because this allows us to remove it from <span class="math notranslate nohighlight">\(\max \limits_{w, b} \min\cfrac{|wx_i+b|}{\|w\|} \Longrightarrow \max \limits_{w, b} \cfrac{1}{\|w\|} \text{ s.t. } \min|wx_i+b| = 1\)</span>.</p>
 <p>So after putting it all together we have</p>
-<p><span class="math notranslate nohighlight">\(\max \cfrac{1}{\|w\|} \text{ s.t. } y_i(w \cdot x_i + b) \ge 0 \text{ and } \min|wx_i+b| = 1\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\begin{array}{l} \max \limits_{w, b} \cfrac{1}{\|w\|} \\ \text{subject to} \quad y_i(w \cdot x_i + b) \ge 0 \\ \quad \quad \quad \quad \quad \min|wx_i+b| = 1 \quad \forall i = 1, \dots, m \end{array}\)</span></p>
 <p>We can combine the two constraints into one and obtain</p>
-<p><span class="math notranslate nohighlight">\(\max \cfrac{1}{\|w\|} \text{ s.t. } y_i(w \cdot x_i + b) \ge 1\)</span>.</p>
-<p>Furthermore, <span class="math notranslate nohighlight">\(\max\cfrac{1}{\|w\|}\)</span> is equivalent to <span class="math notranslate nohighlight">\(\min\|w\|\)</span>, which is equivalent <span class="math notranslate nohighlight">\(\min \|w\|^2\)</span> and we can rewrite as dot product.</p>
-<p><span class="math notranslate nohighlight">\(\min w \cdot w \text{ s.t. } y_i(w \cdot x_i + b) \ge 1\)</span></p>
+<p><span class="math notranslate nohighlight">\(\begin{array}{l} \max \limits_{w, b} \cfrac{1}{\|w\|} \\ \text{subject to} \quad y_i(w \cdot x_i + b) \ge 1 \quad \forall i = 1, \dots, m \end{array}\)</span></p>
+<p>Furthermore, <span class="math notranslate nohighlight">\(\max\cfrac{1}{\|w\|}\)</span> is equivalent to <span class="math notranslate nohighlight">\(\min\|w\|\)</span>, which in turn is equivalent to <span class="math notranslate nohighlight">\(\min \|w\|^2\)</span> which we can rewrite as dot product.</p>
+<p><span class="math notranslate nohighlight">\(\begin{array}{l} \min \limits_{w, b} w \cdot w \\ \text{subject to} \quad y_i(w \cdot x_i + b) \ge 1 \quad \forall i = 1, \dots, m \end{array}\)</span></p>
 <p>To simplify the optimization even further we can introduce a factor of <span class="math notranslate nohighlight">\(\cfrac{1}{2}\)</span> so that the derivative becomes <span class="math notranslate nohighlight">\(w\)</span> instead of <span class="math notranslate nohighlight">\(2w\)</span>.</p>
-<p><span class="math notranslate nohighlight">\(\min \cfrac{1}{2} w \cdot w \text{ s.t. } y_i(w \cdot x_i + b) \ge 1\)</span></p>
+<p><span class="math notranslate nohighlight">\(\begin{array}{l} \min \limits_{w, b} \cfrac{1}{2} w \cdot w \\ \text{subject to} \quad y_i(w \cdot x_i + b) \ge 1 \quad \forall i = 1, \dots, m \end{array}\)</span></p>
 <p>During the optimization for SVM, we must estimate all 3 parameters: <span class="math notranslate nohighlight">\(w_1\)</span>, <span class="math notranslate nohighlight">\(w_2\)</span> and <span class="math notranslate nohighlight">\(b\)</span>.</p>
 <p>This may seem counter intuitive given that a line inherently has only 2 degrees of freedom (slope and intercept).</p>
 <p>However, the constraint <span class="math notranslate nohighlight">\(\min|wx_i+b| = 1\)</span> ensures that only one scale-invariant decision boundary can be selected, making <span class="math notranslate nohighlight">\(w_1\)</span>, <span class="math notranslate nohighlight">\(w_2\)</span> and <span class="math notranslate nohighlight">\(b\)</span> uniquely identifiable.</p>
@@ -3209,16 +3212,16 @@ Cell <span class="ansi-green-fg">In[60], line 10</span>
 <p>With this data the hard margin optimizer doesn’t work.</p>
 <p>We need to give it some slack.</p>
 <p>Let’s introduce the slack variables <span class="math notranslate nohighlight">\(\zeta_i\)</span></p>
-<p><span class="math notranslate nohighlight">\(\min \cfrac{1}{2} w \cdot w \text{ s.t. } y_i(w \cdot x_i + b) \ge 1 - \zeta_i\)</span></p>
+<p><span class="math notranslate nohighlight">\(\begin{array}{l} \min \limits_{w, b, \zeta} \cfrac{1}{2} w \cdot w \\ \text{subject to} \quad y_i(w \cdot x_i + b) \ge 1 - \zeta_i \quad \forall i = 1, \dots, m \end{array}\)</span></p>
 <p>This way we allow for violations of the constraint. More specifically <span class="math notranslate nohighlight">\(\zeta_i\)</span> can take the following values:</p>
 <p><span class="math notranslate nohighlight">\(\zeta_i=0\)</span>: The point <span class="math notranslate nohighlight">\(x_i\)</span> is correctly classified and outside the margin.</p>
 <p><span class="math notranslate nohighlight">\(0&lt;\zeta_i \le 1\)</span>: The point <span class="math notranslate nohighlight">\(x_i\)</span> is correctly classified <em>but</em> within the margin.</p>
 <p><span class="math notranslate nohighlight">\(\zeta_i&gt;1\)</span>: The point <span class="math notranslate nohighlight">\(x_i\)</span> is misclassified.</p>
 <p>Thus, <span class="math notranslate nohighlight">\(\zeta_i\)</span> is constrained to be non-negative:</p>
-<p><span class="math notranslate nohighlight">\(\min \cfrac{1}{2} w \cdot w \text{ s.t. } y_i(w \cdot x_i + b) \ge 1 - \zeta_i \text{ and } \zeta_i \ge 0\)</span></p>
+<p><span class="math notranslate nohighlight">\(\begin{array}{l} \min \limits_{w, b, \zeta} \cfrac{1}{2} w \cdot w \\ \text{subject to} \quad y_i(w \cdot x_i + b) \ge 1 - \zeta_i \\ \quad \quad \quad \quad \quad \zeta_i \ge 0 \quad \forall i = 1, \dots, m \end{array}\)</span></p>
 <p>The problem is that a large enough <span class="math notranslate nohighlight">\(\zeta_i\)</span> defeats the purpose of the constraint.</p>
 <p>We can then penalize solutions that have large values of <span class="math notranslate nohighlight">\(\zeta_i\)</span>. Namely, we can add an L1 regularization for <span class="math notranslate nohighlight">\(\zeta_i\)</span> and a regularization parameter <span class="math notranslate nohighlight">\(C\)</span>.</p>
-<p><span class="math notranslate nohighlight">\(\min \cfrac{1}{2} w \cdot w + C\sum^m_i\zeta_i \text{ s.t. } y_i(w \cdot x_i + b) \ge 1 - \zeta_i \text{ and } \zeta_i \ge 0\)</span></p>
+<p><span class="math notranslate nohighlight">\(\begin{array}{l} \min \limits_{w, b, \zeta} \cfrac{1}{2} w \cdot w + C\sum^m_i\zeta_i \\ \text{subject to} \quad y_i(w \cdot x_i + b) \ge 1 - \zeta_i \\ \quad \quad \quad \quad \quad \zeta_i \ge 0 \quad \forall i = 1, \dots, m \end{array}\)</span></p>
 <p><span class="math notranslate nohighlight">\(C\)</span> provides a trade-off between maximizing the margin (prioritizing generalization) and minimizing misclassification.</p>
 <p>In the extreme case where <span class="math notranslate nohighlight">\(C = 0\)</span>, the objective function to be maximized is the same as in the hard margin SVM.</p>
 <p>However, there is effectively no constraint on classification accuracy, as the slack variables are free to get as large as needed.</p>
@@ -3388,8 +3391,8 @@ det W = -2
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">W</span> <span class="o">=</span> <span class="n">sympy</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
-<span class="n">WI</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">row_join</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">W</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="n">WI</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">row_join</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Matrix</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
 <span class="n">WI</span>
 </pre></div>
 </div>
@@ -3545,9 +3548,8 @@ $\displaystyle \left[\begin{matrix}0.5 &amp; 0.5 &amp; -1\\0 &amp; 0 &amp; 1\\-0
 $\displaystyle \left[\begin{matrix}1.0 &amp; 0 &amp; 0\\0 &amp; 1.0 &amp; 0\\0 &amp; 0 &amp; 1\end{matrix}\right]$</div></div>
 </div>
 </section>
-</section>
 <section id="Calculate-the-characteristic-polynomial,-eigenvalues-and-eigenvectors-of-A">
-<h2>Calculate the characteristic polynomial, eigenvalues and eigenvectors of <span class="math notranslate nohighlight">\(A\)</span><a class="headerlink" href="#Calculate-the-characteristic-polynomial,-eigenvalues-and-eigenvectors-of-A" title="Permalink to this headline">#</a></h2>
+<h3>Calculate the characteristic polynomial, eigenvalues and eigenvectors of <span class="math notranslate nohighlight">\(A\)</span><a class="headerlink" href="#Calculate-the-characteristic-polynomial,-eigenvalues-and-eigenvectors-of-A" title="Permalink to this headline">#</a></h3>
 <p><span class="math notranslate nohighlight">\(A = \begin{bmatrix}2&amp;&amp;1\\-3&amp;&amp;6\end{bmatrix}\)</span></p>
 <p><span class="math notranslate nohighlight">\(A = \begin{bmatrix}2-\lambda&amp;&amp;1\\-3&amp;&amp;6-\lambda\end{bmatrix}\)</span></p>
 <p><span class="math notranslate nohighlight">\(det(A-\lambda I) = (2-\lambda)(6-\lambda)-(1)(-3)\)</span></p>
@@ -3567,6 +3569,7 @@ $\displaystyle \left[\begin{matrix}1.0 &amp; 0 &amp; 0\\0 &amp; 1.0 &amp; 0\\0 &
 <p><span class="math notranslate nohighlight">\(\begin{cases}-v_1+v_2\\0=0\end{cases}\)</span></p>
 <p><span class="math notranslate nohighlight">\(\begin{cases}v_1=v_2\\0=0\end{cases}\)</span></p>
 <p><span class="math notranslate nohighlight">\(\vec{v}_{\lambda=3} = \begin{bmatrix}1\\1\end{bmatrix}\)</span></p>
+</section>
 </section>
 </section>
 

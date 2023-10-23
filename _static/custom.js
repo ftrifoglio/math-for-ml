@@ -47,7 +47,7 @@ function setupAnimationIntersectionObserver(animationId, imgId) {
 $(document).ready(function() {
 
     $("img").each(function() {
-        $(this).wrap('<a class="imgLink" href="#" style="text-decoration:none;"></a>');
+        $(this).wrap('<a class="imgLink" href="#"></a>');
     });
 
     $(".imgLink").click(function(e) {
