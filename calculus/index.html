@@ -1,0 +1,461 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta property="og:title" content="Calculus" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fedassembly.github.io/math-for-ml/calculus/index.html" />
+<meta property="og:site_name" content="Mathematics for Machine Learning and Data Science" />
+<meta property="og:description" content="Week 1- Derivatives- Average rate of change of a function, Derivative of a function, Not differentiable functions- Proof that |x| is not differentiable at 0, Proof that ReLU is not differentiable at 0, Proof that radicals are not differentiable at 0., The inverse function and its derivative, Deri..." />
+<meta property="og:image:width" content="1146" />
+<meta property="og:image:height" content="600" />
+<meta property="og:image" content="https://fedassembly.github.io/math-for-ml/_images/social_previews/summary_calculus_index_93f93b87.png" />
+<meta property="og:image:alt" content="Week 1- Derivatives- Average rate of change of a function, Derivative of a function, Not differentiable functions- Proof that |x| is not differentiable at 0,..." />
+<meta name="description" content="Week 1- Derivatives- Average rate of change of a function, Derivative of a function, Not differentiable functions- Proof that |x| is not differentiable at 0, Proof that ReLU is not differentiable at 0, Proof that radicals are not differentiable at 0., The inverse function and its derivative, Deri..." />
+<meta name="twitter:card" content="summary_large_image" />
+
+    <title>Calculus &#8212; Mathematics for Machine Learning and Data Science</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../_static/custom.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="canonical" href="https://fedassembly.github.io/math-for-ml/calculus/index.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Calculus - Week 1" href="ca_w1.html" />
+    <link rel="prev" title="Linear Algebra - Exercises" href="../linear_algebra/la_exer.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Mathematics for Machine Learning and Data Science</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Topics
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../linear_algebra/index.html">
+   Linear Algebra
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../linear_algebra/la_w1.html">
+     Week 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../linear_algebra/la_w2.html">
+     Week 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../linear_algebra/la_w3.html">
+     Week 3
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../linear_algebra/la_w4.html">
+     Week 4
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../linear_algebra/la_extra.html">
+     Extra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../linear_algebra/la_exer.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="current reference internal" href="#">
+   Calculus
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="ca_w1.html">
+     Week 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="ca_w2.html">
+     Week 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="ca_w3.html">
+     Week 3
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="ca_extra.html">
+     Extra
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+<a href="https://github.com/fedassembly/math-for-ml"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="bottom"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/calculus/index.rst.txt"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.rst</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Calculus</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="calculus">
+<h1>Calculus<a class="headerlink" href="#calculus" title="Permalink to this headline">#</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ca_w1.html">Week 1</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ca_w1.html#Derivatives">Derivatives</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ca_w1.html#Average-rate-of-change-of-a-function">Average rate of change of a function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ca_w1.html#Derivative-of-a-function">Derivative of a function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ca_w1.html#Not-differentiable-functions">Not differentiable functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ca_w1.html#Proof-that-|x|-is-not-differentiable-at-0">Proof that |x| is not differentiable at 0</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ca_w1.html#Proof-that-ReLU-is-not-differentiable-at-0">Proof that ReLU is not differentiable at 0</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ca_w1.html#Proof-that-radicals-are-not-differentiable-at-0">Proof that radicals are not differentiable at 0</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ca_w1.html#The-inverse-function-and-its-derivative">The inverse function and its derivative</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ca_w1.html#Derivative-rules">Derivative rules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ca_w1.html#Constant-multiple-rule">Constant multiple rule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ca_w1.html#Sum-or-difference-rule">Sum or difference rule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ca_w1.html#Product-rule">Product rule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ca_w1.html#Quotient-rule">Quotient rule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ca_w1.html#Chain-rule">Chain rule</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ca_w1.html#Univariate-optimization">Univariate optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ca_w1.html#Computational-efficiency-of-symbolic,-numerical-and-automatic-differentiation">Computational efficiency of symbolic, numerical and automatic differentiation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ca_w2.html">Week 2</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ca_w2.html#Multivariate-optimization">Multivariate optimization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ca_w2.html#Tangent-plane">Tangent plane</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ca_w2.html#Partial-derivatives">Partial derivatives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ca_w2.html#Equaling-partial-derivatives-to-0-to-find-the-minima-and-maxima">Equaling partial derivatives to 0 to find the minima and maxima</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ca_w2.html#Gradient">Gradient</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ca_w3.html">Week 3</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ca_w3.html#Optimizing-neural-networks">Optimizing neural networks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ca_w3.html#Single-neuron-network-with-linear-activation-and-Mean-Squared-Error-(MSE)-loss-function">Single-neuron network with linear activation and Mean Squared Error (MSE) loss function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ca_w3.html#Single-neuron-network-with-sigmoid-activation-and-Log-loss-function">Single-neuron network with sigmoid activation and Log loss function</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ca_w3.html#Calculation-of-partial-derivative-of-Log-loss-wrt-sigmoid-activation">Calculation of partial derivative of Log loss wrt sigmoid activation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ca_w3.html#Calculation-of-the-derivative-of-the-sigmoid-function">Calculation of the derivative of the sigmoid function</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ca_w3.html#Neural-network-with-1-hidden-layer-of-3-neurons-and-sigmoid-activations">Neural network with 1 hidden layer of 3 neurons and sigmoid activations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ca_w3.html#Motivation">Motivation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ca_w3.html#Neural-network-notation">Neural network notation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ca_w3.html#Partial-derivatives-of-a-neural-network">Partial derivatives of a neural network</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ca_w3.html#Forward-and-backward-propagation">Forward and backward propagation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ca_w3.html#Building-a-neural-network">Building a neural network</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ca_w3.html#Newton-Raphson-method">Newton-Raphson method</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ca_w3.html#Newton-Raphson-method-with-one-variable">Newton-Raphson method with one variable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ca_w3.html#Second-derivatives">Second derivatives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ca_w3.html#Second-order-partial-derivatives">Second-order partial derivatives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ca_w3.html#Hessian-matrix">Hessian matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ca_w3.html#Netwon-Raphson-method-with-more-than-one-variable">Netwon-Raphson method with more than one variable</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ca_extra.html">Extra</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ca_extra.html#Lagrange-multiplier-method">Lagrange multiplier method</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ca_extra.html#Convex-optimization">Convex optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ca_extra.html#Inequality-constraints-and-the-Karush–Kuhn–Tucker-conditions">Inequality constraints and the Karush–Kuhn–Tucker conditions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ca_extra.html#Wolfe-dual-problem">Wolfe dual problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ca_extra.html#Optimizing-SVM">Optimizing SVM</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ca_extra.html#Quasi-newton-methods">Quasi-newton methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ca_extra.html#BFGS">BFGS</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="../linear_algebra/la_exer.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Linear Algebra - Exercises</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="ca_w1.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Calculus - Week 1</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Federico Trifoglio<br/>
+  
+      &copy; Copyright 2023.<br/>
+    <div class="extra_footer">
+      <div id="imageOverlay"><img id="overlayImage" src=""></div>
+    </div>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

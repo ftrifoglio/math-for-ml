@@ -1,0 +1,812 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta property="og:title" content="Linear Algebra - Week 4" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fedassembly.github.io/math-for-ml/linear_algebra/la_w4.html" />
+<meta property="og:site_name" content="Mathematics for Machine Learning and Data Science" />
+<meta property="og:description" content="Eigenvalues and Eigenvectors: Basis: 🔑 A basis of a space is a set of linearly independent vectors that spans the space. In a 1-D space, we can only have one element in the basis; in a 2-D space, we can only have two elements in the basis, and so on. 🔑 The span of a basis is the space consisting ..." />
+<meta property="og:image:width" content="1146" />
+<meta property="og:image:height" content="600" />
+<meta property="og:image" content="https://fedassembly.github.io/math-for-ml/_images/social_previews/summary_linear_algebra_la_w4_087f2360.png" />
+<meta property="og:image:alt" content="Eigenvalues and Eigenvectors: Basis: 🔑 A basis of a space is a set of linearly independent vectors that spans the space. In a 1-D space, we can only have one..." />
+<meta name="description" content="Eigenvalues and Eigenvectors: Basis: 🔑 A basis of a space is a set of linearly independent vectors that spans the space. In a 1-D space, we can only have one element in the basis; in a 2-D space, we can only have two elements in the basis, and so on. 🔑 The span of a basis is the space consisting ..." />
+<meta name="twitter:card" content="summary_large_image" />
+
+    <title>Linear Algebra - Week 4 &#8212; Mathematics for Machine Learning and Data Science</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../_static/custom.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://fedassembly.github.io/math-for-ml/linear_algebra/la_w4.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Linear Algebra - Extra curriculum" href="la_extra.html" />
+    <link rel="prev" title="Linear Algebra - Week 3" href="la_w3.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Mathematics for Machine Learning and Data Science</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Topics
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Linear Algebra
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="la_w1.html">
+     Week 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="la_w2.html">
+     Week 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="la_w3.html">
+     Week 3
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Week 4
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="la_extra.html">
+     Extra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="la_exer.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../calculus/index.html">
+   Calculus
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculus/ca_w1.html">
+     Week 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculus/ca_w2.html">
+     Week 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculus/ca_w3.html">
+     Week 3
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculus/ca_extra.html">
+     Extra
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+<a href="https://github.com/fedassembly/math-for-ml"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="bottom"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/linear_algebra/la_w4.ipynb.txt"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Eigenvalues-and-Eigenvectors">
+   Eigenvalues and Eigenvectors
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Basis">
+     Basis
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Eigenvalues">
+     Eigenvalues
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Eigenvectors">
+     Eigenvectors
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Linear Algebra - Week 4</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Eigenvalues-and-Eigenvectors">
+   Eigenvalues and Eigenvectors
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Basis">
+     Basis
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Eigenvalues">
+     Eigenvalues
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Eigenvectors">
+     Eigenvectors
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="Linear-Algebra---Week-4">
+<h1>Linear Algebra - Week 4<a class="headerlink" href="#Linear-Algebra---Week-4" title="Permalink to this headline">#</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">sympy</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Math</span><span class="p">,</span> <span class="n">display</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;seaborn-v0_8-whitegrid&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<section id="Eigenvalues-and-Eigenvectors">
+<h2>Eigenvalues and Eigenvectors<a class="headerlink" href="#Eigenvalues-and-Eigenvectors" title="Permalink to this headline">#</a></h2>
+<section id="Basis">
+<h3>Basis<a class="headerlink" href="#Basis" title="Permalink to this headline">#</a></h3>
+<blockquote>
+<div><p>🔑 A <strong>basis</strong> of a space is a set of linearly independent vectors that spans the space.</p>
+</div></blockquote>
+<p>In a 1-D space, we can only have one element in the basis; in a 2-D space, we can only have two elements in the basis, and so on.</p>
+<blockquote>
+<div><p>🔑 The <strong>span</strong> of a basis is the space consisting of <em>all</em> linear combinations of the basis.</p>
+</div></blockquote>
+<p>Metaphorically, the span of a basis is any point in a space that can be reached by walking only in the directions defined by the basis.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="o">-</span><span class="mf">0.8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span>
+        <span class="mi">4</span> <span class="o">*</span> <span class="o">-</span><span class="mf">0.8</span><span class="p">,</span>
+        <span class="o">-</span><span class="mi">3</span> <span class="o">*</span> <span class="o">-</span><span class="mf">0.3</span><span class="p">,</span>
+        <span class="o">-</span><span class="mf">0.3</span><span class="p">,</span>
+        <span class="o">-</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="p">[</span><span class="mi">4</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span> <span class="o">*</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
+    <span class="n">angles</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+    <span class="n">fc</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="s2">&quot;tab:blue&quot;</span><span class="p">,</span> <span class="s2">&quot;tab:blue&quot;</span><span class="p">],</span>
+    <span class="n">ec</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span> <span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">],</span>
+    <span class="n">ls</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="s2">&quot;solid&quot;</span><span class="p">,</span> <span class="s2">&quot;solid&quot;</span><span class="p">],</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">scale_units</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+    <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">end_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span> <span class="o">*</span> <span class="o">-</span><span class="mf">0.8</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span> <span class="o">*</span> <span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <span class="mf">0.8</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">end_point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">end_point</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;tab:blue&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span>
+    <span class="s2">&quot;The span of a basis is any point in the space</span><span class="se">\n</span><span class="s2">that can be reached by &#39;walking&#39; in the directions</span><span class="se">\n</span><span class="s2">defined by the basis&quot;</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/linear_algebra_la_w4_5_0.png" src="../_images/linear_algebra_la_w4_5_0.png" />
+</div>
+</div>
+</section>
+<section id="Eigenvalues">
+<h3>Eigenvalues<a class="headerlink" href="#Eigenvalues" title="Permalink to this headline">#</a></h3>
+<p>Let’s consider the following linear transformations:</p>
+<p><span class="math notranslate nohighlight">\(A_1 = \begin{bmatrix}2&amp;&amp;1\\0&amp;&amp;3\end{bmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(A_2 = \begin{bmatrix}3&amp;&amp;0\\0&amp;&amp;3\end{bmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(A_3 = \begin{bmatrix}2&amp;&amp;0\\0&amp;&amp;2\end{bmatrix}\)</span></p>
+<p>We can demonstrate that although <span class="math notranslate nohighlight">\(A_1\)</span> and <span class="math notranslate nohighlight">\(A_2\)</span> are different transformations, they are indeed the same for infinitely many points.</p>
+<p>And the same can be demonstrated for <span class="math notranslate nohighlight">\(A_1\)</span> and <span class="math notranslate nohighlight">\(A_3\)</span>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="n">A2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="n">A3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
+<span class="n">e_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">product</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span> <span class="o">-</span> <span class="nb">set</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">e_set</span><span class="p">:</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;tab:blue&quot;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;tab:blue&quot;</span><span class="p">)</span>
+    <span class="n">t_e1</span> <span class="o">=</span> <span class="n">A1</span> <span class="o">@</span> <span class="n">e</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">t_e1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">t_e1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">t_e1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">t_e1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">t_e2</span> <span class="o">=</span> <span class="n">A2</span> <span class="o">@</span> <span class="n">e</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">t_e2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">t_e2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;tab:green&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">t_e3</span> <span class="o">=</span> <span class="n">A3</span> <span class="o">@</span> <span class="n">e</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">t_e3</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">t_e3</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;tab:green&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:green&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:green&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;$A_1$ and $A_2$ are the same for all the points on the line&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;$A_1$ and $A_3$ are the same for all the points on the line&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;original&quot;</span><span class="p">,</span> <span class="s2">&quot;$A_1$ transformation&quot;</span><span class="p">,</span> <span class="s2">&quot;$A_2$ or $A_3$ transformation&quot;</span><span class="p">],</span>
+    <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.01</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/linear_algebra_la_w4_9_0.png" src="../_images/linear_algebra_la_w4_9_0.png" />
+</div>
+</div>
+<p>With some imagination, we can see that the blue square on the left-hand side gets sheared horizontally with <span class="math notranslate nohighlight">\(A_1\)</span> and gets blown out with <span class="math notranslate nohighlight">\(A_2\)</span>.</p>
+<p>We can also see that the points (1, 1) and (-1, -1) go to (3, 3) and (-3, -3) respectively with both <span class="math notranslate nohighlight">\(A_1\)</span> and <span class="math notranslate nohighlight">\(A_2\)</span>.</p>
+<p>Similarly, the points (1, 0) and (-1, 0) go to (2, 0) and (-2, 0) respectively with both <span class="math notranslate nohighlight">\(A_1\)</span> and <span class="math notranslate nohighlight">\(A_3\)</span>.</p>
+<p>We can verify that the difference between <span class="math notranslate nohighlight">\(A_1\)</span> and <span class="math notranslate nohighlight">\(A_2\)</span> (and <span class="math notranslate nohighlight">\(A_1\)</span> and <span class="math notranslate nohighlight">\(A_3\)</span>) are singular transformations.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span>
+    <span class="n">Math</span><span class="p">(</span>
+        <span class="s2">&quot;A_1 - A_2=&quot;</span>
+        <span class="o">+</span> <span class="n">sp</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">A1</span> <span class="o">-</span> <span class="n">A2</span><span class="p">))</span>
+        <span class="o">+</span> <span class="s2">&quot;A_1 - A_3=&quot;</span>
+        <span class="o">+</span> <span class="n">sp</span><span class="o">.</span><span class="n">latex</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">A1</span> <span class="o">-</span> <span class="n">A3</span><span class="p">))</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">A1</span> <span class="o">-</span> <span class="n">A2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">A1</span> <span class="o">-</span> <span class="n">A3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle A_1 - A_2=\left[\begin{matrix}-1 &amp; 1\\0 &amp; 0\end{matrix}\right]A_1 - A_3=\left[\begin{matrix}0 &amp; 1\\0 &amp; 1\end{matrix}\right]$</div></div>
+</div>
+<p>The first system of equations is singular and it has infinitely many solution all of which lie on the line <span class="math notranslate nohighlight">\(y = x\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\begin{cases}-x+y=0\\0x+0y=0\end{cases} = \begin{cases}y=x\\0=0\end{cases}\)</span></p>
+<p>The second system of equations is also singular and it has infinitely many solutions all of which lie on the line <span class="math notranslate nohighlight">\(y = 0\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\begin{cases}0x+y=0\\0x+y=0\end{cases} = \begin{cases}y=0\\y=0\end{cases}\)</span></p>
+<p>It turns out that <span class="math notranslate nohighlight">\(A_2\)</span> and <span class="math notranslate nohighlight">\(A_3\)</span> have the eigenvalues 2 and 3 of the matrix <span class="math notranslate nohighlight">\(A_1\)</span> along their diagonals.</p>
+<p>Formally, <span class="math notranslate nohighlight">\(\lambda\)</span> is an eigenvalue of <span class="math notranslate nohighlight">\(A_1\)</span> if</p>
+<p><span class="math notranslate nohighlight">\(\begin{bmatrix}2&amp;&amp;1\\0&amp;&amp;3\end{bmatrix} - \lambda\begin{bmatrix}1&amp;&amp;0\\0&amp;&amp;1\end{bmatrix} = \begin{bmatrix}0\\0\end{bmatrix}\)</span></p>
+<p>or more compactly</p>
+<p><span class="math notranslate nohighlight">\(\begin{bmatrix}2-\lambda&amp;&amp;1\\0&amp;&amp;3-\lambda\end{bmatrix} = \begin{bmatrix}0\\0\end{bmatrix}\)</span></p>
+<p>To find the value(s) of <span class="math notranslate nohighlight">\(\lambda\)</span> we can use the formula for the determinant, and leverage the fact that it must be zero.</p>
+<p><span class="math notranslate nohighlight">\((2-\lambda) \times (3-\lambda) - 1 \times 0 = 0\)</span></p>
+<p><span class="math notranslate nohighlight">\((2-\lambda) \times (3-\lambda) = 1 \times 0\)</span></p>
+<p>Finally we apply the Zero-Factor Property (if the product of two factors is zero, then at least one of the factors must be zero):</p>
+<p><span class="math notranslate nohighlight">\((2-\lambda) = 0 \Rightarrow \lambda = 2\)</span></p>
+<p><span class="math notranslate nohighlight">\((3-\lambda) = 0 \Rightarrow \lambda = 3\)</span></p>
+<blockquote>
+<div><p>🔑 <span class="math notranslate nohighlight">\(\det(A - \lambda I)\)</span> is called the charateristic polynomial</p>
+</div></blockquote>
+<blockquote>
+<div><p>🔑 The values of <span class="math notranslate nohighlight">\(\lambda\)</span> for which the charateristic polynomial is zero are called roots of the charateristic polynomial</p>
+<p>🔑 The eigenvalues are the roots of the charateristic polynomial</p>
+</div></blockquote>
+<p>So basically, to find the eigenvalues of <span class="math notranslate nohighlight">\(A\)</span> we look at the charateristic polynomial <span class="math notranslate nohighlight">\(\det(A - \lambda I)\)</span> and find the roots, that is we solve <span class="math notranslate nohighlight">\(\det(A - \lambda I) = 0\)</span> for <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+</section>
+<section id="Eigenvectors">
+<h3>Eigenvectors<a class="headerlink" href="#Eigenvectors" title="Permalink to this headline">#</a></h3>
+<blockquote>
+<div><p>🔑 An eigenvector is any vector whose direction is not changed by a linear transformation and it’s only stretched by the eigenvalues.</p>
+</div></blockquote>
+<p>Formally, <span class="math notranslate nohighlight">\(\vec{v}\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(A\)</span> if</p>
+<p><span class="math notranslate nohighlight">\(Av = \lambda v\)</span></p>
+<p>This can be rewritten as</p>
+<p><span class="math notranslate nohighlight">\((A - \lambda I)v = 0\)</span></p>
+<p>Note that we express the column vector <span class="math notranslate nohighlight">\(\lambda v\)</span> in matrix form <span class="math notranslate nohighlight">\(\lambda Iv\)</span> when we move it to the left hand side.</p>
+<p>Let’s continue the example from the previous section and find the eigenvectors.</p>
+<p>We basically need to find <span class="math notranslate nohighlight">\(\vec{v}\)</span> in this system.</p>
+<p><span class="math notranslate nohighlight">\(\begin{bmatrix}2-\lambda&amp;&amp;1\\0&amp;&amp;3-\lambda\end{bmatrix} \begin{bmatrix}v_1\\v_2\end{bmatrix} = \begin{bmatrix}0\\0\end{bmatrix}\)</span></p>
+<p>For <span class="math notranslate nohighlight">\(\lambda=2\)</span> we have</p>
+<p><span class="math notranslate nohighlight">\(\begin{bmatrix}0&amp;&amp;1\\0&amp;&amp;1\end{bmatrix} \begin{bmatrix}v_1\\v_2\end{bmatrix} = \begin{bmatrix}0\\0\end{bmatrix}\)</span>.</p>
+<p>The coefficient matrix can be converted to the row-echelon form (after <span class="math notranslate nohighlight">\(R2 = R2 - R1\)</span>)</p>
+<p><span class="math notranslate nohighlight">\(\begin{bmatrix}0&amp;&amp;1\\0&amp;&amp;0\end{bmatrix} \begin{bmatrix}v_1\\v_2\end{bmatrix} = \begin{bmatrix}0\\0\end{bmatrix}\)</span></p>
+<p>to obtain the following system of equations</p>
+<p><span class="math notranslate nohighlight">\(\begin{cases}v_2=0\\0=0\end{cases}\)</span></p>
+<p>which has solution <span class="math notranslate nohighlight">\(\vec{v} = \langle1, 0\rangle\)</span> or any multiple.</p>
+<p>For <span class="math notranslate nohighlight">\(\lambda=3\)</span> we have</p>
+<p><span class="math notranslate nohighlight">\(\begin{bmatrix}-1&amp;&amp;1\\0&amp;&amp;0\end{bmatrix} \begin{bmatrix}v_1\\v_2\end{bmatrix} = \begin{bmatrix}0\\0\end{bmatrix}\)</span>,</p>
+<p>which is already in row-echelon form, so we only need to solve the following system of equations</p>
+<p><span class="math notranslate nohighlight">\(\begin{cases}-v_1+v_2=0\\0=0\end{cases}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\begin{cases}v_2=v_1\\0=0\end{cases}\)</span></p>
+<p>to find the solution is <span class="math notranslate nohighlight">\(\vec{v} = \langle1, 1\rangle\)</span> or any multiple.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_transformation</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lim</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">basis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">e1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+        <span class="n">e2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span> <span class="o">=</span> <span class="n">basis</span>
+    <span class="n">zero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="s2">&quot;tab:blue&quot;</span>
+    <span class="n">c_t</span> <span class="o">=</span> <span class="s2">&quot;tab:orange&quot;</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">lim</span><span class="p">,</span> <span class="n">lim</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">lim</span><span class="p">,</span> <span class="n">lim</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="n">lim</span><span class="p">,</span> <span class="n">lim</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="n">lim</span><span class="p">,</span> <span class="n">lim</span><span class="p">)</span>
+    <span class="n">_plot_vectors</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">zero</span><span class="p">,</span> <span class="n">e2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">e1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">e2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">e1</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="p">[</span><span class="n">zero</span><span class="p">,</span> <span class="n">e2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">e1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">e2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">e1</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">_make_labels</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="s2">&quot;$e_1$&quot;</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">_make_labels</span><span class="p">(</span><span class="n">e2</span><span class="p">,</span> <span class="s2">&quot;$e_2$&quot;</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">e1_t</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">e1</span><span class="p">)</span>
+    <span class="n">e2_t</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">e2</span><span class="p">)</span>
+    <span class="n">_plot_vectors</span><span class="p">(</span><span class="n">e1_t</span><span class="p">,</span> <span class="n">e2_t</span><span class="p">,</span> <span class="n">c_t</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">zero</span><span class="p">,</span> <span class="n">e2_t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">e1_t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">e2_t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">e1_t</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="p">[</span><span class="n">zero</span><span class="p">,</span> <span class="n">e2_t</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">e1_t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">e2_t</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">e1_t</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">c_t</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">_make_labels</span><span class="p">(</span><span class="n">e1_t</span><span class="p">,</span> <span class="s2">&quot;$T(e_1)$&quot;</span><span class="p">,</span> <span class="n">c_t</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">_make_labels</span><span class="p">(</span><span class="n">e2_t</span><span class="p">,</span> <span class="s2">&quot;$T(e_2)$&quot;</span><span class="p">,</span> <span class="n">c_t</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_make_labels</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">y_offset</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+    <span class="n">e_sgn</span> <span class="o">=</span> <span class="mf">0.4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">e</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+        <span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.2</span> <span class="o">+</span> <span class="n">e_sgn</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">y_offset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">y_offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">e_sgn</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">text</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_plot_vectors</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="p">[</span><span class="n">e1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">e2</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="p">[</span><span class="n">e1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">e2</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+        <span class="n">angles</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+        <span class="n">scale_units</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+        <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">v</span>
+    <span class="k">return</span> <span class="n">w</span>
+
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="n">evecs</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]])]</span>
+<span class="n">lambdas</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">lam</span><span class="p">,</span> <span class="n">evc</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lambdas</span><span class="p">,</span> <span class="n">evecs</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">((</span><span class="n">A</span> <span class="o">-</span> <span class="n">lam</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">@</span> <span class="n">evc</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">A</span> <span class="o">@</span> <span class="n">evc</span><span class="p">,</span> <span class="n">lam</span> <span class="o">*</span> <span class="n">evc</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">plot_transformation</span><span class="p">(</span>
+    <span class="n">partial</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">A</span><span class="p">),</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;$e_1$ and $e_2$ are the eigenvectors of $A$.</span><span class="se">\n</span><span class="s2">Their directions are unchanged after $T()$.&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">basis</span><span class="o">=</span><span class="n">evecs</span><span class="p">,</span>
+    <span class="n">lim</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/linear_algebra_la_w4_15_0.png" src="../_images/linear_algebra_la_w4_15_0.png" />
+</div>
+</div>
+<p>Let’s consider another matrix.</p>
+<p><span class="math notranslate nohighlight">\(A = \begin{bmatrix}9&amp;&amp;4\\4&amp;&amp;3\end{bmatrix}\)</span></p>
+<p>To find the eigenvalues we solve</p>
+<p><span class="math notranslate nohighlight">\((9-\lambda)(3-\lambda)-16=0\)</span></p>
+<p><span class="math notranslate nohighlight">\(\lambda^2-12\lambda+27-16=0\)</span></p>
+<p><span class="math notranslate nohighlight">\((1-\lambda)(11-\lambda)=0\)</span></p>
+<p>So the eigenvalues are <span class="math notranslate nohighlight">\(\lambda=1\)</span> and <span class="math notranslate nohighlight">\(\lambda=11\)</span>.</p>
+<p>For <span class="math notranslate nohighlight">\(\lambda=1\)</span> the eigenvector is given by</p>
+<p><span class="math notranslate nohighlight">\(\begin{bmatrix}8&amp;&amp;4\\4&amp;&amp;2\end{bmatrix} \begin{bmatrix}v_1\\v_2\end{bmatrix} = \begin{bmatrix}0\\0\end{bmatrix}\)</span>.</p>
+<p>The coefficient matrix can be converted to the row-echelon form (after <span class="math notranslate nohighlight">\(R1 = 0.125R1\)</span>, <span class="math notranslate nohighlight">\(R2 = 0.25R2\)</span>, <span class="math notranslate nohighlight">\(R2 = R2 - R1\)</span>)</p>
+<p><span class="math notranslate nohighlight">\(\begin{bmatrix}1&amp;&amp;0.5\\0&amp;&amp;0\end{bmatrix} \begin{bmatrix}v_1\\v_2\end{bmatrix} = \begin{bmatrix}0\\0\end{bmatrix}\)</span></p>
+<p>to obtain the following system of equations</p>
+<p><span class="math notranslate nohighlight">\(\begin{cases}v_1+0.5v_2=0\\0=0\end{cases}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\begin{cases}v_1=-0.5v_2\\0=0\end{cases}\)</span></p>
+<p>which has solution <span class="math notranslate nohighlight">\(\vec{v} = \langle-0.5, 1\rangle\)</span> or any multiple.</p>
+<p>For <span class="math notranslate nohighlight">\(\lambda = 11\)</span> the eigenvector is given by</p>
+<p><span class="math notranslate nohighlight">\(\begin{bmatrix}-2&amp;&amp;4\\4&amp;&amp;-8\end{bmatrix} \begin{bmatrix}v_1\\v_2\end{bmatrix} = \begin{bmatrix}0\\0\end{bmatrix}\)</span>.</p>
+<p>The coefficient matrix can be converted to the row-echelon form (after <span class="math notranslate nohighlight">\(R1=-0.5R1\)</span>, <span class="math notranslate nohighlight">\(R2=-0.5R2\)</span> and <span class="math notranslate nohighlight">\(R2 = R2 - R1\)</span>)</p>
+<p><span class="math notranslate nohighlight">\(\begin{bmatrix}1&amp;&amp;-2\\0&amp;&amp;0\end{bmatrix} \begin{bmatrix}v_1\\v_2\end{bmatrix} = \begin{bmatrix}0\\0\end{bmatrix}\)</span></p>
+<p>to obtain the following system of equations</p>
+<p><span class="math notranslate nohighlight">\(\begin{cases}v_1-2v_2=0\\0=0\end{cases}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\begin{cases}v_1=2v_2\\0=0\end{cases}\)</span></p>
+<p>which has solution <span class="math notranslate nohighlight">\(\vec{v} = \langle2, 1\rangle\)</span> or any multiple.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="n">lambdas</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">]</span>
+<span class="n">evecs</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.25</span><span class="p">]])]</span>
+
+<span class="k">for</span> <span class="n">lam</span><span class="p">,</span> <span class="n">evc</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lambdas</span><span class="p">,</span> <span class="n">evecs</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">((</span><span class="n">A</span> <span class="o">-</span> <span class="n">lam</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">@</span> <span class="n">evc</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">A</span> <span class="o">@</span> <span class="n">evc</span><span class="p">,</span> <span class="n">lam</span> <span class="o">*</span> <span class="n">evc</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">plot_transformation</span><span class="p">(</span>
+    <span class="n">partial</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">A</span><span class="p">),</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;$e_1$ and $e_2$ are the eigenvectors of $A$.</span><span class="se">\n</span><span class="s2">Their directions are unchanged after $T()$.&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">basis</span><span class="o">=</span><span class="n">evecs</span><span class="p">,</span>
+    <span class="n">lim</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/linear_algebra_la_w4_17_0.png" src="../_images/linear_algebra_la_w4_17_0.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="la_w3.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Linear Algebra - Week 3</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="la_extra.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Linear Algebra - Extra curriculum</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Federico Trifoglio<br/>
+  
+      &copy; Copyright 2023.<br/>
+    <div class="extra_footer">
+      <div id="imageOverlay"><img id="overlayImage" src=""></div>
+    </div>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

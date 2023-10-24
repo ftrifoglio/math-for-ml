@@ -1,0 +1,1124 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Calculus - Week 1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import timeit\n",
+    "\n",
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np\n",
+    "import sympy as sp\n",
+    "\n",
+    "plt.style.use(\"seaborn-v0_8-whitegrid\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Derivatives"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Average rate of change of a function"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def constant(x, c, *args):\n",
+    "    return np.full_like(x, c)\n",
+    "\n",
+    "\n",
+    "def linear(x, m, *args):\n",
+    "    return x * m\n",
+    "\n",
+    "\n",
+    "def quadratic(x, *args):\n",
+    "    return np.power(x, 2)\n",
+    "\n",
+    "\n",
+    "def cubic(x, *args):\n",
+    "    return np.power(x, 3)\n",
+    "\n",
+    "\n",
+    "def fractional(x, *args):\n",
+    "    if isinstance(x, np.ndarray):\n",
+    "        x = x.copy()\n",
+    "        x[x == 0] = np.nan\n",
+    "    elif x == 0:\n",
+    "        x = np.nan\n",
+    "    return np.power(x, -1)\n",
+    "\n",
+    "\n",
+    "def squareroot(x, *args):\n",
+    "    if isinstance(x, np.ndarray):\n",
+    "        x = x.copy()\n",
+    "        x[x < 0] = np.nan\n",
+    "    elif x < 0:\n",
+    "        x = np.nan\n",
+    "    return np.power(x, 1 / 2)\n",
+    "\n",
+    "\n",
+    "def exponential(x, *args):\n",
+    "    return np.exp(x)\n",
+    "\n",
+    "\n",
+    "def logarithmic(x, b, *args):\n",
+    "    if isinstance(x, np.ndarray):\n",
+    "        x = x.copy()\n",
+    "        x[x <= 0] = np.nan\n",
+    "    elif x <= 0:\n",
+    "        x = np.nan\n",
+    "    return np.log(x) / np.log(b)\n",
+    "\n",
+    "\n",
+    "def sin(x, *args):\n",
+    "    return np.sin(x)\n",
+    "\n",
+    "\n",
+    "def cos(x, *args):\n",
+    "    return np.cos(x)\n",
+    "\n",
+    "\n",
+    "def abs(x, *args):\n",
+    "    return np.abs(x)\n",
+    "\n",
+    "\n",
+    "def sigmoid(x, *args):\n",
+    "    return 1 / (1 + np.exp(-x))\n",
+    "\n",
+    "\n",
+    "def relu(x, *args):\n",
+    "    # np.maximum: element-wise max, not np.max along axis\n",
+    "    return np.maximum(0, x)\n",
+    "\n",
+    "\n",
+    "def tanh(x, *args):\n",
+    "    return np.tanh(x)\n",
+    "\n",
+    "\n",
+    "x = np.linspace(-6, 6, 400)\n",
+    "funcs = [\n",
+    "    constant,\n",
+    "    linear,\n",
+    "    quadratic,\n",
+    "    cubic,\n",
+    "    fractional,\n",
+    "    squareroot,\n",
+    "    exponential,\n",
+    "    logarithmic,\n",
+    "    logarithmic,\n",
+    "    sin,\n",
+    "    cos,\n",
+    "    abs,\n",
+    "    sigmoid,\n",
+    "    relu,\n",
+    "    tanh,\n",
+    "]\n",
+    "args = [\n",
+    "    [0],\n",
+    "    [2],\n",
+    "    [None],\n",
+    "    [None],\n",
+    "    [None],\n",
+    "    [None],\n",
+    "    [None],\n",
+    "    [np.e],\n",
+    "    [10],\n",
+    "    [None],\n",
+    "    [None],\n",
+    "    [None],\n",
+    "    [None],\n",
+    "    [None],\n",
+    "    [None],\n",
+    "]\n",
+    "\n",
+    "fig, axs = plt.subplots(nrows=3, ncols=5, figsize=(5 * 4, 3 * 4))\n",
+    "for ax, f, arg in zip(axs.flatten(), funcs, args):\n",
+    "    ax.scatter(x, f(x, *arg), s=5)\n",
+    "    ax.set_title(\n",
+    "        f.__name__ + \" \" + \" \".join([str(a)[:3] for a in arg if a is not None]),\n",
+    "        loc=\"right\",\n",
+    "    )\n",
+    "    ax.spines[[\"left\", \"bottom\"]].set_position((\"data\", 0))\n",
+    "    ax.text(1, 0, \"$x$\", transform=ax.get_yaxis_transform())\n",
+    "    ax.text(0, 1.02, \"$f(x)$\", transform=ax.get_xaxis_transform())\n",
+    "plt.tight_layout()\n",
+    "plt.subplots_adjust(top=0.90)\n",
+    "plt.suptitle(\"Common functions\", fontsize=15)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let $x = 0.25$ and $\\Delta x = 1.25$, we calculate the average rate of change of each function wrt $x$ over the interval $\\Delta x$ as\n",
+    "\n",
+    "> 📐 $\\cfrac{\\Delta f}{\\Delta x} = \\cfrac{f(x + \\Delta x) - f(x)}{\\Delta x}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig, axs = plt.subplots(nrows=3, ncols=5, figsize=(5 * 4, 3 * 4))\n",
+    "for ax, f, arg in zip(axs.flatten(), funcs, args):\n",
+    "    ax.scatter(x, f(x, *arg), s=5)\n",
+    "    x_1 = 0.25\n",
+    "    d_x = 1.25\n",
+    "    ax.scatter(x_1, f(x_1, *arg), s=20, c=\"tab:orange\")\n",
+    "    ax.scatter(x_1 + d_x, f(x_1 + d_x, *arg), s=20, c=\"tab:orange\")\n",
+    "    ax.plot([x_1, x_1 + d_x], [f(x_1, *arg), f(x_1, *arg)], \"--\", color=\"tab:orange\")\n",
+    "    ax.plot(\n",
+    "        [x_1 + d_x, x_1 + d_x],\n",
+    "        [f(x_1 + d_x, *arg), f(x_1, *arg)],\n",
+    "        \"--\",\n",
+    "        color=\"tab:orange\",\n",
+    "    )\n",
+    "    ax.plot(\n",
+    "        [x_1, x_1 + d_x],\n",
+    "        [f(x_1, *arg), f(x_1 + d_x, *arg)],\n",
+    "        \"--\",\n",
+    "        linewidth=2,\n",
+    "        color=\"tab:green\",\n",
+    "    )\n",
+    "    slope = (f(x_1 + d_x, *arg) - f(x_1, *arg)) / d_x\n",
+    "    ax.text(\n",
+    "        x_1 + d_x,\n",
+    "        f(x_1 + d_x, *arg),\n",
+    "        f\"{slope:.2f}\",\n",
+    "        fontsize=12,\n",
+    "        color=\"k\",\n",
+    "        bbox=dict(facecolor=\"tab:green\", alpha=0.8),\n",
+    "    )\n",
+    "    ax.set_title(\n",
+    "        f.__name__ + \" \" + \" \".join([str(a)[:3] for a in arg if a is not None]),\n",
+    "        loc=\"right\",\n",
+    "    )\n",
+    "    ax.spines[[\"left\", \"bottom\"]].set_position((\"data\", 0))\n",
+    "    ax.text(1, 0, \"$x$\", transform=ax.get_yaxis_transform())\n",
+    "    ax.text(0, 1.02, \"$f(x)$\", transform=ax.get_xaxis_transform())\n",
+    "plt.tight_layout()\n",
+    "plt.subplots_adjust(top=0.90)\n",
+    "plt.suptitle(\n",
+    "    \"Average rate of change of common functions at $x=0.25$ over $\\\\Delta x = 1.25$\",\n",
+    "    fontsize=15,\n",
+    ")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "As $\\Delta x$ approaches 0 we get the instantaneous rate of change of each function wrt x.\n",
+    "\n",
+    "> 📐 $\\lim_{{\\Delta x}\\to{0}}\\cfrac{\\Delta f}{\\Delta x} = \\lim_{{\\Delta x}\\to{0}}\\cfrac{f(x + \\Delta x) - f(x)}{\\Delta x}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig, axs = plt.subplots(nrows=3, ncols=5, figsize=(5 * 4, 3 * 4))\n",
+    "for ax, f, arg in zip(axs.flatten(), funcs, args):\n",
+    "    ax.scatter(x, f(x, *arg), s=5)\n",
+    "    x_1 = 0.25\n",
+    "    h = 1e-6\n",
+    "    # y-y1 = m(x-x1)\n",
+    "    # y = m(x - x1) + y1\n",
+    "    slope = (f(x_1 + h, *arg) - f(x_1, *arg)) / h\n",
+    "    tan_range = np.linspace(-1, 1)\n",
+    "    ax.plot(\n",
+    "        tan_range,\n",
+    "        slope * (tan_range - x_1) + f(x_1, *arg),\n",
+    "        \"--\",\n",
+    "        color=\"tab:green\",\n",
+    "    )\n",
+    "    ax.text(\n",
+    "        x_1,\n",
+    "        f(x_1, *arg),\n",
+    "        f\"{slope:.2f}\",\n",
+    "        fontsize=12,\n",
+    "        color=\"k\",\n",
+    "        bbox=dict(facecolor=\"tab:green\", alpha=0.8),\n",
+    "    )\n",
+    "    ax.set_title(\n",
+    "        f.__name__ + \" \" + \" \".join([str(a)[:3] for a in arg if a is not None]),\n",
+    "        loc=\"right\",\n",
+    "    )\n",
+    "    ax.spines[[\"left\", \"bottom\"]].set_position((\"data\", 0))\n",
+    "    ax.text(1, 0, \"$x$\", transform=ax.get_yaxis_transform())\n",
+    "    ax.text(0, 1.02, \"$f(x)$\", transform=ax.get_xaxis_transform())\n",
+    "plt.tight_layout()\n",
+    "plt.subplots_adjust(top=0.90)\n",
+    "plt.suptitle(\n",
+    "    \"Instanteneous rate of change of common functions at $x=0.25$\", fontsize=15\n",
+    ")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Derivative of a function"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "> 🔑 The derivative of the function $f(x)$ wrt $x$ is $\\cfrac{d}{dx}f(x) = \\lim_{{\\Delta x}\\to{0}}\\cfrac{\\Delta f}{\\Delta x} = \\lim_{{\\Delta x}\\to{0}}\\cfrac{f(x + \\Delta x) - f(x)}{\\Delta x}$\n",
+    "\n",
+    "The derivative of the common functions seen so far are:\n",
+    "\n",
+    "$\\cfrac{d}{dx}(k) = \\lim_{{\\Delta x}\\to{0}} \\cfrac{k - k}{\\Delta x} = 0$\n",
+    "\n",
+    "$\\cfrac{d}{dx}(2x) = \\lim_{{\\Delta x}\\to{0}} \\cfrac{2(x+\\Delta x) - 2x}{\\Delta x} = 2$\n",
+    "\n",
+    "$\\cfrac{d}{dx}(x^2) = \\lim_{{\\Delta x}\\to{0}} \\cfrac{(x+\\Delta x)^2 - x^2}{\\Delta x} = 2x$\n",
+    "\n",
+    "$\\cfrac{d}{dx}(x^3) = \\lim_{{\\Delta x}\\to{0}} \\cfrac{(x+\\Delta x)^3 - x^3}{\\Delta x} = 3x^2$\n",
+    "\n",
+    "$\\cfrac{d}{dx}\\left( \\cfrac{1}{x} \\right) = \\cfrac{d}{dx}(x^{-1}) = \\lim_{{\\Delta x}\\to{0}} \\cfrac{(x+\\Delta x)^{-1} - x^{-1}}{\\Delta x} = -x^{-2} \\text{ for } x \\ne 0$\n",
+    "\n",
+    "$\\cfrac{d}{dx}(\\sqrt{x}) = \\cfrac{d}{dx}(x^{\\frac{1}{2}}) = \\lim_{{\\Delta x}\\to{0}} \\cfrac{(x+\\Delta x)^{\\frac{1}{2}} - x^{\\frac{1}{2}}}{\\Delta x} = \\cfrac{1}{2}x^{-\\frac{1}{2}} \\text{ for } x \\ge 0$\n",
+    "\n",
+    "$\\cfrac{d}{dx}(e^x) = \\lim_{{\\Delta x}\\to{0}} \\cfrac{e^{x+\\Delta x} - e^x}{\\Delta x} = e^x$\n",
+    "\n",
+    "$\\cfrac{d}{dx}(\\log_e(x)) = \\lim_{{\\Delta x}\\to{0}} \\cfrac{\\ln(x+\\Delta x) - \\ln(x)}{\\Delta x} = \\cfrac{1}{x\\ln(e)} \\text{ for } x > 0$\n",
+    "\n",
+    "$\\cfrac{d}{dx}(\\log_{10}(x)) = \\lim_{{\\Delta x}\\to{0}} \\cfrac{\\log_{10}(x+\\Delta x) - \\log_{10}(x)}{\\Delta x} = \\cfrac{1}{x \\ln(10)} \\text{ for } x > 0$\n",
+    "\n",
+    "$\\cfrac{d}{dx}(\\sin(x)) = \\lim_{{\\Delta x}\\to{0}} \\cfrac{\\sin(x+\\Delta x) - \\sin(x)}{\\Delta x} = \\cos(x)$\n",
+    "\n",
+    "$\\cfrac{d}{dx}(\\cos(x)) = \\lim_{{\\Delta x}\\to{0}} \\cfrac{\\cos(x+\\Delta x) - \\cos(x)}{\\Delta x} = -\\sin(x)$\n",
+    "\n",
+    "$\\cfrac{d}{dx}(|x|) = \\lim_{{\\Delta x}\\to{0}} \\cfrac{|x+\\Delta x| - |x|}{\\Delta x} = \\begin{cases}1 \\text{ if } x > 0\\\\-1 \\text{ if } x < 0\\\\\\text{undefined if } x = 0\\end{cases}$\n",
+    "\n",
+    "$\\cfrac{d}{dx}(\\sigma(x)) = \\lim_{{\\Delta x}\\to{0}} \\cfrac{\\sigma(x+\\Delta x) - \\sigma(x)}{\\Delta x} = \\sigma(x)(1-\\sigma(x))$\n",
+    "\n",
+    "$\\cfrac{d}{dx}(\\text{ReLU}(x)) = \\lim_{{\\Delta x}\\to{0}} \\cfrac{\\text{ReLU}(x+\\Delta x) - \\text{ReLU}(x)}{\\Delta x} = \\begin{cases}1 \\text{ if } x > 0\\\\0 \\text{ if } x < 0\\\\\\text{undefined if } x = 0\\end{cases}$\n",
+    "\n",
+    "$\\cfrac{d}{dx}(\\tanh(x)) = \\lim_{{\\Delta x}\\to{0}} \\cfrac{\\tanh(x+\\Delta x) - \\tanh(x)}{\\Delta x} = 1 - \\text{tanh}(x)^2$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def d_constant(x, *args):\n",
+    "    return np.full_like(x, 0)\n",
+    "\n",
+    "\n",
+    "def d_linear(x, m, *args):\n",
+    "    return np.full_like(x, m)\n",
+    "\n",
+    "\n",
+    "def d_quadratic(x, *args):\n",
+    "    return 2 * x\n",
+    "\n",
+    "\n",
+    "def d_cubic(x, *args):\n",
+    "    return 3 * (x**2)\n",
+    "\n",
+    "\n",
+    "def d_fractional(x, *args):\n",
+    "    if isinstance(x, np.ndarray):\n",
+    "        x = x.copy()\n",
+    "        x[x == 0] = np.nan\n",
+    "    elif x == 0:\n",
+    "        x = np.nan\n",
+    "    return -(x**-2)\n",
+    "\n",
+    "\n",
+    "def d_squareroot(x, *args):\n",
+    "    if isinstance(x, np.ndarray):\n",
+    "        x = x.copy()\n",
+    "        x[x < 0] = np.nan\n",
+    "    elif x < 0:\n",
+    "        x = np.nan\n",
+    "    return (1 / 2) * x ** (-1 / 2)\n",
+    "\n",
+    "\n",
+    "def d_exponential(x, *args):\n",
+    "    return np.exp(x)\n",
+    "\n",
+    "\n",
+    "def d_logarithmic(x, b, *args):\n",
+    "    if isinstance(x, np.ndarray):\n",
+    "        x = x.copy()\n",
+    "        x[x <= 0] = np.nan\n",
+    "    elif x <= 0:\n",
+    "        x = np.nan\n",
+    "    return 1 / (x * np.log(b))\n",
+    "\n",
+    "\n",
+    "def d_sin(x, *args):\n",
+    "    return np.cos(x)\n",
+    "\n",
+    "\n",
+    "def d_cos(x, *args):\n",
+    "    return -np.sin(x)\n",
+    "\n",
+    "\n",
+    "def d_abs(x, *args):\n",
+    "    if isinstance(x, np.ndarray):\n",
+    "        x = x.copy()\n",
+    "        x[x == 0] = np.nan\n",
+    "    elif x == 0:\n",
+    "        x = np.nan\n",
+    "    return np.sign(x)\n",
+    "\n",
+    "\n",
+    "def d_sigmoid(x, *args):\n",
+    "    return sigmoid(x) * (1 - sigmoid(x))\n",
+    "\n",
+    "\n",
+    "def d_relu(x, *args):\n",
+    "    if isinstance(x, np.ndarray):\n",
+    "        x = x.copy()\n",
+    "        x[x == 0] = np.nan\n",
+    "    elif x == 0:\n",
+    "        x = np.nan\n",
+    "    return np.sign(relu(x))\n",
+    "\n",
+    "\n",
+    "def d_tanh(x, *args):\n",
+    "    return 1 - np.tanh(x) ** 2\n",
+    "\n",
+    "\n",
+    "d_funcs = [\n",
+    "    d_constant,\n",
+    "    d_linear,\n",
+    "    d_quadratic,\n",
+    "    d_cubic,\n",
+    "    d_fractional,\n",
+    "    d_squareroot,\n",
+    "    d_exponential,\n",
+    "    d_logarithmic,\n",
+    "    d_logarithmic,\n",
+    "    d_sin,\n",
+    "    d_cos,\n",
+    "    d_abs,\n",
+    "    d_sigmoid,\n",
+    "    d_relu,\n",
+    "    d_tanh,\n",
+    "]\n",
+    "\n",
+    "fig, axs = plt.subplots(nrows=3, ncols=5, figsize=(5 * 4, 3 * 4))\n",
+    "for ax, f, df, arg in zip(axs.flatten(), funcs, d_funcs, args):\n",
+    "    ax.scatter(x, f(x, *arg), s=5)\n",
+    "    f_lims = np.array(ax.get_ylim())\n",
+    "    ax.scatter(x, df(x, *arg), s=5)\n",
+    "    df_lims = np.array(ax.get_ylim())\n",
+    "    if any(abs(df_lims) > 10 * abs(f_lims)):\n",
+    "        ax.set_ylim(f_lims)\n",
+    "    ax.set_title(\n",
+    "        f.__name__ + \" \" + \" \".join([str(a)[:3] for a in arg if a is not None]),\n",
+    "        loc=\"right\",\n",
+    "    )\n",
+    "    ax.spines[[\"left\", \"bottom\"]].set_position((\"data\", 0))\n",
+    "    ax.text(1, 0, \"$x$\", transform=ax.get_yaxis_transform())\n",
+    "    ax.text(0, 1.02, \"$f(x)$\", transform=ax.get_xaxis_transform())\n",
+    "plt.tight_layout()\n",
+    "plt.subplots_adjust(top=0.90)\n",
+    "plt.suptitle(\"Derivatives of common functions\", fontsize=15)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Not differentiable functions"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "> 🔑 A function is not differentiable at $x = a$ if $\\lim_{x\\to{a}}\\cfrac{f(x)-f(a)}{x-a}$ does not exist\n",
+    "\n",
+    "Visually, we can determine whether a function is not differentiable if we see\n",
+    "\n",
+    "1. a cusp or a corner\n",
+    "\n",
+    "2. a jump or point of discontinuity\n",
+    "\n",
+    "3. a vertical tangent"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Proof that |x| is not differentiable at 0"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "$\\cfrac{df}{dx}(a) = \\lim_{x\\to{a}}\\cfrac{f(x)-f(a)}{x-a}$\n",
+    "\n",
+    "$\\lim_{x\\to{0}}\\cfrac{f(x)-f(0)}{x-0}$\n",
+    "\n",
+    "$\\lim_{x\\to{0}}\\cfrac{|x|}{x}$\n",
+    "\n",
+    "$\\lim_{x\\to{0}^+}\\cfrac{x}{x} = 1$\n",
+    "\n",
+    "$\\lim_{x\\to{0}^-}\\cfrac{-x}{x} = -1$\n",
+    "\n",
+    "$\\lim_{x\\to{0}}\\cfrac{|x|}{x}$ does not exist because $\\lim_{x\\to{0}^+} \\ne \\lim_{x\\to{0}^-}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Proof that ReLU is not differentiable at 0"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "$\\cfrac{df}{dx}(a) = \\lim_{x\\to{a}}\\cfrac{f(x)-f(a)}{x-a}$\n",
+    "\n",
+    "$\\lim_{x\\to{0}}\\cfrac{f(x)-f(0)}{x-0}$\n",
+    "\n",
+    "$\\lim_{x\\to{0}}\\cfrac{\\text{ReLU}(x)}{x}$\n",
+    "\n",
+    "$\\lim_{x\\to{0}^+}\\cfrac{x}{x} = 1$\n",
+    "\n",
+    "$\\lim_{x\\to{0}^-}\\cfrac{0}{x} = 0$\n",
+    "\n",
+    "$\\lim_{x\\to{0}}\\cfrac{\\text{ReLU}(x)}{x}$ does not exist because $\\lim_{x\\to{0}^+} \\ne \\lim_{x\\to{0}^-}$\n",
+    "\n",
+    "That being said the universal convention in machine learning applications is to assign a derivative of 0 at the non-differentiable point 0, such that\n",
+    "\n",
+    "$\\text{ReLU}'(x) = \\begin{cases}1 \\text{ if } x > 0\\\\0 \\text{ if } x \\le 0\\end{cases}$\n",
+    "\n",
+    "This won't make a lot of sense now, because we haven't introduced backward propagation yet, but it's a bit imprecise to say that \"conventionally the derivative of ReLU at 0 is 0\".\n",
+    "\n",
+    "Frameworks like Tensorflow, for example, just do not propagate the gradient when the ReLU activation is 0.\n",
+    "\n",
+    "Source: https://github.com/tensorflow/tensorflow/blob/0aecf379b7bbdbe93be91643825f0ae94171d509/tensorflow/core/kernels/relu_op_functor.h#L52"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Proof that radicals are not differentiable at 0"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "$\\cfrac{df}{dx}(a) = \\lim_{x\\to{a}}\\cfrac{f(x)-f(a)}{x-a}$\n",
+    "\n",
+    "$\\lim_{x\\to{0}}\\cfrac{f(x)-f(0)}{x-0}$\n",
+    "\n",
+    "$\\lim_{x\\to{0}^+}\\cfrac{\\sqrt{x}}{x}$\n",
+    "\n",
+    "$\\lim_{x\\to{0}^+}\\cfrac{\\sqrt{x}\\sqrt{x}}{x\\sqrt{x}}$\n",
+    "\n",
+    "$\\lim_{x\\to{0}^+}\\cfrac{x}{x\\sqrt{x}}$\n",
+    "\n",
+    "$\\lim_{x\\to{0}^+}\\cfrac{1}{\\sqrt{x}}$\n",
+    "\n",
+    "$\\lim_{x\\to{0}^+}\\cfrac{1}{\\sqrt{x}}$ does not exist because $\\lim_{x\\to{0}^+}\\cfrac{1}{\\sqrt{x}} \\rightarrow +\\infty$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### The inverse function and its derivative"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "$\\sqrt{x}$ is the inverse of $x^2$, because $x \\xrightarrow{x^2} x^2 \\xrightarrow{\\sqrt{x}} x$\n",
+    "\n",
+    "> 🔑 $g(y)$ is the inverse of $f(x)$ if $x \\xrightarrow{f(x)} y \\xrightarrow{g(y)} x$. In other words the inverse function undoes what the function does.\n",
+    "\n",
+    "$\\cfrac{1}{x}$ is NOT the inverse of $x$, because $x \\xrightarrow{x} x \\xrightarrow{\\frac{1}{x}} \\cfrac{1}{x}$\n",
+    "\n",
+    "$\\ln x$ is the inverse of $e^x$, because $x \\xrightarrow{\\ln x} \\ln x \\xrightarrow{e^x} x$\n",
+    "\n",
+    "> 🔑 The derivative of the inverse function is $g\\prime(y) = \\cfrac{1}{f\\prime(x)}$\n",
+    "\n",
+    "Let's verify it.\n",
+    "\n",
+    "$\\cfrac{d}{dy}\\ln{y} = \\cfrac{1}{y}$ but also $\\cfrac{1}{\\cfrac{d}{dx}e^{\\ln y}} = \\cfrac{1}{y}$\n",
+    "\n",
+    "$\\cfrac{d}{dy}\\sqrt{y} = \\cfrac{d}{dy}y^{\\frac{1}{2}} = \\cfrac{1}{2}y^{-\\frac{1}{2}}$ but also $\\cfrac{1}{\\cfrac{d}{dx}\\left( y^{\\frac{1}{2}} \\right)^2} = \\cfrac{1}{2y^{\\frac{1}{2}}} = \\cfrac{1}{2}y^{-\\frac{1}{2}} = \\cfrac{1}{2}\\cfrac{1}{y^\\frac{1}{2}} = \\cfrac{1}{2}y^{-\\frac{1}{2}}$\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if squareroot(quadratic(x_1)) == x_1:\n",
+    "    assert 1 / d_quadratic(x_1) == d_squareroot(quadratic(x_1))\n",
+    "\n",
+    "if np.exp(np.log(x_1)):\n",
+    "    assert 1 / d_exponential(x_1) == d_logarithmic(exponential(x_1), b=np.e)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Derivative rules"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Constant multiple rule"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "> 📐 $\\cfrac{d}{dx}[cf(x)] = cf'(x)$\n",
+    "\n",
+    "Example:\n",
+    "\n",
+    "$y = 5x^2$\n",
+    "\n",
+    "$\\cfrac{dy}{dx} = 5 \\cfrac{d}{dx}x^2$\n",
+    "\n",
+    "$\\cfrac{dy}{dx} = 10x$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "x = sp.symbols(\"x\")\n",
+    "expr = 5 * x**2\n",
+    "expr.diff()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Sum or difference rule"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "> 📐 $\\cfrac{d}{dx}[f(x) + g(x)] = f'(x) + g'(x)$\n",
+    "\n",
+    "Example:\n",
+    "\n",
+    "$y = 5x^2 + 3x + 1$\n",
+    "\n",
+    "$\\cfrac{dy}{dx} = \\cfrac{d}{dx}5x^2 + \\cfrac{d}{dx}3x + 1$\n",
+    "\n",
+    "$\\cfrac{dy}{dx} = 10x + 3$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "x = sp.symbols(\"x\")\n",
+    "expr = 5 * x**2 + 3 * x + 1\n",
+    "expr.diff()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Product rule"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "> 📐 $\\cfrac{d}{dx}[f(x)g(x)] = f'(x)g(x) + f(x)g'(x)$\n",
+    "\n",
+    "Example:\n",
+    "\n",
+    "$y = (5x^2)(3x + 1)$\n",
+    "\n",
+    "$\\cfrac{dy}{dx} = \\cfrac{d}{dx}(5x^2)(3x + 1) + \\cfrac{d}{dx}(3x + 1)(5x^2)$\n",
+    "\n",
+    "$\\cfrac{dy}{dx} = 5\\left(\\cfrac{d}{dx}(x^2)(3x + 1) + \\cfrac{d}{dx}(3x + 1)(x^2)\\right)$\n",
+    "\n",
+    "$\\cfrac{dy}{dx} = 5(2x(3x+1) + 3(x^2))$\n",
+    "\n",
+    "$\\cfrac{dy}{dx} = 5(6x^2+2x+3x^2)$\n",
+    "\n",
+    "$\\cfrac{dy}{dx} = 5(9x^2+2x)$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "x = sp.symbols(\"x\")\n",
+    "expr = (5 * x**2) * (3 * x + 1)\n",
+    "expr.diff().simplify()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Quotient rule"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "> 📐 $\\cfrac{d}{dx}\\left[\\cfrac{f(x)}{g(x)}\\right] = \\cfrac{f'(x)g(x) - f(x)g'(x)}{g(x)^2}$\n",
+    "\n",
+    "Example:\n",
+    "\n",
+    "$y = \\cfrac{5x^2}{3x + 1}$\n",
+    "\n",
+    "$\\cfrac{dy}{dx} = \\cfrac{\\cfrac{d}{dx}(5x^2)(3x + 1)-\\cfrac{d}{dx}(3x + 1)(5x^2)}{(3x + 1)^2}$\n",
+    "\n",
+    "$\\cfrac{dy}{dx} = 5\\left(\\cfrac{\\cfrac{d}{dx}(x^2)(3x + 1)-\\cfrac{d}{dx}(3x + 1)(x^2)}{(3x + 1)^2}\\right)$\n",
+    "\n",
+    "$\\cfrac{dy}{dx} = 5\\left(\\cfrac{2x(3x+1) - 3(x^2)}{(3x + 1)^2}\\right)$\n",
+    "\n",
+    "$\\cfrac{dy}{dx} = 5\\left(\\cfrac{6x^2+2x-3x^2}{(3x + 1)^2}\\right)$\n",
+    "\n",
+    "$\\cfrac{dy}{dx} = \\cfrac{5(3x^2+2x)}{(3x + 1)^2}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "x = sp.symbols(\"x\")\n",
+    "expr = (5 * x**2) / (3 * x + 1)\n",
+    "expr.diff().simplify().factor()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Chain rule"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "> 📐 $\\cfrac{d}{dx}[g(f(x))] = g'(f(x))f'(x)$\n",
+    "\n",
+    "Example I:\n",
+    "\n",
+    "$y = 5(3x + 1)^2$\n",
+    "\n",
+    "$\\cfrac{dy}{dx} = 5\\left(\\cfrac{d}{dx}(3x+1)^2\\cfrac{d}{dx}3x + 1\\right)$\n",
+    "\n",
+    "$\\cfrac{dy}{dx} = 5(2(3x+1)3)$\n",
+    "\n",
+    "$\\cfrac{dy}{dx} = 30(3x+1)$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "x = sp.symbols(\"x\")\n",
+    "expr = 5 * (3 * x + 1) ** 2\n",
+    "expr.diff().simplify().factor()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Example II:\n",
+    "\n",
+    "$y = e^{3x+1}$\n",
+    "\n",
+    "$\\cfrac{dy}{dx} = \\cfrac{d}{dx}e^{3x+1}\\cfrac{d}{dx}3x+1$\n",
+    "\n",
+    "$\\cfrac{dy}{dx} = e^{3x+1}3$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "x = sp.symbols(\"x\")\n",
+    "expr = sp.exp(3 * x + 1)\n",
+    "expr.diff()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Univariate optimization"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The probability of getting $k$ successes in $n$ independent Bernoulli trials with success probability $p$ for each trial is:\n",
+    "\n",
+    "$Pr(k, n, p) = \\binom{n}{k}p^k(1-p)^{n-k}$\n",
+    "\n",
+    "To motivate the maximization of $Pr(k, n, p)$ wrt $p$, let's imagine we're playing a game where we need to toss a coin 10 times and we win only if we get 7 heads and 3 tails.\n",
+    "\n",
+    "We can use a biased coin for this game and we can customize the bias $p$.\n",
+    "\n",
+    "To maximize $Pr(k, n, p)$ wrt $p$ we can omit the binomial coefficient.\n",
+    "\n",
+    "$p^k(1-p)^{n-k}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "p, k, n = sp.symbols(\"p, k, n\")\n",
+    "pr = p**k * (1 - p) ** (n - k)\n",
+    "pr"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's find the derivative wrt $p$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "dprdp = sp.diff(pr, p)\n",
+    "dprdp.simplify().factor()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's evaluate it for $k=7$ and $n=10$ and visualize both $Pr(7, 10, p)$ and $\\cfrac{d}{dp}Pr(7, 10, p)$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def move_spplot_to_axes(p, ax):\n",
+    "    backend = p.backend(p)\n",
+    "    backend.ax = ax\n",
+    "    backend._process_series(backend.parent._series, ax, backend.parent)\n",
+    "    backend.ax.spines[\"right\"].set_color(\"none\")\n",
+    "    backend.ax.spines[\"bottom\"].set_position(\"zero\")\n",
+    "    backend.ax.spines[\"top\"].set_color(\"none\")\n",
+    "    plt.close(backend.fig)\n",
+    "\n",
+    "\n",
+    "p1 = sp.plot(\n",
+    "    dprdp.evalf(subs={k: 7, n: 10}),\n",
+    "    pr.evalf(subs={k: 7, n: 10}),\n",
+    "    (p, 0, 1),\n",
+    "    legend=True,\n",
+    "    ylabel=\"$Pr(7, 10, p)$\",\n",
+    "    title=\"Function and derivative evaluated for $k=7$ and $n=10$\",\n",
+    "    show=False,\n",
+    ")\n",
+    "\n",
+    "fig, ax = plt.subplots()\n",
+    "move_spplot_to_axes(p1, ax)\n",
+    "plt.axhline(\n",
+    "    y=pr.evalf(subs={k: 7, n: 10, p: 0.7}),\n",
+    "    xmin=0.5,\n",
+    "    xmax=0.9,\n",
+    "    color=\"tab:orange\",\n",
+    "    linestyle=\"--\",\n",
+    "    linewidth=1,\n",
+    ")\n",
+    "plt.scatter(0.7, 0, zorder=3)\n",
+    "plt.xticks(np.linspace(0, 1, 11))\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "When $k = 7$ and $n = 10$, the maximum of $Pr(7, 10, p)$ is for $p=0.7$, that is when $\\cfrac{d}{dp}Pr(7, 10, p) = 0$\n",
+    "\n",
+    "Let's prove it analytically."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sp.solve(dprdp, p)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Generally, $Pr(k, n, p)$ is maximized for $p=k/n$.\n",
+    "\n",
+    "Let's evaluate it for $k = 7$ and $n = 10$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sp.solve(dprdp, p)[0].evalf(subs={k: 7, n: 10})"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "It turns out there is an easier way to maximize $p^k(1-p)^{n-k}$.\n",
+    "\n",
+    "And it's based on the fact that $\\max_{p} p^k(1-p)^{n-k} = \\max_{p} \\ln p^k(1-p)^{n-k}$.\n",
+    "\n",
+    "Using the product rule $\\ln (ab) = \\ln a + \\ln b$ and the power rule $\\ln a^b = b \\ln a$ we get\n",
+    "\n",
+    "$\\ln p^k(1-p)^{n-k} = k \\ln p + (n-k) \\ln (1-p)$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Calculating the derivative of $k \\ln p + (n-k) \\ln (1-p)$ is a lot easier\n",
+    "\n",
+    "$\\cfrac{d}{dx}k \\ln p + (n-k) \\ln (1-p)$\n",
+    "\n",
+    "$\\cfrac{d}{dx}k \\ln p + \\cfrac{d}{dx}(n-k) \\ln (1-p)$\n",
+    "\n",
+    "$k \\cfrac{d}{dx} \\ln p + (n-k)\\cfrac{d}{dx} \\ln (1-p)$\n",
+    "\n",
+    "$k \\cfrac{1}{p} + (n-k)\\cfrac{1}{1-p}(-1)$\n",
+    "\n",
+    "$k \\cfrac{1}{p} - (n-k)\\cfrac{1}{1-p}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now let's solve it.\n",
+    "\n",
+    "$k \\cfrac{1}{p} - (n-k)\\cfrac{1}{1-p} = 0$\n",
+    "\n",
+    "$\\cfrac{k(1-p)-(n-k)p}{p(1-p)} = 0$\n",
+    "\n",
+    "$k(1-p)-(n-k)p = 0$\n",
+    "\n",
+    "$k - kp - np + kp = 0$\n",
+    "\n",
+    "$k - np = 0$\n",
+    "\n",
+    "$p = \\cfrac{k}{n}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Computational efficiency of symbolic, numerical and automatic differentiation"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Symbolic differentiation produces exact derivatives like when computing derivatives by hand. It's fast for simple functions, but it slows down as the complexity increases.\n",
+    "\n",
+    "Numerical differentiation produces an approximation that is somewhat similar to computing the instantaneous rate of change for a very small $\\Delta x$. It's slow.\n",
+    "\n",
+    "Automatic differentiation produces an approximation by constructing a computational graph consisting of basic functions and computing the derivative at each node using the chain rule. It's fast even for complex functions. It's the most common approach used in neural networks."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def get_setup(k, v):\n",
+    "    sym_setup = f\"\"\"\n",
+    "import sympy as sp\n",
+    "import numpy as np\n",
+    "x_arr = np.linspace(-6, 6, 1000000)\n",
+    "def f(x):\n",
+    "    return {v}\n",
+    "def diff():\n",
+    "    x = sp.symbols(\"x\")\n",
+    "    return sp.lambdify(x, sp.diff(f(x), x), \"numpy\")(x_arr)\n",
+    "\"\"\"\n",
+    "\n",
+    "    num_setup = f\"\"\"\n",
+    "import numpy as np\n",
+    "x_arr = np.linspace(-6, 6, 1000000)\n",
+    "def f(x):\n",
+    "    return {v}\n",
+    "def diff():\n",
+    "    return np.gradient(f(x_arr), x_arr)\n",
+    "\"\"\"\n",
+    "\n",
+    "    aut_setup = f\"\"\"\n",
+    "from jax import vmap, grad\n",
+    "import jax.numpy as jnp\n",
+    "x_arr = jnp.linspace(-6, 6, 1000000)\n",
+    "def f(x):\n",
+    "    return {v}\n",
+    "def diff():\n",
+    "    return vmap(grad(f))(x_arr)\n",
+    "\"\"\"\n",
+    "\n",
+    "    setup = {\n",
+    "        \"symbolic\": sym_setup,\n",
+    "        \"numerical\": num_setup,\n",
+    "        \"automatic\": aut_setup,\n",
+    "    }\n",
+    "\n",
+    "    return setup[k]\n",
+    "\n",
+    "\n",
+    "res = {\n",
+    "    \"symbolic\": {\n",
+    "        \"x**2\": 0,\n",
+    "        \"2*x**3 - 3*x**2 + 5\": 0,\n",
+    "        \"sp.exp(-2*x) + 3*sp.sin(3*x)\": 0,\n",
+    "    },\n",
+    "    \"numerical\": {\n",
+    "        \"x**2\": 0,\n",
+    "        \"2*x**3 - 3*x**2 + 5\": 0,\n",
+    "        \"np.exp(-2*x) + 3*np.sin(3*x)\": 0,\n",
+    "    },\n",
+    "    \"automatic\": {\n",
+    "        \"x**2\": 0,\n",
+    "        \"2*x**3 - 3*x**2 + 5\": 0,\n",
+    "        \"jnp.exp(-2*x) + 3*jnp.sin(3*x)\": 0,\n",
+    "    },\n",
+    "}\n",
+    "for k, vv in res.items():\n",
+    "    for v in vv.keys():\n",
+    "        r = timeit.repeat(\"diff()\", number=100, repeat=3, setup=get_setup(k, v))\n",
+    "        res[k][v] = np.array(r).mean()\n",
+    "\n",
+    "x_lab = [r\"$x^2$\", r\"$2x^3-3x^2+5$\", r\"$e^{-2x}+3\\sin(3x)$\"]\n",
+    "plt.plot(x_lab, res[\"symbolic\"].values(), marker=\"o\", linestyle=\"--\", label=\"symbolic\")\n",
+    "plt.plot(\n",
+    "    x_lab, res[\"numerical\"].values(), marker=\"o\", linestyle=\"--\", label=\"numerical\"\n",
+    ")\n",
+    "plt.plot(\n",
+    "    x_lab, res[\"automatic\"].values(), marker=\"o\", linestyle=\"--\", label=\"automatic\"\n",
+    ")\n",
+    "plt.xlabel(\"function\")\n",
+    "plt.ylabel(\"seconds\")\n",
+    "plt.title(\n",
+    "    \"Time taken for evaluating 100 differentiations using an array of shape 1,000,000\"\n",
+    ")\n",
+    "plt.legend()\n",
+    "plt.show()"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": ".venv",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.5"
+  },
+  "orig_nbformat": 4
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

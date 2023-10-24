@@ -1,0 +1,395 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Linear Algebra - Week 1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import matplotlib as mpl\n",
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np\n",
+    "import sympy as sp\n",
+    "\n",
+    "plt.style.use(\"seaborn-v0_8-whitegrid\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Singularity"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "| Complete | Redundant | Contradictory |\n",
+    "|---|---|---|\n",
+    "| $\\begin{cases} a + b = 10  \\\\ a + 2b = 12 \\end{cases}$ | $\\begin{cases} a + b = 10  \\\\ 2a + 2b = 20 \\end{cases}$ | $\\begin{cases} a + b = 10  \\\\ 2a + 2b = 24 \\end{cases}$ |\n",
+    "\n",
+    "The first system is complete (non-singular) because it has one solution. $a=8$ and $b=2$.\n",
+    "\n",
+    "The second system is redundant (singular) because it has many solutions. Any $a$ and $b$ whose sum is 10.\n",
+    "\n",
+    "The second system is contradictory (singular) because it has no solutions. No $a+b$ can be equal to 10 while $2(a+b)$ not being 20.\n",
+    "\n",
+    "> 🔑 **Singular:** peculiar, irregular\n",
+    "\n",
+    "> 🔑 **Non-singular:** regular"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Singularity and linear dependency"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "A system of equations can also be represented as lines.\n",
+    "\n",
+    "In a non-singular system the lines will intersect at the solution.\n",
+    "\n",
+    "In a singular (redundant) system the lines will be one over the other (ie parallel with distant zero).\n",
+    "\n",
+    "In a singular (contradictory) system the lines will be parallel and distant from each other."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def line1(a):\n",
+    "    return 10.0 - a\n",
+    "\n",
+    "\n",
+    "def line2(a):\n",
+    "    return 6.0 - (0.5) * a\n",
+    "\n",
+    "\n",
+    "def line3(a):\n",
+    "    return (20.0 - 2.0 * a) / 2\n",
+    "\n",
+    "\n",
+    "def line4(a):\n",
+    "    return 12.0 - a\n",
+    "\n",
+    "\n",
+    "fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(10, 4), sharex=True, sharey=True)\n",
+    "\n",
+    "ax1.plot([0.0, 10.0], [line1(0.0), line1(10.0)], label=\"$a+b=10$\")\n",
+    "ax1.plot([0.0, 10.0], [line2(0.0), line2(10.0)], label=\"$a+2b=12$\")\n",
+    "ax1.set_ylabel(\"b\")\n",
+    "ax1.set_xlabel(\"a\")\n",
+    "ax1.legend()\n",
+    "ax1.set_title(\"Complete Non-Singular system\")\n",
+    "ax1.set_aspect(\"equal\")\n",
+    "\n",
+    "ax2.plot([0.0, 10.0], [line1(0.0), line1(10.0)], label=\"$a+b=10$\")\n",
+    "ax2.plot(\n",
+    "    [0.0, 10.0],\n",
+    "    [line3(0.0), line3(10.0)],\n",
+    "    dashes=[2, 3],\n",
+    "    linewidth=\"3\",\n",
+    "    label=\"$2a+2b=20$\",\n",
+    ")\n",
+    "ax2.set_ylabel(\"b\")\n",
+    "ax2.set_xlabel(\"a\")\n",
+    "ax2.legend()\n",
+    "ax2.set_title(\"Redundant Singular system\")\n",
+    "ax2.set_aspect(\"equal\")\n",
+    "\n",
+    "ax3.plot([0.0, 10.0], [line1(0.0), line1(10.0)], label=\"$a+b=10$\")\n",
+    "ax3.plot([0.0, 10.0], [line4(0.0), line4(10.0)], label=\"$2a+2b=24$\")\n",
+    "ax3.set_ylabel(\"b\")\n",
+    "ax3.set_xlabel(\"a\")\n",
+    "ax3.legend()\n",
+    "ax3.set_title(\"Contradictory Singular system\")\n",
+    "ax3.set_aspect(\"equal\")\n",
+    "\n",
+    "plt.tight_layout()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "It turns out that to distinguish between singular and non-singular, the constants can be removed.\n",
+    "\n",
+    "| Complete | Redundant | Contradictory |\n",
+    "|---|---|---|\n",
+    "| $\\begin{cases} a + b = 10  \\\\ a + 2b = 12 \\end{cases}$ | $\\begin{cases} a + b = 10  \\\\ 2a + 2b = 20 \\end{cases}$ | $\\begin{cases} a + b = 10  \\\\ 2a + 2b = 24 \\end{cases}$ |\n",
+    "\n",
+    "Becomes\n",
+    "\n",
+    "| Non-Singular | Singular |\n",
+    "|---|---|\n",
+    "| $\\begin{cases} a + b = 0 \\\\ a + 2b = 0 \\end{cases}$ | $\\begin{cases} a + b = 0 \\\\ 2a + 2b = 0 \\end{cases}$ |\n",
+    "\n",
+    "And this is where the notion of **Non-singular** and **Singular** matrices comes in.\n",
+    "\n",
+    "| Non-Singular | Singular |\n",
+    "|---|---|\n",
+    "| $\\begin{bmatrix} 1 & 1 \\\\ 1 & 2 \\end{bmatrix}$ $\\begin{bmatrix} 0 \\\\ 0 \\end{bmatrix}$ | $\\begin{bmatrix} 1 & 1 \\\\ 2 & 2 \\end{bmatrix}$ $\\begin{bmatrix} 0 \\\\ 0 \\end{bmatrix}$ |\n",
+    "\n",
+    "<p>&nbsp;</p>\n",
+    "\n",
+    "> 🔑 **Singular**: the rows are linearly dependent\n",
+    "\n",
+    "> 🔑 **Non-singular**: the rows are linearly independent\n",
+    "\n",
+    "When the rows are linearly independent, there is no constant you can multiply a row by to obtain the second row. \n",
+    "\n",
+    "A different interpretation is that each row carries new information that we cannot derive from any other rows.\n",
+    "\n",
+    "In contrast, the information provided by the rows of a singular matrix are either redundant or contradictory."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Singularity and the determinant"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "> 🔑 **Singular**: determinant is zero\n",
+    "\n",
+    "> 🔑 **Non-singular**: determinant is non-zero\n",
+    "\n",
+    "To see how we get to the formula for the determinant and why it's 0 for singular matrices, let's consider the matrix $A$.\n",
+    "\n",
+    "$A = \\begin{bmatrix}\n",
+    "a & b \\\\\n",
+    "c & d\n",
+    "\\end{bmatrix}$\n",
+    "\n",
+    "We saw earlier that $A$ is singular if $(a+b)k = c+d$ for $k > 0$ (linear dependency).\n",
+    "\n",
+    "In particular we saw $\\begin{bmatrix} 1 & 1 \\\\ 2 & 2 \\end{bmatrix}$ is singular because $(1+1)k = 2+2$ for $k=2$.\n",
+    "\n",
+    "Equivalently\n",
+    "\n",
+    "$A = \n",
+    "\\begin{cases}\n",
+    "ax + by = 0 \\\\\n",
+    "cx + dy = 0\n",
+    "\\end{cases}$\n",
+    "\n",
+    "$=\\begin{cases}\n",
+    "k_1ax = cx \\\\\n",
+    "k_2by = dy\n",
+    "\\end{cases}$\n",
+    "\n",
+    "$=\\begin{cases}\n",
+    "k_1 = \\cfrac{c}{a} \\\\\n",
+    "k_2 = \\cfrac{d}{b}\n",
+    "\\end{cases}$\n",
+    "\n",
+    "If $k_1 = k_2 = k > 0$, we obtain\n",
+    "\n",
+    "$\\cfrac{c}{a} = \\cfrac{d}{b}$\n",
+    "\n",
+    "We get rid of the fractions and we obtain the formula of the determinant of $A$\n",
+    "\n",
+    "$\\det A = ad - bc$\n",
+    "\n",
+    "$A$ is singular if $ad - bc$ is 0, which implies that $k > 0$\n",
+    "\n",
+    "The determinant has the following properties.\n",
+    "\n",
+    "> 🔑 $\\det A \\times \\det B = \\det AB$\n",
+    "\n",
+    "> 🔑 $\\det A^{-1} = \\cfrac{1}{\\det A}$\n",
+    "\n",
+    "The second one actually can be derived from the first property.\n",
+    "\n",
+    "$\\det AA^{-1} = \\det A \\times \\det A^{-1}$\n",
+    "\n",
+    "$\\det I = \\det A \\times \\det A^{-1}$\n",
+    "\n",
+    "$\\cfrac{\\det I}{\\det A} = \\det A^{-1}$\n",
+    "\n",
+    "$\\cfrac{1}{\\det A} = \\det A^{-1}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's verify the first property, the second property and also that $\\det I = 1$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "A = np.array([[5, 3], [2, 1]])\n",
+    "B = np.array([[1, -1], [3, 4]])\n",
+    "\n",
+    "assert np.isclose(np.linalg.det(A) * np.linalg.det(B), np.linalg.det(np.matmul(A, B)))\n",
+    "assert np.isclose(np.linalg.det(np.linalg.inv(A)), 1 / np.linalg.det(A))\n",
+    "assert np.isclose(np.linalg.det(np.linalg.inv(B)), 1 / np.linalg.det(B))\n",
+    "assert np.linalg.det(np.identity(2)) == 1.0"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Singularity and rank"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can think the rank of a matrix in terms of how non-singular a matrix is.\n",
+    "\n",
+    "A 2-D matrix has solution in a 2-D space.\n",
+    "\n",
+    "When a matrix is non-singular, we get a point as the solution; and since a point has 0 dimensions, the rank is 2. \n",
+    "\n",
+    "When a matrix is singular, we get a line as the solution or the whole space. A line has dimension 1 and the whole space has dimension 2, so the rank is 1 and 0, respectively.\n",
+    "\n",
+    "Similarly to what we saw for the determinant of matrix, the rank relates to the amount of linearly independent rows of a matrix.\n",
+    "\n",
+    "> 🔑 The rank of a matrix is the number of linearly independent rows\n",
+    "\n",
+    "Although this can help develop an intuition of what the rank of a matrix represents, it doesn't help determine it, especially for large matrices or non-obvious linear dependencies.\n",
+    "\n",
+    "One method to determine the rank of a matrix is through the reduced row-echelon form (rref) of a matrix.\n",
+    "\n",
+    "Let's consider the matrix\n",
+    "\n",
+    "$\\begin{bmatrix}5&&1\\\\4&&-3\\end{bmatrix}$\n",
+    "\n",
+    "We can obtain the row echelon form via row operations:\n",
+    "- switching any two rows\n",
+    "- multiplying (dividing) a row by a non-zero constant\n",
+    "- adding (subtracting) one row to another\n",
+    "\n",
+    "Row operations are such that they don't alter the singularity or non-singularity of a matrix, nor its rank.\n",
+    "\n",
+    "1. Divide each row by the leftmost non-zero coefficient\n",
+    "\n",
+    "$\\begin{bmatrix}1&&\\cfrac{1}{5}\\\\1&&-\\cfrac{3}{4}\\end{bmatrix}$\n",
+    "\n",
+    "2. Subtract the first row from the second row\n",
+    "\n",
+    "$\\begin{bmatrix}1&&\\cfrac{1}{5}\\\\0&&-\\cfrac{3}{4}-\\cfrac{1}{5}\\end{bmatrix}$\n",
+    "\n",
+    "3. Divide the last row by the leftmost non-zero coefficient\n",
+    "\n",
+    "$\\begin{bmatrix}1&&\\cfrac{1}{5}\\\\0&&1\\end{bmatrix}$\n",
+    "\n",
+    "4. Multiply the second row by $\\cfrac{1}{5}$ and subtract it from the first row\n",
+    "\n",
+    "$\\begin{bmatrix}1&&0\\\\0&&1\\end{bmatrix}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Or we can use the `rref` method of the `Matrix` data structure from the `sp` package."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sp.Matrix([[5, 1], [1, -3]]).rref(pivots=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's try to calculate the rref of a singular matrix: a 3x3 matrix where **all** rows are linearly dependent."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sp.Matrix([[1, 2, 3], [3, 6, 9], [2, 4, 6]]).rref(pivots=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's try another singular matrix, where only 2 rows are linearly dependent."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sp.Matrix([[1, 2, 3], [3, 6, 9], [1, 2, 4]]).rref(pivots=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The rref form is characterized by the presence of pivots.\n",
+    "\n",
+    "> 🔑 A pivot is the first non-zero entry of each row in a row-echelon form.\n",
+    "\n",
+    "And it turns out the pivots help us determine the rank of a matrix.\n",
+    "\n",
+    "> 🔑 The rank of a matrix is the number of pivots of its row-echelon form"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": ".venv",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.5"
+  },
+  "orig_nbformat": 4
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

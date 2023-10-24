@@ -1,0 +1,1442 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta property="og:title" content="Linear Algebra - Extra curriculum" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fedassembly.github.io/math-for-ml/linear_algebra/la_extra.html" />
+<meta property="og:site_name" content="Mathematics for Machine Learning and Data Science" />
+<meta property="og:description" content="Principal Componenent Analysis: Let’s apply all the learnings in this notebook to a simple example of PCA. We’ll see applications of: - singular and non-singular matrices - determinants - dot products - linear transformations - eigenvectors and eigenvalues - vector projections This was inspired b..." />
+<meta property="og:image:width" content="1146" />
+<meta property="og:image:height" content="600" />
+<meta property="og:image" content="https://fedassembly.github.io/math-for-ml/_images/social_previews/summary_linear_algebra_la_extra_4b7cad64.png" />
+<meta property="og:image:alt" content="Principal Componenent Analysis: Let’s apply all the learnings in this notebook to a simple example of PCA. We’ll see applications of: - singular and non-sing..." />
+<meta name="description" content="Principal Componenent Analysis: Let’s apply all the learnings in this notebook to a simple example of PCA. We’ll see applications of: - singular and non-singular matrices - determinants - dot products - linear transformations - eigenvectors and eigenvalues - vector projections This was inspired b..." />
+<meta name="twitter:card" content="summary_large_image" />
+
+    <title>Linear Algebra - Extra curriculum &#8212; Mathematics for Machine Learning and Data Science</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../_static/custom.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://fedassembly.github.io/math-for-ml/linear_algebra/la_extra.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Linear Algebra - Exercises" href="la_exer.html" />
+    <link rel="prev" title="Linear Algebra - Week 4" href="la_w4.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Mathematics for Machine Learning and Data Science</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Topics
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Linear Algebra
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="la_w1.html">
+     Week 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="la_w2.html">
+     Week 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="la_w3.html">
+     Week 3
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="la_w4.html">
+     Week 4
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Extra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="la_exer.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../calculus/index.html">
+   Calculus
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculus/ca_w1.html">
+     Week 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculus/ca_w2.html">
+     Week 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculus/ca_w3.html">
+     Week 3
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculus/ca_extra.html">
+     Extra
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+<a href="https://github.com/fedassembly/math-for-ml"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="bottom"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/linear_algebra/la_extra.ipynb.txt"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Principal-Componenent-Analysis">
+   Principal Componenent Analysis
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Support-Vector-Machines">
+   Support Vector Machines
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Linear Algebra - Extra curriculum</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Principal-Componenent-Analysis">
+   Principal Componenent Analysis
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Support-Vector-Machines">
+   Support Vector Machines
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="Linear-Algebra---Extra-curriculum">
+<h1>Linear Algebra - Extra curriculum<a class="headerlink" href="#Linear-Algebra---Extra-curriculum" title="Permalink to this headline">#</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;seaborn-v0_8-whitegrid&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<section id="Principal-Componenent-Analysis">
+<h2>Principal Componenent Analysis<a class="headerlink" href="#Principal-Componenent-Analysis" title="Permalink to this headline">#</a></h2>
+<p>Let’s apply all the learnings in this notebook to a simple example of PCA.</p>
+<p>We’ll see applications of: - singular and non-singular matrices - determinants - dot products - linear transformations - eigenvectors and eigenvalues - vector projections</p>
+<p>This was inspired by Luis Serrano’s <a class="reference external" href="https://www.youtube.com/watch?v=g-Hb26agBFg">YT video</a> on PCA.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">]])</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">10</span>
+    <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">]])</span> <span class="o">*</span> <span class="mi">15</span>
+    <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="p">[</span><span class="n">X</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="p">[</span><span class="n">X</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">1</span><span class="p">]],</span>
+        <span class="n">angles</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+        <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">scale_units</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:blue&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.05</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.05</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$x_1$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$x_2$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Samples as vectors&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/linear_algebra_la_extra_4_0.png" src="../_images/linear_algebra_la_extra_4_0.png" />
+</div>
+</div>
+<p>Let’s standardize the data.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Z</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="p">[</span><span class="n">Z</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="p">[</span><span class="n">Z</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">1</span><span class="p">]],</span>
+        <span class="n">angles</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+        <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">scale_units</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:blue&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">Z</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">,</span> <span class="n">Z</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">Z</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">,</span> <span class="n">Z</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$x_1$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$x_2$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Effect of standardization on the vectors&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/linear_algebra_la_extra_6_0.png" src="../_images/linear_algebra_la_extra_6_0.png" />
+</div>
+</div>
+<p>Let’s calculate the covariance matrix, whose eigenvectors represent the directions of the maximum variance (or better maximum correlation since we’re using standardized data).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">Z</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Z</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">bias</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">cov_evecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">cov</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">cov_v1</span> <span class="o">=</span> <span class="n">cov_evecs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">cov_v2</span> <span class="o">=</span> <span class="n">cov_evecs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Determinant of transformation: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">cov</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dot product of eigenvectors: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">cov_v1</span><span class="p">,</span><span class="w"> </span><span class="n">cov_v2</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Determinant of transformation: 0.36
+Dot product of eigenvectors: 0.00
+</pre></div></div>
+</div>
+<p>We can see that the covariance matrix represent a non-singular linear transformation.</p>
+<p>We can also see that the eigenvectors are orthogonal because their dot product is 0.</p>
+<blockquote>
+<div><p>🔑 The eigenvectors of a symmetric matrix are orthogonal</p>
+</div></blockquote>
+<p>Another property of symmetric matrices is that their transformation always entails some sort of stretching, which means that the eigenvalues are always real numbers (not complex numbers like in the case of rotations).</p>
+<p>Let’s visualize the effect of the linear transformation induced by the covariance matrix.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_transformation</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lim</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">basis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">e1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+        <span class="n">e2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span> <span class="o">=</span> <span class="n">basis</span>
+    <span class="n">zero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="s2">&quot;tab:blue&quot;</span>
+    <span class="n">c_t</span> <span class="o">=</span> <span class="s2">&quot;tab:orange&quot;</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">lim</span><span class="p">,</span> <span class="n">lim</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">lim</span><span class="p">,</span> <span class="n">lim</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="n">lim</span><span class="p">,</span> <span class="n">lim</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="n">lim</span><span class="p">,</span> <span class="n">lim</span><span class="p">)</span>
+    <span class="n">_plot_vectors</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">zero</span><span class="p">,</span> <span class="n">e2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">e1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">e2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">e1</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="p">[</span><span class="n">zero</span><span class="p">,</span> <span class="n">e2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">e1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">e2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">e1</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">_make_labels</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="s2">&quot;$e_1$&quot;</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">_make_labels</span><span class="p">(</span><span class="n">e2</span><span class="p">,</span> <span class="s2">&quot;$e_2$&quot;</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">e1_t</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">e1</span><span class="p">)</span>
+    <span class="n">e2_t</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">e2</span><span class="p">)</span>
+    <span class="n">_plot_vectors</span><span class="p">(</span><span class="n">e1_t</span><span class="p">,</span> <span class="n">e2_t</span><span class="p">,</span> <span class="n">c_t</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">zero</span><span class="p">,</span> <span class="n">e2_t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">e1_t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">e2_t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">e1_t</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="p">[</span><span class="n">zero</span><span class="p">,</span> <span class="n">e2_t</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">e1_t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">e2_t</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">e1_t</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">c_t</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">_make_labels</span><span class="p">(</span><span class="n">e1_t</span><span class="p">,</span> <span class="s2">&quot;$T(e_1)$&quot;</span><span class="p">,</span> <span class="n">c_t</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">_make_labels</span><span class="p">(</span><span class="n">e2_t</span><span class="p">,</span> <span class="s2">&quot;$T(e_2)$&quot;</span><span class="p">,</span> <span class="n">c_t</span><span class="p">,</span> <span class="n">y_offset</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_make_labels</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">y_offset</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+    <span class="n">e_sgn</span> <span class="o">=</span> <span class="mf">0.4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">e</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+        <span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.2</span> <span class="o">+</span> <span class="n">e_sgn</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">y_offset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">y_offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">e_sgn</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">text</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_plot_vectors</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="p">[</span><span class="n">e1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">e2</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="p">[</span><span class="n">e1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">e2</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+        <span class="n">angles</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+        <span class="n">scale_units</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+        <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">v</span>
+    <span class="k">return</span> <span class="n">w</span>
+
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">plot_transformation</span><span class="p">(</span>
+    <span class="n">partial</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">cov</span><span class="p">),</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Covariance matrix as a linear transformation&quot;</span><span class="p">,</span>
+    <span class="n">basis</span><span class="o">=</span><span class="p">(</span><span class="n">cov_v1</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">cov_v2</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">lim</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/linear_algebra_la_extra_10_0.png" src="../_images/linear_algebra_la_extra_10_0.png" />
+</div>
+</div>
+<p>To better see the effect of the transformation, we’ve used a basis that its parallel to the eigenbasis of the transformation.</p>
+<p><span class="math notranslate nohighlight">\(COV_{x_1x_2} = \begin{bmatrix}1&amp;&amp;0.8\\0.8&amp;&amp;1\end{bmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\vec{v_1} = \begin{bmatrix}0.7\\0.7\end{bmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\vec{v_2} = \begin{bmatrix}-0.7\\0.7\end{bmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(COV_{x_1x_2} \cdot \vec{v_1} = \begin{bmatrix}1 \times 0.7 + 0.8 \times 0.7\\0.8 \times 0.7 + 1 \times 0.7\end{bmatrix} = \begin{bmatrix}1.3\\1.3\end{bmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(COV_{x_1x_2} \cdot \vec{v_2} = \begin{bmatrix}1 \times -0.7 + 0.8 \times 0.7\\0.8 \times -0.7 + 1 \times 0.7\end{bmatrix} = \begin{bmatrix}-0.14\\0.14\end{bmatrix}\)</span></p>
+<p>Let’s overlay the eigenvectors on the data.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="p">[</span><span class="n">Z</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="p">[</span><span class="n">Z</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">1</span><span class="p">]],</span>
+        <span class="n">angles</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+        <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">scale_units</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:blue&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="n">cov_v1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cov_v2</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+    <span class="p">[</span><span class="n">cov_v1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cov_v2</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+    <span class="n">angles</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+    <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">scale_units</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$x_1$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$x_2$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">Z</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">,</span> <span class="n">Z</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">Z</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">,</span> <span class="n">Z</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Eigenvectors of the covariance matrix on the data&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/linear_algebra_la_extra_12_0.png" src="../_images/linear_algebra_la_extra_12_0.png" />
+</div>
+</div>
+<p>Let’s see the principal components (eigenvectors times eigenvalues). Of course, the first principal component is the one with the highest magnitude (eigenvalue).</p>
+<p>Given the nature of this data (positively correlated) we expect the first principal component to be the one corresponding to the eigenvector with signs [+, +] or [-, -].</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eigvls</span><span class="p">,</span> <span class="n">eigvcs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">cov</span><span class="p">)</span>
+<span class="n">rank</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">eigvls</span><span class="p">)</span>
+<span class="n">eigvls</span> <span class="o">=</span> <span class="n">eigvls</span><span class="p">[</span><span class="n">rank</span><span class="p">]</span>
+<span class="n">eigvcs</span> <span class="o">=</span> <span class="n">eigvcs</span><span class="p">[:,</span> <span class="n">rank</span><span class="p">]</span>
+<span class="n">pc</span> <span class="o">=</span> <span class="n">eigvcs</span> <span class="o">*</span> <span class="n">eigvls</span>
+
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="p">[</span><span class="n">Z</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="p">[</span><span class="n">Z</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">1</span><span class="p">]],</span>
+        <span class="n">angles</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+        <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">scale_units</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:blue&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="n">pc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">pc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span>
+    <span class="p">[</span><span class="n">pc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">pc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]],</span>
+    <span class="n">angles</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+    <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">scale_units</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s2">&quot;PC1&quot;</span><span class="p">,</span> <span class="n">pc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s2">&quot;PC2&quot;</span><span class="p">,</span> <span class="n">pc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$x_1$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$x_2$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">Z</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">,</span> <span class="n">Z</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">Z</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">,</span> <span class="n">Z</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Eigenvectors stretched by their eigenvalues&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/linear_algebra_la_extra_14_0.png" src="../_images/linear_algebra_la_extra_14_0.png" />
+</div>
+</div>
+<p>Let’s project all the vectors onto the first principal component.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_components</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">proj_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">eigvcs</span><span class="p">[:,</span> <span class="p">:</span><span class="n">n_components</span><span class="p">])</span>  <span class="c1"># (6, 2) @ (2, 1) -&gt; (6, 1)</span>
+<span class="n">proj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">proj_norm</span><span class="p">,</span> <span class="n">eigvcs</span><span class="p">[:,</span> <span class="p">:</span><span class="n">n_components</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>  <span class="c1"># (6, 1) @ (1, 2) -&gt; (6, 2)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">Z</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">proj</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">Z</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">proj</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]],</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:blue&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="p">[</span><span class="n">Z</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="p">[</span><span class="n">Z</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">1</span><span class="p">]],</span>
+        <span class="n">angles</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+        <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">scale_units</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:blue&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="n">pc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="n">pc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span>
+    <span class="p">[</span><span class="n">pc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="n">pc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span>
+    <span class="n">angles</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+    <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">scale_units</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">proj</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">proj</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$x_1$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$x_2$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">Z</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">,</span> <span class="n">Z</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">Z</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">,</span> <span class="n">Z</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Projections to the eigenvector with the largest eigenvalue&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/linear_algebra_la_extra_16_0.png" src="../_images/linear_algebra_la_extra_16_0.png" />
+</div>
+</div>
+</section>
+<section id="Support-Vector-Machines">
+<h2>Support Vector Machines<a class="headerlink" href="#Support-Vector-Machines" title="Permalink to this headline">#</a></h2>
+<p>Another interesting application to illustrate the importance of linear algebra is SVM.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">group_1_centroid</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">group_2_centroid</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span>
+    <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="n">group_1_centroid</span><span class="p">,</span>
+    <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="n">group_2_centroid</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">20</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span> <span class="s2">&quot;tab:blue&quot;</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$x_1$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$x_2$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Data with 2 classes (perfect linear separation)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/linear_algebra_la_extra_19_0.png" src="../_images/linear_algebra_la_extra_19_0.png" />
+</div>
+</div>
+<p>We need to find a line <span class="math notranslate nohighlight">\(wx+b\)</span> such that</p>
+<p><span class="math notranslate nohighlight">\(h(x_i) = \begin{cases}1 &amp;\text{if }wx_i+b \ge 0\\-1 &amp;\text{otherwise }\end{cases} \text{ for } i = 1, \dots, m\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">decision_boundary</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">x1</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span> <span class="s2">&quot;tab:blue&quot;</span><span class="p">))</span>
+<span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x1</span><span class="p">,</span>
+    <span class="n">decision_boundary</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])),</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;DB 1&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x1</span><span class="p">,</span>
+    <span class="n">decision_boundary</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">b</span><span class="o">=-</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])),</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;DB 2&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x1</span><span class="p">,</span>
+    <span class="n">decision_boundary</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">b</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])),</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashdot&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;DB 3&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$x_1$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$x_2$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Random Decision Boundaries&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/linear_algebra_la_extra_21_0.png" src="../_images/linear_algebra_la_extra_21_0.png" />
+</div>
+</div>
+<p>Intuitively, we know DB 2 (<span class="math notranslate nohighlight">\(x_2 = -0.1 - 0.6x_1\)</span>) is the best one of the three, but why?</p>
+<p>We haven’t seen this during the course, but the normalized distance between a point and a line is</p>
+<blockquote>
+<div><p>📐 <span class="math notranslate nohighlight">\(d = \cfrac{|w_1x_1 + w_2x_2 + b|}{\sqrt{w_1^2 + w_2^2}} = \cfrac{|w \cdot x + b|}{\|w\|}\)</span></p>
+</div></blockquote>
+<p><img alt="9995cca88a01415ab3161a56cb93e0b5" class="no-scaled-link" src="https://ds055uzetaobb.cloudfront.net/brioche/uploads/pHeSaRZIjr-untitled-drawing-7.png" style="width: 300px;" /> <em>Source: www.brilliant.org</em></p>
+<p><span class="math notranslate nohighlight">\(x_2 = -0.1 - 0.6x_1\)</span> can be rewritten as <span class="math notranslate nohighlight">\(-0.6x_1 -1x_2 -0.1 = 0\)</span> so we can get</p>
+<p><span class="math notranslate nohighlight">\(d = \cfrac{|-0.6x_1 -1x_2 -0.1|}{\sqrt{-0.6^2 + -1^2}}\)</span></p>
+<p>It turns out that the formula for <span class="math notranslate nohighlight">\(d\)</span> (distance between a point and a line) has a vector projection proof.</p>
+<p>Let the point <span class="math notranslate nohighlight">\(P = (x^0_1, x^0_2)\)</span> and let the given line have equation <span class="math notranslate nohighlight">\(w_1x_1 + w_2x_2 + b = 0\)</span>.</p>
+<p>Also, let <span class="math notranslate nohighlight">\(Q = (x^1_1, x^1_2)\)</span> be any point on this line and let the vector <span class="math notranslate nohighlight">\(\vec{w} = \langle w_1, w_2 \rangle\)</span> starting at point <span class="math notranslate nohighlight">\(Q\)</span>.</p>
+<p>For example, <span class="math notranslate nohighlight">\(Q\)</span> could be <span class="math notranslate nohighlight">\((x_1, -0.1 - 0.6x_1)\)</span>, and by arbitrarily fixing <span class="math notranslate nohighlight">\(x_1 = 0\)</span> we get <span class="math notranslate nohighlight">\(Q = (0, -0.1)\)</span>.</p>
+<p>The vector <span class="math notranslate nohighlight">\(\vec{w}\)</span> is perpendicular to the line.</p>
+<p>The distance <span class="math notranslate nohighlight">\(d\)</span> from the point <span class="math notranslate nohighlight">\(P\)</span> to the line is equal to the length of the orthogonal projection of <span class="math notranslate nohighlight">\(\overrightarrow{QP}\)</span> onto <span class="math notranslate nohighlight">\(\vec{w}\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(d = \|\overrightarrow{proj_{w}QP}\| = \cfrac{(\vec{P} - \vec{Q}) \cdot \vec{w}}{\|\vec{w}\|} \cfrac{\vec{w}}{\|\vec{w}\|}\)</span></p>
+<p>The only difference to what we saw earlier during the course is that the vector <span class="math notranslate nohighlight">\(\vec{P}\)</span> starts at point <span class="math notranslate nohighlight">\(Q\)</span> (a point on the line) and not the origin.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">])</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">decision_boundary</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=-</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">)])</span>
+<span class="n">proj_P</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">P</span> <span class="o">-</span> <span class="n">Q</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">w</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+
+<span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x1</span><span class="p">,</span>
+    <span class="n">decision_boundary</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">b</span><span class="o">=-</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">),</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;DB 2&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">arc</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">(</span>
+    <span class="n">Q</span><span class="p">,</span>
+    <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">angle</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span>
+    <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">arc</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">Q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">Q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">P</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">Q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="p">],</span>
+    <span class="p">[</span>
+        <span class="n">Q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">Q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">P</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">Q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">],</span>
+    <span class="p">[</span>
+        <span class="n">P</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">proj_P</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="o">-</span><span class="n">proj_P</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="p">],</span>
+    <span class="p">[</span>
+        <span class="n">P</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">proj_P</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="o">-</span><span class="n">proj_P</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">],</span>
+    <span class="n">angles</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+    <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">scale_units</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+    <span class="n">fc</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;tab:blue&quot;</span><span class="p">,</span> <span class="s2">&quot;tab:green&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="s2">&quot;tab:orange&quot;</span><span class="p">],</span>
+    <span class="n">ec</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">],</span>
+    <span class="n">ls</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;solid&quot;</span><span class="p">,</span> <span class="s2">&quot;solid&quot;</span><span class="p">,</span> <span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="s2">&quot;solid&quot;</span><span class="p">],</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.3</span><span class="p">,</span> <span class="s2">&quot;$P$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:blue&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;$w$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+    <span class="n">proj_P</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">proj_P</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.3</span><span class="p">,</span> <span class="s2">&quot;$proj_</span><span class="si">{n}</span><span class="s2">P$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:green&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="s2">&quot;$w_1x_1 + w_2x_2 + b = 0$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="mf">1.75</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;$d$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">Q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">Q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;$Q$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Projection proof of $d$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$x_1$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$x_2$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/linear_algebra_la_extra_23_0.png" src="../_images/linear_algebra_la_extra_23_0.png" />
+</div>
+</div>
+<p>Let’s verify it.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">P</span> <span class="o">@</span> <span class="n">w</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+<span class="n">proof_d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">proj_P</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">proof_d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>The smallest distance among all data points to the decision boundary is called margin.</p>
+<p><span class="math notranslate nohighlight">\(\gamma(w, b) = \min\cfrac{|wx_i+b|}{\|w\|}\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">margin</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">X</span> <span class="o">@</span> <span class="n">w</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Margin of decision boundary 1: </span><span class="si">{</span><span class="n">margin</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Margin of decision boundary 2: </span><span class="si">{</span><span class="n">margin</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="o">=-</span><span class="mf">0.1</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.6</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Margin of decision boundary 3: </span><span class="si">{</span><span class="n">margin</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Margin of decision boundary 1: 0.06
+Margin of decision boundary 2: 1.10
+Margin of decision boundary 3: 0.34
+</pre></div></div>
+</div>
+<p>This confirms our intuition that the DB 2 was the best of the three.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">margin_loc</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">X</span> <span class="o">@</span> <span class="n">w</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+
+
+<span class="n">s1</span> <span class="o">=</span> <span class="n">margin_loc</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+<span class="n">s2</span> <span class="o">=</span> <span class="n">margin_loc</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">b</span><span class="o">=-</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+<span class="n">s3</span> <span class="o">=</span> <span class="n">margin_loc</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">b</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">[[</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">s3</span><span class="p">],</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">X</span><span class="p">[[</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">s3</span><span class="p">],</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">c</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span><span class="p">[[</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">s3</span><span class="p">]]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span> <span class="s2">&quot;tab:blue&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span> <span class="s2">&quot;tab:blue&quot;</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x1</span><span class="p">,</span>
+    <span class="n">decision_boundary</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])),</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;DB 1&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x1</span><span class="p">,</span>
+    <span class="n">decision_boundary</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">b</span><span class="o">=-</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])),</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;DB 2&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x1</span><span class="p">,</span>
+    <span class="n">decision_boundary</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">b</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])),</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashdot&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;DB 3&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">quiver_to_boundary</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">decision_boundary</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">)])</span>
+    <span class="n">proj</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">-</span> <span class="n">Q</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">w</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">X</span><span class="p">[</span><span class="n">s</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="p">[</span><span class="n">X</span><span class="p">[</span><span class="n">s</span><span class="p">][</span><span class="mi">1</span><span class="p">]],</span>
+        <span class="p">[</span><span class="o">-</span><span class="n">proj</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="p">[</span><span class="o">-</span><span class="n">proj</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+        <span class="n">angles</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+        <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">scale_units</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span><span class="p">[[</span><span class="n">s</span><span class="p">]]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span> <span class="s2">&quot;tab:blue&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+
+
+<span class="n">quiver_to_boundary</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">s</span><span class="o">=</span><span class="n">s1</span><span class="p">)</span>
+<span class="n">quiver_to_boundary</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">b</span><span class="o">=-</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">s</span><span class="o">=</span><span class="n">s2</span><span class="p">)</span>
+<span class="n">quiver_to_boundary</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">b</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">s</span><span class="o">=</span><span class="n">s3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$x_1$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$x_2$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Points responsible for the margin of each decision boundary&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/linear_algebra_la_extra_29_0.png" src="../_images/linear_algebra_la_extra_29_0.png" />
+</div>
+</div>
+<p>The primary objective of SVM is to find a decision boundary that maximizes the margin between two classes.</p>
+<p>But that alone is not sufficient. We also need to ensure that the points lie on the correct side of the boundary.</p>
+<p>It becomes a constrained optimization problem.</p>
+<p><span class="math notranslate nohighlight">\(\begin{array}{l} \max \limits_{w, b} \gamma(w, b) \\ \text{subject to} \quad y_i(w \cdot x_i + b) \ge 0 \text{ } \forall i = 1, \dots, m \end{array}\)</span></p>
+<p>Let’s substitute the definition of margin and we get</p>
+<p><span class="math notranslate nohighlight">\(\begin{array}{l} \max \limits_{w, b} \min\cfrac{|wx_i+b|}{\|w\|} \\ \text{subject to} \quad y_i(w \cdot x_i + b) \ge 0 \text{ } \forall i = 1, \dots, m \end{array}\)</span></p>
+<p>Without a constraint on <span class="math notranslate nohighlight">\(w\)</span> and <span class="math notranslate nohighlight">\(b\)</span>, we would have infinite possible values for these parameters that would give the same separating decision boundary due to its scale invariance.</p>
+<p>We can set a scale for <span class="math notranslate nohighlight">\(w\)</span> and <span class="math notranslate nohighlight">\(b\)</span> by adding the additional constraint <span class="math notranslate nohighlight">\(\min|wx_i+b| = 1\)</span>.</p>
+<p>In other words, the scale of the values of <span class="math notranslate nohighlight">\(w\)</span> and <span class="math notranslate nohighlight">\(b\)</span> will be such that the smallest distance between the points and the decision boundary is <span class="math notranslate nohighlight">\(\cfrac{1}{\|w\|}\)</span>.</p>
+<p>Why is the constant set to 1 and not another number?</p>
+<p>Well, because this allows us to remove it from <span class="math notranslate nohighlight">\(\max \limits_{w, b} \min\cfrac{|wx_i+b|}{\|w\|} \Longrightarrow \max \limits_{w, b} \cfrac{1}{\|w\|} \text{ s.t. } \min|wx_i+b| = 1\)</span>.</p>
+<p>So after putting it all together we have</p>
+<p><span class="math notranslate nohighlight">\(\begin{array}{l} \max \limits_{w, b} \cfrac{1}{\|w\|} \\ \text{subject to} \quad y_i(w \cdot x_i + b) \ge 0 \\ \quad \quad \quad \quad \quad \min|wx_i+b| = 1 \quad \forall i = 1, \dots, m \end{array}\)</span></p>
+<p>We can combine the two constraints into one and obtain</p>
+<p><span class="math notranslate nohighlight">\(\begin{array}{l} \max \limits_{w, b} \cfrac{1}{\|w\|} \\ \text{subject to} \quad y_i(w \cdot x_i + b) \ge 1 \quad \forall i = 1, \dots, m \end{array}\)</span></p>
+<p>Furthermore, <span class="math notranslate nohighlight">\(\max\cfrac{1}{\|w\|}\)</span> is equivalent to <span class="math notranslate nohighlight">\(\min\|w\|\)</span>, which in turn is equivalent to <span class="math notranslate nohighlight">\(\min \|w\|^2\)</span> which we can rewrite as dot product.</p>
+<p><span class="math notranslate nohighlight">\(\begin{array}{l} \min \limits_{w, b} w \cdot w \\ \text{subject to} \quad y_i(w \cdot x_i + b) \ge 1 \quad \forall i = 1, \dots, m \end{array}\)</span></p>
+<p>To simplify the optimization even further we can introduce a factor of <span class="math notranslate nohighlight">\(\cfrac{1}{2}\)</span> so that the derivative becomes <span class="math notranslate nohighlight">\(w\)</span> instead of <span class="math notranslate nohighlight">\(2w\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\begin{array}{l} \min \limits_{w, b} \cfrac{1}{2} w \cdot w \\ \text{subject to} \quad y_i(w \cdot x_i + b) \ge 1 \quad \forall i = 1, \dots, m \end{array}\)</span></p>
+<p>During the optimization for SVM, we must estimate all 3 parameters: <span class="math notranslate nohighlight">\(w_1\)</span>, <span class="math notranslate nohighlight">\(w_2\)</span> and <span class="math notranslate nohighlight">\(b\)</span>.</p>
+<p>This may seem counter intuitive given that a line inherently has only 2 degrees of freedom (slope and intercept).</p>
+<p>However, the constraint <span class="math notranslate nohighlight">\(\min|wx_i+b| = 1\)</span> ensures that only one scale-invariant decision boundary can be selected, making <span class="math notranslate nohighlight">\(w_1\)</span>, <span class="math notranslate nohighlight">\(w_2\)</span> and <span class="math notranslate nohighlight">\(b\)</span> uniquely identifiable.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hard_loss</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">params</span><span class="p">[:</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">hard_constraint</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">params</span><span class="p">[:</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="k">return</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+
+
+<span class="k">def</span> <span class="nf">parallel_thru_point</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+
+<span class="n">hard_initial</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">hard_cons</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;ineq&quot;</span><span class="p">,</span> <span class="s2">&quot;fun&quot;</span><span class="p">:</span> <span class="n">hard_constraint</span><span class="p">,</span> <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">i</span><span class="p">)}</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="p">]</span>
+
+<span class="n">hard_result</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">fun</span><span class="o">=</span><span class="n">hard_loss</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="n">hard_initial</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="n">hard_cons</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">hard_initial</span><span class="p">,</span> <span class="n">hard_result</span><span class="o">.</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Initial values close to final estimates&quot;</span><span class="p">)</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">hard_result</span><span class="o">.</span><span class="n">x</span><span class="p">[:</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">hard_result</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<span class="n">sv</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">X</span> <span class="o">@</span> <span class="n">w</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()]</span>
+
+<span class="c1"># plot data</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span> <span class="s2">&quot;tab:blue&quot;</span><span class="p">))</span>
+<span class="c1"># plot decision boundary</span>
+<span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">x1</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="c1"># plot parallels thru support vectors</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x1</span><span class="p">,</span> <span class="n">parallel_thru_point</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">sv</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x1</span><span class="p">,</span> <span class="n">parallel_thru_point</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">sv</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span>
+<span class="p">)</span>
+<span class="c1"># highlight support vectors</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">sv</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">sv</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>
+    <span class="n">facecolors</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
+    <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="c1"># plot margin</span>
+<span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">decision_boundary</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">)])</span>
+<span class="n">proj_sv</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">sv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">Q</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">w</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">Q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Q</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+    <span class="p">[</span><span class="n">Q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">Q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+    <span class="p">[</span><span class="n">proj_sv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="n">proj_sv</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+    <span class="p">[</span><span class="n">proj_sv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="n">proj_sv</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+    <span class="n">angles</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+    <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">scale_units</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\dfrac</span><span class="si">{1}</span><span class="s2">{\|w\|}$&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">Q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">1.1</span><span class="p">,</span> <span class="n">Q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$x_1$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$x_2$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;SVM Decision Boundary&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">X</span><span class="w"> </span><span class="o">@</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/linear_algebra_la_extra_31_0.png" src="../_images/linear_algebra_la_extra_31_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Accuracy: 100%
+</pre></div></div>
+</div>
+<p>Let’s verify that <span class="math notranslate nohighlight">\(\min|wx_i+b| = 1\)</span>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">margin</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>This was a very simple example where the classes are perfectly separated, so that we could use the hard margin implementation.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">group_1_centroid</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">group_2_centroid</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span>
+    <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="n">group_1_centroid</span><span class="p">,</span>
+    <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="n">group_2_centroid</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">20</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span> <span class="s2">&quot;tab:blue&quot;</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$x_1$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$x_2$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Data with 2 classes (imperfect linear separation)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/linear_algebra_la_extra_35_0.png" src="../_images/linear_algebra_la_extra_35_0.png" />
+</div>
+</div>
+<p>Let’s try the hard margin implementation.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hard_initial</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">hard_cons</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;ineq&quot;</span><span class="p">,</span> <span class="s2">&quot;fun&quot;</span><span class="p">:</span> <span class="n">hard_constraint</span><span class="p">,</span> <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">i</span><span class="p">)}</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="p">]</span>
+
+<span class="n">hard_result</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">fun</span><span class="o">=</span><span class="n">hard_loss</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="n">hard_initial</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="n">hard_cons</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">hard_initial</span><span class="p">,</span> <span class="n">hard_result</span><span class="o">.</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Initial values close to final estimates&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ValueError</span>                                Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[18], line 10</span>
+<span class="ansi-green-intense-fg ansi-bold">      7</span> hard_result <span style="color: rgb(98,98,98)">=</span> minimize(fun<span style="color: rgb(98,98,98)">=</span>hard_loss, x0<span style="color: rgb(98,98,98)">=</span>hard_initial, constraints<span style="color: rgb(98,98,98)">=</span>hard_cons)
+<span class="ansi-green-intense-fg ansi-bold">      9</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> np<span style="color: rgb(98,98,98)">.</span>allclose(hard_initial, hard_result<span style="color: rgb(98,98,98)">.</span>x):
+<span class="ansi-green-fg">---&gt; 10</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">raise</span> <span class="ansi-bold" style="color: rgb(215,95,95)">ValueError</span>(<span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">Initial values close to final estimates</span><span style="color: rgb(175,0,0)">&#34;</span>)
+
+<span class="ansi-red-fg">ValueError</span>: Initial values close to final estimates
+</pre></div></div>
+</div>
+<p>With this data the hard margin optimizer doesn’t work.</p>
+<p>We need to give it some slack.</p>
+<p>Let’s introduce the slack variables <span class="math notranslate nohighlight">\(\zeta_i\)</span></p>
+<p><span class="math notranslate nohighlight">\(\begin{array}{l} \min \limits_{w, b, \zeta} \cfrac{1}{2} w \cdot w \\ \text{subject to} \quad y_i(w \cdot x_i + b) \ge 1 - \zeta_i \quad \forall i = 1, \dots, m \end{array}\)</span></p>
+<p>This way we allow for violations of the constraint. More specifically <span class="math notranslate nohighlight">\(\zeta_i\)</span> can take the following values:</p>
+<p><span class="math notranslate nohighlight">\(\zeta_i=0\)</span>: The point <span class="math notranslate nohighlight">\(x_i\)</span> is correctly classified and outside the margin.</p>
+<p><span class="math notranslate nohighlight">\(0&lt;\zeta_i \le 1\)</span>: The point <span class="math notranslate nohighlight">\(x_i\)</span> is correctly classified <em>but</em> within the margin.</p>
+<p><span class="math notranslate nohighlight">\(\zeta_i&gt;1\)</span>: The point <span class="math notranslate nohighlight">\(x_i\)</span> is misclassified.</p>
+<p>Thus, <span class="math notranslate nohighlight">\(\zeta_i\)</span> is constrained to be non-negative:</p>
+<p><span class="math notranslate nohighlight">\(\begin{array}{l} \min \limits_{w, b, \zeta} \cfrac{1}{2} w \cdot w \\ \text{subject to} \quad y_i(w \cdot x_i + b) \ge 1 - \zeta_i \\ \quad \quad \quad \quad \quad \zeta_i \ge 0 \quad \forall i = 1, \dots, m \end{array}\)</span></p>
+<p>The problem is that a large enough <span class="math notranslate nohighlight">\(\zeta_i\)</span> defeats the purpose of the constraint.</p>
+<p>We can then penalize solutions that have large values of <span class="math notranslate nohighlight">\(\zeta_i\)</span>. Namely, we can add an L1 regularization for <span class="math notranslate nohighlight">\(\zeta_i\)</span> and a regularization parameter <span class="math notranslate nohighlight">\(C\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\begin{array}{l} \min \limits_{w, b, \zeta} \cfrac{1}{2} w \cdot w + C\sum^m_i\zeta_i \\ \text{subject to} \quad y_i(w \cdot x_i + b) \ge 1 - \zeta_i \\ \quad \quad \quad \quad \quad \zeta_i \ge 0 \quad \forall i = 1, \dots, m \end{array}\)</span></p>
+<p><span class="math notranslate nohighlight">\(C\)</span> provides a trade-off between maximizing the margin (prioritizing generalization) and minimizing misclassification.</p>
+<p>In the extreme case where <span class="math notranslate nohighlight">\(C = 0\)</span>, the objective function to be maximized is the same as in the hard margin SVM.</p>
+<p>However, there is effectively no constraint on classification accuracy, as the slack variables are free to get as large as needed.</p>
+<p>With a large <span class="math notranslate nohighlight">\(C\)</span>, solutions with large <span class="math notranslate nohighlight">\(\zeta_i\)</span> values are heavily penalized. This leads to a narrower margin and to over-fitting because fewer misclassification are allowed.</p>
+<p>A small <span class="math notranslate nohighlight">\(C\)</span> allows for a wider margin, but at the cost of permitting more misclassification.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">soft_margin_svm</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">soft_loss</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">params</span><span class="p">[:</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:]</span>
+        <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">C</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">soft_constraint</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">params</span><span class="p">[:</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="n">zi</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">zi</span>
+
+    <span class="n">soft_initial</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">soft_cons</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;ineq&quot;</span><span class="p">,</span> <span class="s2">&quot;fun&quot;</span><span class="p">:</span> <span class="n">soft_constraint</span><span class="p">,</span> <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">i</span><span class="p">)}</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="p">]</span>
+    <span class="n">bounds_w</span> <span class="o">=</span> <span class="p">[(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">bounds_b</span> <span class="o">=</span> <span class="p">[(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span>
+    <span class="n">bounds_z</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">bounds</span> <span class="o">=</span> <span class="n">bounds_w</span> <span class="o">+</span> <span class="n">bounds_b</span> <span class="o">+</span> <span class="n">bounds_z</span>
+
+    <span class="n">soft_result</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span>
+        <span class="n">fun</span><span class="o">=</span><span class="n">soft_loss</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="n">soft_initial</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="n">soft_cons</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">soft_initial</span><span class="p">,</span> <span class="n">soft_result</span><span class="o">.</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Initial values close to final estimates&quot;</span><span class="p">)</span>
+
+    <span class="n">w</span> <span class="o">=</span> <span class="n">soft_result</span><span class="o">.</span><span class="n">x</span><span class="p">[:</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">soft_result</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">soft_result</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:]</span>
+    <span class="c1"># indices of within-margin zetas sorted by farthest to closest</span>
+    <span class="n">svz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">((</span><span class="n">z</span> <span class="o">&gt;</span> <span class="mf">1e-6</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">z</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()[</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">z</span><span class="p">[(</span><span class="n">z</span> <span class="o">&gt;</span> <span class="mf">1e-6</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">z</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)])</span>
+    <span class="p">]</span>
+    <span class="n">zX</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">svz</span><span class="p">]</span>
+    <span class="c1"># within margin support vectors farthest from decision boundary (one per class)</span>
+    <span class="n">sv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">zX</span><span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">svz</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">zX</span><span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">svz</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+
+    <span class="c1"># plot data</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span> <span class="s2">&quot;tab:blue&quot;</span><span class="p">))</span>
+    <span class="c1"># plot decision boundary</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">x1</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="c1"># plot parallels thru support vectors</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">x1</span><span class="p">,</span> <span class="n">parallel_thru_point</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">sv</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span>
+    <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">x1</span><span class="p">,</span> <span class="n">parallel_thru_point</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">sv</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span>
+    <span class="p">)</span>
+    <span class="c1"># highlight support vectors</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+        <span class="n">zX</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="n">zX</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="n">s</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>
+        <span class="n">facecolors</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
+        <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># plot margin</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">decision_boundary</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">)])</span>
+    <span class="n">proj_svp</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">sv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">Q</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">w</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+    <span class="n">proj_svn</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">sv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">Q</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">w</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">Q</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Q</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="p">[</span><span class="n">Q</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">Q</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+        <span class="p">[</span><span class="n">proj_svp</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">proj_svn</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="p">[</span><span class="n">proj_svp</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">proj_svn</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+        <span class="n">angles</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+        <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">scale_units</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$x_1$&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$x_2$&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Soft SVM Decision Boundary C=</span><span class="si">{</span><span class="n">C</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">X</span><span class="w"> </span><span class="o">@</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="n">soft_margin_svm</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/linear_algebra_la_extra_39_0.png" src="../_images/linear_algebra_la_extra_39_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Accuracy: 98%
+</pre></div></div>
+</div>
+<p>Let’s try a smaller value for <span class="math notranslate nohighlight">\(C\)</span>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">soft_margin_svm</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/linear_algebra_la_extra_41_0.png" src="../_images/linear_algebra_la_extra_41_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Accuracy: 95%
+</pre></div></div>
+</div>
+</section>
+</section>
+
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="la_w4.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Linear Algebra - Week 4</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="la_exer.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Linear Algebra - Exercises</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Federico Trifoglio<br/>
+  
+      &copy; Copyright 2023.<br/>
+    <div class="extra_footer">
+      <div id="imageOverlay"><img id="overlayImage" src=""></div>
+    </div>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

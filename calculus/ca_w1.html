@@ -1,0 +1,1521 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta property="og:title" content="Calculus - Week 1" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fedassembly.github.io/math-for-ml/calculus/ca_w1.html" />
+<meta property="og:site_name" content="Mathematics for Machine Learning and Data Science" />
+<meta property="og:description" content="Derivatives: Average rate of change of a function: Let x = 0.25 and\Delta x = 1.25, we calculate the average rate of change of each function wrt x over the interval\Delta x as 📐\cfrac{\Delta f}{\Delta x} = \cfrac{f(x + \Delta x) - f(x)}{\Delta x} As\Delta x approaches 0 we get the instantaneous r..." />
+<meta property="og:image:width" content="1146" />
+<meta property="og:image:height" content="600" />
+<meta property="og:image" content="https://fedassembly.github.io/math-for-ml/_images/social_previews/summary_calculus_ca_w1_c8cb0157.png" />
+<meta property="og:image:alt" content="Derivatives: Average rate of change of a function: Let x = 0.25 and\Delta x = 1.25, we calculate the average rate of change of each function wrt x over the i..." />
+<meta name="description" content="Derivatives: Average rate of change of a function: Let x = 0.25 and\Delta x = 1.25, we calculate the average rate of change of each function wrt x over the interval\Delta x as 📐\cfrac{\Delta f}{\Delta x} = \cfrac{f(x + \Delta x) - f(x)}{\Delta x} As\Delta x approaches 0 we get the instantaneous r..." />
+<meta name="twitter:card" content="summary_large_image" />
+
+    <title>Calculus - Week 1 &#8212; Mathematics for Machine Learning and Data Science</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../_static/custom.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://fedassembly.github.io/math-for-ml/calculus/ca_w1.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Calculus - Week 2" href="ca_w2.html" />
+    <link rel="prev" title="Calculus" href="index.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Mathematics for Machine Learning and Data Science</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Topics
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../linear_algebra/index.html">
+   Linear Algebra
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../linear_algebra/la_w1.html">
+     Week 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../linear_algebra/la_w2.html">
+     Week 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../linear_algebra/la_w3.html">
+     Week 3
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../linear_algebra/la_w4.html">
+     Week 4
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../linear_algebra/la_extra.html">
+     Extra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../linear_algebra/la_exer.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Calculus
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Week 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="ca_w2.html">
+     Week 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="ca_w3.html">
+     Week 3
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="ca_extra.html">
+     Extra
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+<a href="https://github.com/fedassembly/math-for-ml"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="bottom"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/calculus/ca_w1.ipynb.txt"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Derivatives">
+   Derivatives
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Average-rate-of-change-of-a-function">
+     Average rate of change of a function
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Derivative-of-a-function">
+     Derivative of a function
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Not-differentiable-functions">
+     Not differentiable functions
+    </a>
+    <ul class="visible nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#Proof-that-|x|-is-not-differentiable-at-0">
+       Proof that |x| is not differentiable at 0
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#Proof-that-ReLU-is-not-differentiable-at-0">
+       Proof that ReLU is not differentiable at 0
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#Proof-that-radicals-are-not-differentiable-at-0">
+       Proof that radicals are not differentiable at 0
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#The-inverse-function-and-its-derivative">
+     The inverse function and its derivative
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Derivative-rules">
+     Derivative rules
+    </a>
+    <ul class="visible nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#Constant-multiple-rule">
+       Constant multiple rule
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#Sum-or-difference-rule">
+       Sum or difference rule
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#Product-rule">
+       Product rule
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#Quotient-rule">
+       Quotient rule
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#Chain-rule">
+       Chain rule
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Univariate-optimization">
+   Univariate optimization
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Computational-efficiency-of-symbolic,-numerical-and-automatic-differentiation">
+   Computational efficiency of symbolic, numerical and automatic differentiation
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Calculus - Week 1</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Derivatives">
+   Derivatives
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Average-rate-of-change-of-a-function">
+     Average rate of change of a function
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Derivative-of-a-function">
+     Derivative of a function
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Not-differentiable-functions">
+     Not differentiable functions
+    </a>
+    <ul class="visible nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#Proof-that-|x|-is-not-differentiable-at-0">
+       Proof that |x| is not differentiable at 0
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#Proof-that-ReLU-is-not-differentiable-at-0">
+       Proof that ReLU is not differentiable at 0
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#Proof-that-radicals-are-not-differentiable-at-0">
+       Proof that radicals are not differentiable at 0
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#The-inverse-function-and-its-derivative">
+     The inverse function and its derivative
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Derivative-rules">
+     Derivative rules
+    </a>
+    <ul class="visible nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#Constant-multiple-rule">
+       Constant multiple rule
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#Sum-or-difference-rule">
+       Sum or difference rule
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#Product-rule">
+       Product rule
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#Quotient-rule">
+       Quotient rule
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#Chain-rule">
+       Chain rule
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Univariate-optimization">
+   Univariate optimization
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Computational-efficiency-of-symbolic,-numerical-and-automatic-differentiation">
+   Computational efficiency of symbolic, numerical and automatic differentiation
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="Calculus---Week-1">
+<h1>Calculus - Week 1<a class="headerlink" href="#Calculus---Week-1" title="Permalink to this headline">#</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">timeit</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">sympy</span> <span class="k">as</span> <span class="nn">sp</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;seaborn-v0_8-whitegrid&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<section id="Derivatives">
+<h2>Derivatives<a class="headerlink" href="#Derivatives" title="Permalink to this headline">#</a></h2>
+<section id="Average-rate-of-change-of-a-function">
+<h3>Average rate of change of a function<a class="headerlink" href="#Average-rate-of-change-of-a-function" title="Permalink to this headline">#</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">constant</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">linear</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">m</span>
+
+
+<span class="k">def</span> <span class="nf">quadratic</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">cubic</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">fractional</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">squareroot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">exponential</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">logarithmic</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">sin</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">cos</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">abs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">relu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="c1"># np.maximum: element-wise max, not np.max along axis</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">tanh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+<span class="n">funcs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">constant</span><span class="p">,</span>
+    <span class="n">linear</span><span class="p">,</span>
+    <span class="n">quadratic</span><span class="p">,</span>
+    <span class="n">cubic</span><span class="p">,</span>
+    <span class="n">fractional</span><span class="p">,</span>
+    <span class="n">squareroot</span><span class="p">,</span>
+    <span class="n">exponential</span><span class="p">,</span>
+    <span class="n">logarithmic</span><span class="p">,</span>
+    <span class="n">logarithmic</span><span class="p">,</span>
+    <span class="n">sin</span><span class="p">,</span>
+    <span class="n">cos</span><span class="p">,</span>
+    <span class="nb">abs</span><span class="p">,</span>
+    <span class="n">sigmoid</span><span class="p">,</span>
+    <span class="n">relu</span><span class="p">,</span>
+    <span class="n">tanh</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">args</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+    <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">e</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">10</span><span class="p">],</span>
+    <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+    <span class="p">[</span><span class="kc">None</span><span class="p">],</span>
+<span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axs</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">funcs</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+        <span class="n">f</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="p">)[:</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arg</span> <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]),</span>
+        <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[[</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="s2">&quot;bottom&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">set_position</span><span class="p">((</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;$x$&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">get_yaxis_transform</span><span class="p">())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">,</span> <span class="s2">&quot;$f(x)$&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xaxis_transform</span><span class="p">())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mf">0.90</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Common functions&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/calculus_ca_w1_4_0.png" src="../_images/calculus_ca_w1_4_0.png" />
+</div>
+</div>
+<p>Let <span class="math notranslate nohighlight">\(x = 0.25\)</span> and <span class="math notranslate nohighlight">\(\Delta x = 1.25\)</span>, we calculate the average rate of change of each function wrt <span class="math notranslate nohighlight">\(x\)</span> over the interval <span class="math notranslate nohighlight">\(\Delta x\)</span> as</p>
+<blockquote>
+<div><p>📐 <span class="math notranslate nohighlight">\(\cfrac{\Delta f}{\Delta x} = \cfrac{f(x + \Delta x) - f(x)}{\Delta x}\)</span></p>
+</div></blockquote>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axs</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">funcs</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">x_1</span> <span class="o">=</span> <span class="mf">0.25</span>
+    <span class="n">d_x</span> <span class="o">=</span> <span class="mf">1.25</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_1</span> <span class="o">+</span> <span class="n">d_x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x_1</span> <span class="o">+</span> <span class="n">d_x</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x_1</span><span class="p">,</span> <span class="n">x_1</span> <span class="o">+</span> <span class="n">d_x</span><span class="p">],</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">),</span> <span class="n">f</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">)],</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">x_1</span> <span class="o">+</span> <span class="n">d_x</span><span class="p">,</span> <span class="n">x_1</span> <span class="o">+</span> <span class="n">d_x</span><span class="p">],</span>
+        <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">x_1</span> <span class="o">+</span> <span class="n">d_x</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">),</span> <span class="n">f</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">)],</span>
+        <span class="s2">&quot;--&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">x_1</span><span class="p">,</span> <span class="n">x_1</span> <span class="o">+</span> <span class="n">d_x</span><span class="p">],</span>
+        <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">),</span> <span class="n">f</span><span class="p">(</span><span class="n">x_1</span> <span class="o">+</span> <span class="n">d_x</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">)],</span>
+        <span class="s2">&quot;--&quot;</span><span class="p">,</span>
+        <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:green&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">slope</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x_1</span> <span class="o">+</span> <span class="n">d_x</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">))</span> <span class="o">/</span> <span class="n">d_x</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+        <span class="n">x_1</span> <span class="o">+</span> <span class="n">d_x</span><span class="p">,</span>
+        <span class="n">f</span><span class="p">(</span><span class="n">x_1</span> <span class="o">+</span> <span class="n">d_x</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">),</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">slope</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+        <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;tab:green&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+        <span class="n">f</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="p">)[:</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arg</span> <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]),</span>
+        <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[[</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="s2">&quot;bottom&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">set_position</span><span class="p">((</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;$x$&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">get_yaxis_transform</span><span class="p">())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">,</span> <span class="s2">&quot;$f(x)$&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xaxis_transform</span><span class="p">())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mf">0.90</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span>
+    <span class="s2">&quot;Average rate of change of common functions at $x=0.25$ over $</span><span class="se">\\</span><span class="s2">Delta x = 1.25$&quot;</span><span class="p">,</span>
+    <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/calculus_ca_w1_6_0.png" src="../_images/calculus_ca_w1_6_0.png" />
+</div>
+</div>
+<p>As <span class="math notranslate nohighlight">\(\Delta x\)</span> approaches 0 we get the instantaneous rate of change of each function wrt x.</p>
+<blockquote>
+<div><p>📐 <span class="math notranslate nohighlight">\(\lim_{{\Delta x}\to{0}}\cfrac{\Delta f}{\Delta x} = \lim_{{\Delta x}\to{0}}\cfrac{f(x + \Delta x) - f(x)}{\Delta x}\)</span></p>
+</div></blockquote>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axs</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">funcs</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">x_1</span> <span class="o">=</span> <span class="mf">0.25</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="mf">1e-6</span>
+    <span class="c1"># y-y1 = m(x-x1)</span>
+    <span class="c1"># y = m(x - x1) + y1</span>
+    <span class="n">slope</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x_1</span> <span class="o">+</span> <span class="n">h</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">))</span> <span class="o">/</span> <span class="n">h</span>
+    <span class="n">tan_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">tan_range</span><span class="p">,</span>
+        <span class="n">slope</span> <span class="o">*</span> <span class="p">(</span><span class="n">tan_range</span> <span class="o">-</span> <span class="n">x_1</span><span class="p">)</span> <span class="o">+</span> <span class="n">f</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">),</span>
+        <span class="s2">&quot;--&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:green&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+        <span class="n">x_1</span><span class="p">,</span>
+        <span class="n">f</span><span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">),</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">slope</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+        <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;tab:green&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+        <span class="n">f</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="p">)[:</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arg</span> <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]),</span>
+        <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[[</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="s2">&quot;bottom&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">set_position</span><span class="p">((</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;$x$&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">get_yaxis_transform</span><span class="p">())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">,</span> <span class="s2">&quot;$f(x)$&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xaxis_transform</span><span class="p">())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mf">0.90</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span>
+    <span class="s2">&quot;Instanteneous rate of change of common functions at $x=0.25$&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/calculus_ca_w1_8_0.png" src="../_images/calculus_ca_w1_8_0.png" />
+</div>
+</div>
+</section>
+<section id="Derivative-of-a-function">
+<h3>Derivative of a function<a class="headerlink" href="#Derivative-of-a-function" title="Permalink to this headline">#</a></h3>
+<blockquote>
+<div><p>🔑 The derivative of the function <span class="math notranslate nohighlight">\(f(x)\)</span> wrt <span class="math notranslate nohighlight">\(x\)</span> is <span class="math notranslate nohighlight">\(\cfrac{d}{dx}f(x) = \lim_{{\Delta x}\to{0}}\cfrac{\Delta f}{\Delta x} = \lim_{{\Delta x}\to{0}}\cfrac{f(x + \Delta x) - f(x)}{\Delta x}\)</span></p>
+</div></blockquote>
+<p>The derivative of the common functions seen so far are:</p>
+<p><span class="math notranslate nohighlight">\(\cfrac{d}{dx}(k) = \lim_{{\Delta x}\to{0}} \cfrac{k - k}{\Delta x} = 0\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{d}{dx}(2x) = \lim_{{\Delta x}\to{0}} \cfrac{2(x+\Delta x) - 2x}{\Delta x} = 2\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{d}{dx}(x^2) = \lim_{{\Delta x}\to{0}} \cfrac{(x+\Delta x)^2 - x^2}{\Delta x} = 2x\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{d}{dx}(x^3) = \lim_{{\Delta x}\to{0}} \cfrac{(x+\Delta x)^3 - x^3}{\Delta x} = 3x^2\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{d}{dx}\left( \cfrac{1}{x} \right) = \cfrac{d}{dx}(x^{-1}) = \lim_{{\Delta x}\to{0}} \cfrac{(x+\Delta x)^{-1} - x^{-1}}{\Delta x} = -x^{-2} \text{ for } x \ne 0\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{d}{dx}(\sqrt{x}) = \cfrac{d}{dx}(x^{\frac{1}{2}}) = \lim_{{\Delta x}\to{0}} \cfrac{(x+\Delta x)^{\frac{1}{2}} - x^{\frac{1}{2}}}{\Delta x} = \cfrac{1}{2}x^{-\frac{1}{2}} \text{ for } x \ge 0\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{d}{dx}(e^x) = \lim_{{\Delta x}\to{0}} \cfrac{e^{x+\Delta x} - e^x}{\Delta x} = e^x\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{d}{dx}(\log_e(x)) = \lim_{{\Delta x}\to{0}} \cfrac{\ln(x+\Delta x) - \ln(x)}{\Delta x} = \cfrac{1}{x\ln(e)} \text{ for } x &gt; 0\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{d}{dx}(\log_{10}(x)) = \lim_{{\Delta x}\to{0}} \cfrac{\log_{10}(x+\Delta x) - \log_{10}(x)}{\Delta x} = \cfrac{1}{x \ln(10)} \text{ for } x &gt; 0\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{d}{dx}(\sin(x)) = \lim_{{\Delta x}\to{0}} \cfrac{\sin(x+\Delta x) - \sin(x)}{\Delta x} = \cos(x)\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{d}{dx}(\cos(x)) = \lim_{{\Delta x}\to{0}} \cfrac{\cos(x+\Delta x) - \cos(x)}{\Delta x} = -\sin(x)\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{d}{dx}(|x|) = \lim_{{\Delta x}\to{0}} \cfrac{|x+\Delta x| - |x|}{\Delta x} = \begin{cases}1 \text{ if } x &gt; 0\\-1 \text{ if } x &lt; 0\\\text{undefined if } x = 0\end{cases}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{d}{dx}(\sigma(x)) = \lim_{{\Delta x}\to{0}} \cfrac{\sigma(x+\Delta x) - \sigma(x)}{\Delta x} = \sigma(x)(1-\sigma(x))\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{d}{dx}(\text{ReLU}(x)) = \lim_{{\Delta x}\to{0}} \cfrac{\text{ReLU}(x+\Delta x) - \text{ReLU}(x)}{\Delta x} = \begin{cases}1 \text{ if } x &gt; 0\\0 \text{ if } x &lt; 0\\\text{undefined if } x = 0\end{cases}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{d}{dx}(\tanh(x)) = \lim_{{\Delta x}\to{0}} \cfrac{\tanh(x+\Delta x) - \tanh(x)}{\Delta x} = 1 - \text{tanh}(x)^2\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">d_constant</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">d_linear</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">d_quadratic</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span>
+
+
+<span class="k">def</span> <span class="nf">d_cubic</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">3</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">d_fractional</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">return</span> <span class="o">-</span><span class="p">(</span><span class="n">x</span><span class="o">**-</span><span class="mi">2</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">d_squareroot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">d_exponential</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">d_logarithmic</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">d_sin</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">d_cos</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">d_abs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">d_sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">d_relu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">relu</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">d_tanh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+
+<span class="n">d_funcs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">d_constant</span><span class="p">,</span>
+    <span class="n">d_linear</span><span class="p">,</span>
+    <span class="n">d_quadratic</span><span class="p">,</span>
+    <span class="n">d_cubic</span><span class="p">,</span>
+    <span class="n">d_fractional</span><span class="p">,</span>
+    <span class="n">d_squareroot</span><span class="p">,</span>
+    <span class="n">d_exponential</span><span class="p">,</span>
+    <span class="n">d_logarithmic</span><span class="p">,</span>
+    <span class="n">d_logarithmic</span><span class="p">,</span>
+    <span class="n">d_sin</span><span class="p">,</span>
+    <span class="n">d_cos</span><span class="p">,</span>
+    <span class="n">d_abs</span><span class="p">,</span>
+    <span class="n">d_sigmoid</span><span class="p">,</span>
+    <span class="n">d_relu</span><span class="p">,</span>
+    <span class="n">d_tanh</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axs</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">funcs</span><span class="p">,</span> <span class="n">d_funcs</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">f_lims</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">df</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">),</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">df_lims</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">())</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">df_lims</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">f_lims</span><span class="p">)):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">f_lims</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+        <span class="n">f</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="p">)[:</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arg</span> <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]),</span>
+        <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[[</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="s2">&quot;bottom&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">set_position</span><span class="p">((</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;$x$&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">get_yaxis_transform</span><span class="p">())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">,</span> <span class="s2">&quot;$f(x)$&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xaxis_transform</span><span class="p">())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mf">0.90</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Derivatives of common functions&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/calculus_ca_w1_11_0.png" src="../_images/calculus_ca_w1_11_0.png" />
+</div>
+</div>
+</section>
+<section id="Not-differentiable-functions">
+<h3>Not differentiable functions<a class="headerlink" href="#Not-differentiable-functions" title="Permalink to this headline">#</a></h3>
+<blockquote>
+<div><p>🔑 A function is not differentiable at <span class="math notranslate nohighlight">\(x = a\)</span> if <span class="math notranslate nohighlight">\(\lim_{x\to{a}}\cfrac{f(x)-f(a)}{x-a}\)</span> does not exist</p>
+</div></blockquote>
+<p>Visually, we can determine whether a function is not differentiable if we see</p>
+<ol class="arabic simple">
+<li><p>a cusp or a corner</p></li>
+<li><p>a jump or point of discontinuity</p></li>
+<li><p>a vertical tangent</p></li>
+</ol>
+<section id="Proof-that-|x|-is-not-differentiable-at-0">
+<h4>Proof that |x| is not differentiable at 0<a class="headerlink" href="#Proof-that-|x|-is-not-differentiable-at-0" title="Permalink to this headline">#</a></h4>
+<p><span class="math notranslate nohighlight">\(\cfrac{df}{dx}(a) = \lim_{x\to{a}}\cfrac{f(x)-f(a)}{x-a}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\lim_{x\to{0}}\cfrac{f(x)-f(0)}{x-0}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\lim_{x\to{0}}\cfrac{|x|}{x}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\lim_{x\to{0}^+}\cfrac{x}{x} = 1\)</span></p>
+<p><span class="math notranslate nohighlight">\(\lim_{x\to{0}^-}\cfrac{-x}{x} = -1\)</span></p>
+<p><span class="math notranslate nohighlight">\(\lim_{x\to{0}}\cfrac{|x|}{x}\)</span> does not exist because <span class="math notranslate nohighlight">\(\lim_{x\to{0}^+} \ne \lim_{x\to{0}^-}\)</span></p>
+</section>
+<section id="Proof-that-ReLU-is-not-differentiable-at-0">
+<h4>Proof that ReLU is not differentiable at 0<a class="headerlink" href="#Proof-that-ReLU-is-not-differentiable-at-0" title="Permalink to this headline">#</a></h4>
+<p><span class="math notranslate nohighlight">\(\cfrac{df}{dx}(a) = \lim_{x\to{a}}\cfrac{f(x)-f(a)}{x-a}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\lim_{x\to{0}}\cfrac{f(x)-f(0)}{x-0}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\lim_{x\to{0}}\cfrac{\text{ReLU}(x)}{x}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\lim_{x\to{0}^+}\cfrac{x}{x} = 1\)</span></p>
+<p><span class="math notranslate nohighlight">\(\lim_{x\to{0}^-}\cfrac{0}{x} = 0\)</span></p>
+<p><span class="math notranslate nohighlight">\(\lim_{x\to{0}}\cfrac{\text{ReLU}(x)}{x}\)</span> does not exist because <span class="math notranslate nohighlight">\(\lim_{x\to{0}^+} \ne \lim_{x\to{0}^-}\)</span></p>
+<p>That being said the universal convention in machine learning applications is to assign a derivative of 0 at the non-differentiable point 0, such that</p>
+<p><span class="math notranslate nohighlight">\(\text{ReLU}'(x) = \begin{cases}1 \text{ if } x &gt; 0\\0 \text{ if } x \le 0\end{cases}\)</span></p>
+<p>This won’t make a lot of sense now, because we haven’t introduced backward propagation yet, but it’s a bit imprecise to say that “conventionally the derivative of ReLU at 0 is 0”.</p>
+<p>Frameworks like Tensorflow, for example, just do not propagate the gradient when the ReLU activation is 0.</p>
+<p>Source: <a class="reference external" href="https://github.com/tensorflow/tensorflow/blob/0aecf379b7bbdbe93be91643825f0ae94171d509/tensorflow/core/kernels/relu_op_functor.h#L52">https://github.com/tensorflow/tensorflow/blob/0aecf379b7bbdbe93be91643825f0ae94171d509/tensorflow/core/kernels/relu_op_functor.h#L52</a></p>
+</section>
+<section id="Proof-that-radicals-are-not-differentiable-at-0">
+<h4>Proof that radicals are not differentiable at 0<a class="headerlink" href="#Proof-that-radicals-are-not-differentiable-at-0" title="Permalink to this headline">#</a></h4>
+<p><span class="math notranslate nohighlight">\(\cfrac{df}{dx}(a) = \lim_{x\to{a}}\cfrac{f(x)-f(a)}{x-a}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\lim_{x\to{0}}\cfrac{f(x)-f(0)}{x-0}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\lim_{x\to{0}^+}\cfrac{\sqrt{x}}{x}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\lim_{x\to{0}^+}\cfrac{\sqrt{x}\sqrt{x}}{x\sqrt{x}}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\lim_{x\to{0}^+}\cfrac{x}{x\sqrt{x}}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\lim_{x\to{0}^+}\cfrac{1}{\sqrt{x}}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\lim_{x\to{0}^+}\cfrac{1}{\sqrt{x}}\)</span> does not exist because <span class="math notranslate nohighlight">\(\lim_{x\to{0}^+}\cfrac{1}{\sqrt{x}} \rightarrow +\infty\)</span></p>
+</section>
+</section>
+<section id="The-inverse-function-and-its-derivative">
+<h3>The inverse function and its derivative<a class="headerlink" href="#The-inverse-function-and-its-derivative" title="Permalink to this headline">#</a></h3>
+<p><span class="math notranslate nohighlight">\(\sqrt{x}\)</span> is the inverse of <span class="math notranslate nohighlight">\(x^2\)</span>, because <span class="math notranslate nohighlight">\(x \xrightarrow{x^2} x^2 \xrightarrow{\sqrt{x}} x\)</span></p>
+<blockquote>
+<div><p>🔑 <span class="math notranslate nohighlight">\(g(y)\)</span> is the inverse of <span class="math notranslate nohighlight">\(f(x)\)</span> if <span class="math notranslate nohighlight">\(x \xrightarrow{f(x)} y \xrightarrow{g(y)} x\)</span>. In other words the inverse function undoes what the function does.</p>
+</div></blockquote>
+<p><span class="math notranslate nohighlight">\(\cfrac{1}{x}\)</span> is NOT the inverse of <span class="math notranslate nohighlight">\(x\)</span>, because <span class="math notranslate nohighlight">\(x \xrightarrow{x} x \xrightarrow{\frac{1}{x}} \cfrac{1}{x}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\ln x\)</span> is the inverse of <span class="math notranslate nohighlight">\(e^x\)</span>, because <span class="math notranslate nohighlight">\(x \xrightarrow{\ln x} \ln x \xrightarrow{e^x} x\)</span></p>
+<blockquote>
+<div><p>🔑 The derivative of the inverse function is <span class="math notranslate nohighlight">\(g\prime(y) = \cfrac{1}{f\prime(x)}\)</span></p>
+</div></blockquote>
+<p>Let’s verify it.</p>
+<p><span class="math notranslate nohighlight">\(\cfrac{d}{dy}\ln{y} = \cfrac{1}{y}\)</span> but also <span class="math notranslate nohighlight">\(\cfrac{1}{\cfrac{d}{dx}e^{\ln y}} = \cfrac{1}{y}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{d}{dy}\sqrt{y} = \cfrac{d}{dy}y^{\frac{1}{2}} = \cfrac{1}{2}y^{-\frac{1}{2}}\)</span> but also <span class="math notranslate nohighlight">\(\cfrac{1}{\cfrac{d}{dx}\left( y^{\frac{1}{2}} \right)^2} = \cfrac{1}{2y^{\frac{1}{2}}} = \cfrac{1}{2}y^{-\frac{1}{2}} = \cfrac{1}{2}\cfrac{1}{y^\frac{1}{2}} = \cfrac{1}{2}y^{-\frac{1}{2}}\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">squareroot</span><span class="p">(</span><span class="n">quadratic</span><span class="p">(</span><span class="n">x_1</span><span class="p">))</span> <span class="o">==</span> <span class="n">x_1</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">d_quadratic</span><span class="p">(</span><span class="n">x_1</span><span class="p">)</span> <span class="o">==</span> <span class="n">d_squareroot</span><span class="p">(</span><span class="n">quadratic</span><span class="p">(</span><span class="n">x_1</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x_1</span><span class="p">)):</span>
+    <span class="k">assert</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">d_exponential</span><span class="p">(</span><span class="n">x_1</span><span class="p">)</span> <span class="o">==</span> <span class="n">d_logarithmic</span><span class="p">(</span><span class="n">exponential</span><span class="p">(</span><span class="n">x_1</span><span class="p">),</span> <span class="n">b</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">AssertionError</span>                            Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[6], line 5</span>
+<span class="ansi-green-intense-fg ansi-bold">      2</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">assert</span> <span style="color: rgb(98,98,98)">1</span> <span style="color: rgb(98,98,98)">/</span> d_quadratic(x_1) <span style="color: rgb(98,98,98)">==</span> d_squareroot(quadratic(x_1))
+<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> np<span style="color: rgb(98,98,98)">.</span>exp(np<span style="color: rgb(98,98,98)">.</span>log(x_1)):
+<span class="ansi-green-fg">----&gt; 5</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">assert</span> <span style="color: rgb(98,98,98)">1</span> <span style="color: rgb(98,98,98)">/</span> d_exponential(x_1) <span style="color: rgb(98,98,98)">==</span> d_logarithmic(exponential(x_1), b<span style="color: rgb(98,98,98)">=</span>np<span style="color: rgb(98,98,98)">.</span>e)
+
+<span class="ansi-red-fg">AssertionError</span>:
+</pre></div></div>
+</div>
+</section>
+<section id="Derivative-rules">
+<h3>Derivative rules<a class="headerlink" href="#Derivative-rules" title="Permalink to this headline">#</a></h3>
+<section id="Constant-multiple-rule">
+<h4>Constant multiple rule<a class="headerlink" href="#Constant-multiple-rule" title="Permalink to this headline">#</a></h4>
+<blockquote>
+<div><p>📐 <span class="math notranslate nohighlight">\(\cfrac{d}{dx}[cf(x)] = cf'(x)\)</span></p>
+</div></blockquote>
+<p>Example:</p>
+<p><span class="math notranslate nohighlight">\(y = 5x^2\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{dy}{dx} = 5 \cfrac{d}{dx}x^2\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{dy}{dx} = 10x\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">expr</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">expr</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle 10 x$</div></div>
+</div>
+</section>
+<section id="Sum-or-difference-rule">
+<h4>Sum or difference rule<a class="headerlink" href="#Sum-or-difference-rule" title="Permalink to this headline">#</a></h4>
+<blockquote>
+<div><p>📐 <span class="math notranslate nohighlight">\(\cfrac{d}{dx}[f(x) + g(x)] = f'(x) + g'(x)\)</span></p>
+</div></blockquote>
+<p>Example:</p>
+<p><span class="math notranslate nohighlight">\(y = 5x^2 + 3x + 1\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{dy}{dx} = \cfrac{d}{dx}5x^2 + \cfrac{d}{dx}3x + 1\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{dy}{dx} = 10x + 3\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">expr</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">expr</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle 10 x + 3$</div></div>
+</div>
+</section>
+<section id="Product-rule">
+<h4>Product rule<a class="headerlink" href="#Product-rule" title="Permalink to this headline">#</a></h4>
+<blockquote>
+<div><p>📐 <span class="math notranslate nohighlight">\(\cfrac{d}{dx}[f(x)g(x)] = f'(x)g(x) + f(x)g'(x)\)</span></p>
+</div></blockquote>
+<p>Example:</p>
+<p><span class="math notranslate nohighlight">\(y = (5x^2)(3x + 1)\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{dy}{dx} = \cfrac{d}{dx}(5x^2)(3x + 1) + \cfrac{d}{dx}(3x + 1)(5x^2)\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{dy}{dx} = 5\left(\cfrac{d}{dx}(x^2)(3x + 1) + \cfrac{d}{dx}(3x + 1)(x^2)\right)\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{dy}{dx} = 5(2x(3x+1) + 3(x^2))\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{dy}{dx} = 5(6x^2+2x+3x^2)\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{dy}{dx} = 5(9x^2+2x)\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">expr</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">expr</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle 5 x \left(9 x + 2\right)$</div></div>
+</div>
+</section>
+<section id="Quotient-rule">
+<h4>Quotient rule<a class="headerlink" href="#Quotient-rule" title="Permalink to this headline">#</a></h4>
+<blockquote>
+<div><p>📐 <span class="math notranslate nohighlight">\(\cfrac{d}{dx}\left[\cfrac{f(x)}{g(x)}\right] = \cfrac{f'(x)g(x) - f(x)g'(x)}{g(x)^2}\)</span></p>
+</div></blockquote>
+<p>Example:</p>
+<p><span class="math notranslate nohighlight">\(y = \cfrac{5x^2}{3x + 1}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{dy}{dx} = \cfrac{\cfrac{d}{dx}(5x^2)(3x + 1)-\cfrac{d}{dx}(3x + 1)(5x^2)}{(3x + 1)^2}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{dy}{dx} = 5\left(\cfrac{\cfrac{d}{dx}(x^2)(3x + 1)-\cfrac{d}{dx}(3x + 1)(x^2)}{(3x + 1)^2}\right)\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{dy}{dx} = 5\left(\cfrac{2x(3x+1) - 3(x^2)}{(3x + 1)^2}\right)\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{dy}{dx} = 5\left(\cfrac{6x^2+2x-3x^2}{(3x + 1)^2}\right)\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{dy}{dx} = \cfrac{5(3x^2+2x)}{(3x + 1)^2}\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">expr</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">expr</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span><span class="o">.</span><span class="n">factor</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle \frac{5 x \left(3 x + 2\right)}{\left(3 x + 1\right)^{2}}$</div></div>
+</div>
+</section>
+<section id="Chain-rule">
+<h4>Chain rule<a class="headerlink" href="#Chain-rule" title="Permalink to this headline">#</a></h4>
+<blockquote>
+<div><p>📐 <span class="math notranslate nohighlight">\(\cfrac{d}{dx}[g(f(x))] = g'(f(x))f'(x)\)</span></p>
+</div></blockquote>
+<p>Example I:</p>
+<p><span class="math notranslate nohighlight">\(y = 5(3x + 1)^2\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{dy}{dx} = 5\left(\cfrac{d}{dx}(3x+1)^2\cfrac{d}{dx}3x + 1\right)\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{dy}{dx} = 5(2(3x+1)3)\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{dy}{dx} = 30(3x+1)\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">expr</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">expr</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span><span class="o">.</span><span class="n">factor</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle 30 \cdot \left(3 x + 1\right)$</div></div>
+</div>
+<p>Example II:</p>
+<p><span class="math notranslate nohighlight">\(y = e^{3x+1}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{dy}{dx} = \cfrac{d}{dx}e^{3x+1}\cfrac{d}{dx}3x+1\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{dy}{dx} = e^{3x+1}3\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">expr</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">expr</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle 3 e^{3 x + 1}$</div></div>
+</div>
+</section>
+</section>
+</section>
+<section id="Univariate-optimization">
+<h2>Univariate optimization<a class="headerlink" href="#Univariate-optimization" title="Permalink to this headline">#</a></h2>
+<p>The probability of getting <span class="math notranslate nohighlight">\(k\)</span> successes in <span class="math notranslate nohighlight">\(n\)</span> independent Bernoulli trials with success probability <span class="math notranslate nohighlight">\(p\)</span> for each trial is:</p>
+<p><span class="math notranslate nohighlight">\(Pr(k, n, p) = \binom{n}{k}p^k(1-p)^{n-k}\)</span></p>
+<p>To motivate the maximization of <span class="math notranslate nohighlight">\(Pr(k, n, p)\)</span> wrt <span class="math notranslate nohighlight">\(p\)</span>, let’s imagine we’re playing a game where we need to toss a coin 10 times and we win only if we get 7 heads and 3 tails.</p>
+<p>We can use a biased coin for this game and we can customize the bias <span class="math notranslate nohighlight">\(p\)</span>.</p>
+<p>To maximize <span class="math notranslate nohighlight">\(Pr(k, n, p)\)</span> wrt <span class="math notranslate nohighlight">\(p\)</span> we can omit the binomial coefficient.</p>
+<p><span class="math notranslate nohighlight">\(p^k(1-p)^{n-k}\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s2">&quot;p, k, n&quot;</span><span class="p">)</span>
+<span class="n">pr</span> <span class="o">=</span> <span class="n">p</span><span class="o">**</span><span class="n">k</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">k</span><span class="p">)</span>
+<span class="n">pr</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle p^{k} \left(1 - p\right)^{- k + n}$</div></div>
+</div>
+<p>Let’s find the derivative wrt <span class="math notranslate nohighlight">\(p\)</span>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dprdp</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">pr</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+<span class="n">dprdp</span><span class="o">.</span><span class="n">simplify</span><span class="p">()</span><span class="o">.</span><span class="n">factor</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle - \frac{k p^{k} \left(1 - p\right)^{- k + n + 1} + k p^{k + 1} \left(1 - p\right)^{- k + n} - n p^{k + 1} \left(1 - p\right)^{- k + n}}{p \left(p - 1\right)}$</div></div>
+</div>
+<p>Let’s evaluate it for <span class="math notranslate nohighlight">\(k=7\)</span> and <span class="math notranslate nohighlight">\(n=10\)</span> and visualize both <span class="math notranslate nohighlight">\(Pr(7, 10, p)\)</span> and <span class="math notranslate nohighlight">\(\cfrac{d}{dp}Pr(7, 10, p)\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">move_spplot_to_axes</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+    <span class="n">backend</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="n">backend</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span>
+    <span class="n">backend</span><span class="o">.</span><span class="n">_process_series</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">_series</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">backend</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+    <span class="n">backend</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;right&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
+    <span class="n">backend</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;bottom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="s2">&quot;zero&quot;</span><span class="p">)</span>
+    <span class="n">backend</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;top&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">fig</span><span class="p">)</span>
+
+
+<span class="n">p1</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">dprdp</span><span class="o">.</span><span class="n">evalf</span><span class="p">(</span><span class="n">subs</span><span class="o">=</span><span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="mi">10</span><span class="p">}),</span>
+    <span class="n">pr</span><span class="o">.</span><span class="n">evalf</span><span class="p">(</span><span class="n">subs</span><span class="o">=</span><span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="mi">10</span><span class="p">}),</span>
+    <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;$Pr(7, 10, p)$&quot;</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Function and derivative evaluated for $k=7$ and $n=10$&quot;</span><span class="p">,</span>
+    <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">move_spplot_to_axes</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">pr</span><span class="o">.</span><span class="n">evalf</span><span class="p">(</span><span class="n">subs</span><span class="o">=</span><span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">}),</span>
+    <span class="n">xmin</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">xmax</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:orange&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="mf">0.7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/calculus_ca_w1_47_0.png" src="../_images/calculus_ca_w1_47_0.png" />
+</div>
+</div>
+<p>When <span class="math notranslate nohighlight">\(k = 7\)</span> and <span class="math notranslate nohighlight">\(n = 10\)</span>, the maximum of <span class="math notranslate nohighlight">\(Pr(7, 10, p)\)</span> is for <span class="math notranslate nohighlight">\(p=0.7\)</span>, that is when <span class="math notranslate nohighlight">\(\cfrac{d}{dp}Pr(7, 10, p) = 0\)</span></p>
+<p>Let’s prove it analytically.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sp</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">dprdp</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[k/n]
+</pre></div></div>
+</div>
+<p>Generally, <span class="math notranslate nohighlight">\(Pr(k, n, p)\)</span> is maximized for <span class="math notranslate nohighlight">\(p=k/n\)</span>.</p>
+<p>Let’s evaluate it for <span class="math notranslate nohighlight">\(k = 7\)</span> and <span class="math notranslate nohighlight">\(n = 10\)</span>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sp</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">dprdp</span><span class="p">,</span> <span class="n">p</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">evalf</span><span class="p">(</span><span class="n">subs</span><span class="o">=</span><span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle 0.7$</div></div>
+</div>
+<p>It turns out there is an easier way to maximize <span class="math notranslate nohighlight">\(p^k(1-p)^{n-k}\)</span>.</p>
+<p>And it’s based on the fact that <span class="math notranslate nohighlight">\(\max_{p} p^k(1-p)^{n-k} = \max_{p} \ln p^k(1-p)^{n-k}\)</span>.</p>
+<p>Using the product rule <span class="math notranslate nohighlight">\(\ln (ab) = \ln a + \ln b\)</span> and the power rule <span class="math notranslate nohighlight">\(\ln a^b = b \ln a\)</span> we get</p>
+<p><span class="math notranslate nohighlight">\(\ln p^k(1-p)^{n-k} = k \ln p + (n-k) \ln (1-p)\)</span></p>
+<p>Calculating the derivative of <span class="math notranslate nohighlight">\(k \ln p + (n-k) \ln (1-p)\)</span> is a lot easier</p>
+<p><span class="math notranslate nohighlight">\(\cfrac{d}{dx}k \ln p + (n-k) \ln (1-p)\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{d}{dx}k \ln p + \cfrac{d}{dx}(n-k) \ln (1-p)\)</span></p>
+<p><span class="math notranslate nohighlight">\(k \cfrac{d}{dx} \ln p + (n-k)\cfrac{d}{dx} \ln (1-p)\)</span></p>
+<p><span class="math notranslate nohighlight">\(k \cfrac{1}{p} + (n-k)\cfrac{1}{1-p}(-1)\)</span></p>
+<p><span class="math notranslate nohighlight">\(k \cfrac{1}{p} - (n-k)\cfrac{1}{1-p}\)</span></p>
+<p>Now let’s solve it.</p>
+<p><span class="math notranslate nohighlight">\(k \cfrac{1}{p} - (n-k)\cfrac{1}{1-p} = 0\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{k(1-p)-(n-k)p}{p(1-p)} = 0\)</span></p>
+<p><span class="math notranslate nohighlight">\(k(1-p)-(n-k)p = 0\)</span></p>
+<p><span class="math notranslate nohighlight">\(k - kp - np + kp = 0\)</span></p>
+<p><span class="math notranslate nohighlight">\(k - np = 0\)</span></p>
+<p><span class="math notranslate nohighlight">\(p = \cfrac{k}{n}\)</span></p>
+</section>
+<section id="Computational-efficiency-of-symbolic,-numerical-and-automatic-differentiation">
+<h2>Computational efficiency of symbolic, numerical and automatic differentiation<a class="headerlink" href="#Computational-efficiency-of-symbolic,-numerical-and-automatic-differentiation" title="Permalink to this headline">#</a></h2>
+<p>Symbolic differentiation produces exact derivatives like when computing derivatives by hand. It’s fast for simple functions, but it slows down as the complexity increases.</p>
+<p>Numerical differentiation produces an approximation that is somewhat similar to computing the instantaneous rate of change for a very small <span class="math notranslate nohighlight">\(\Delta x\)</span>. It’s slow.</p>
+<p>Automatic differentiation produces an approximation by constructing a computational graph consisting of basic functions and computing the derivative at each node using the chain rule. It’s fast even for complex functions. It’s the most common approach used in neural networks.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_setup</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="n">sym_setup</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">import sympy as sp</span>
+<span class="s2">import numpy as np</span>
+<span class="s2">x_arr = np.linspace(-6, 6, 1000000)</span>
+<span class="s2">def f(x):</span>
+<span class="s2">    return </span><span class="si">{</span><span class="n">v</span><span class="si">}</span>
+<span class="s2">def diff():</span>
+<span class="s2">    x = sp.symbols(&quot;x&quot;)</span>
+<span class="s2">    return sp.lambdify(x, sp.diff(f(x), x), &quot;numpy&quot;)(x_arr)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="n">num_setup</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">import numpy as np</span>
+<span class="s2">x_arr = np.linspace(-6, 6, 1000000)</span>
+<span class="s2">def f(x):</span>
+<span class="s2">    return </span><span class="si">{</span><span class="n">v</span><span class="si">}</span>
+<span class="s2">def diff():</span>
+<span class="s2">    return np.gradient(f(x_arr), x_arr)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="n">aut_setup</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">from jax import vmap, grad</span>
+<span class="s2">import jax.numpy as jnp</span>
+<span class="s2">x_arr = jnp.linspace(-6, 6, 1000000)</span>
+<span class="s2">def f(x):</span>
+<span class="s2">    return </span><span class="si">{</span><span class="n">v</span><span class="si">}</span>
+<span class="s2">def diff():</span>
+<span class="s2">    return vmap(grad(f))(x_arr)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="n">setup</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;symbolic&quot;</span><span class="p">:</span> <span class="n">sym_setup</span><span class="p">,</span>
+        <span class="s2">&quot;numerical&quot;</span><span class="p">:</span> <span class="n">num_setup</span><span class="p">,</span>
+        <span class="s2">&quot;automatic&quot;</span><span class="p">:</span> <span class="n">aut_setup</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">setup</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+
+<span class="n">res</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;symbolic&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x**2&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;2*x**3 - 3*x**2 + 5&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;sp.exp(-2*x) + 3*sp.sin(3*x)&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;numerical&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x**2&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;2*x**3 - 3*x**2 + 5&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;np.exp(-2*x) + 3*np.sin(3*x)&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;automatic&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;x**2&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;2*x**3 - 3*x**2 + 5&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;jnp.exp(-2*x) + 3*jnp.sin(3*x)&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">vv</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vv</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">timeit</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="s2">&quot;diff()&quot;</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">setup</span><span class="o">=</span><span class="n">get_setup</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+        <span class="n">res</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="n">x_lab</span> <span class="o">=</span> <span class="p">[</span><span class="sa">r</span><span class="s2">&quot;$x^2$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$2x^3-3x^2+5$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$e^{-2x}+3\sin(3x)$&quot;</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_lab</span><span class="p">,</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;symbolic&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;symbolic&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x_lab</span><span class="p">,</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;numerical&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;numerical&quot;</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x_lab</span><span class="p">,</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;automatic&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;automatic&quot;</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;function&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;seconds&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span>
+    <span class="s2">&quot;Time taken for evaluating 100 differentiations using an array of shape 1,000,000&quot;</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1698184905.818675    2474 tfrt_cpu_pjrt_client.cc:349] TfrtCpuClient created.
+No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/calculus_ca_w1_57_1.png" src="../_images/calculus_ca_w1_57_1.png" />
+</div>
+</div>
+</section>
+</section>
+
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Calculus</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="ca_w2.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Calculus - Week 2</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Federico Trifoglio<br/>
+  
+      &copy; Copyright 2023.<br/>
+    <div class="extra_footer">
+      <div id="imageOverlay"><img id="overlayImage" src=""></div>
+    </div>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

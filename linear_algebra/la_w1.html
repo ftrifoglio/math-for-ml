@@ -1,0 +1,771 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta property="og:title" content="Linear Algebra - Week 1" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fedassembly.github.io/math-for-ml/linear_algebra/la_w1.html" />
+<meta property="og:site_name" content="Mathematics for Machine Learning and Data Science" />
+<meta property="og:description" content="Singularity:,,, Complete, Redundant, Contradictory,,,\begin{cases} a + b = 10 \\ a + 2b = 12 \end{cases},\begin{cases} a + b = 10 \\ 2a + 2b = 20 \end{cases},\begin{cases} a + b = 10 \\ 2a + 2b = 24 \end{cases},,,, The first system is complete (non-singular) because it has one solution. a=8 and b..." />
+<meta property="og:image:width" content="1146" />
+<meta property="og:image:height" content="600" />
+<meta property="og:image" content="https://fedassembly.github.io/math-for-ml/_images/social_previews/summary_linear_algebra_la_w1_751e049e.png" />
+<meta property="og:image:alt" content="Singularity:,,, Complete, Redundant, Contradictory,,,\begin{cases} a + b = 10 \\ a + 2b = 12 \end{cases},\begin{cases} a + b = 10 \\ 2a + 2b = 20 \end{cases}..." />
+<meta name="description" content="Singularity:,,, Complete, Redundant, Contradictory,,,\begin{cases} a + b = 10 \\ a + 2b = 12 \end{cases},\begin{cases} a + b = 10 \\ 2a + 2b = 20 \end{cases},\begin{cases} a + b = 10 \\ 2a + 2b = 24 \end{cases},,,, The first system is complete (non-singular) because it has one solution. a=8 and b..." />
+<meta name="twitter:card" content="summary_large_image" />
+
+    <title>Linear Algebra - Week 1 &#8212; Mathematics for Machine Learning and Data Science</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../_static/custom.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://fedassembly.github.io/math-for-ml/linear_algebra/la_w1.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Linear Algebra - Week 2" href="la_w2.html" />
+    <link rel="prev" title="Linear Algebra" href="index.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Mathematics for Machine Learning and Data Science</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Topics
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Linear Algebra
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Week 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="la_w2.html">
+     Week 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="la_w3.html">
+     Week 3
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="la_w4.html">
+     Week 4
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="la_extra.html">
+     Extra
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="la_exer.html">
+     Exercises
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../calculus/index.html">
+   Calculus
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculus/ca_w1.html">
+     Week 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculus/ca_w2.html">
+     Week 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculus/ca_w3.html">
+     Week 3
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../calculus/ca_extra.html">
+     Extra
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+<a href="https://github.com/fedassembly/math-for-ml"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="bottom"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/linear_algebra/la_w1.ipynb.txt"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Singularity">
+   Singularity
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Singularity-and-linear-dependency">
+     Singularity and linear dependency
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Singularity-and-the-determinant">
+     Singularity and the determinant
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Singularity-and-rank">
+     Singularity and rank
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Linear Algebra - Week 1</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Singularity">
+   Singularity
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Singularity-and-linear-dependency">
+     Singularity and linear dependency
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Singularity-and-the-determinant">
+     Singularity and the determinant
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Singularity-and-rank">
+     Singularity and rank
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="Linear-Algebra---Week-1">
+<h1>Linear Algebra - Week 1<a class="headerlink" href="#Linear-Algebra---Week-1" title="Permalink to this headline">#</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">sympy</span> <span class="k">as</span> <span class="nn">sp</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;seaborn-v0_8-whitegrid&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<section id="Singularity">
+<h2>Singularity<a class="headerlink" href="#Singularity" title="Permalink to this headline">#</a></h2>
+<table class="table">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Complete</p></th>
+<th class="head"><p>Redundant</p></th>
+<th class="head"><p>Contradictory</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\begin{cases} a + b = 10 \\ a + 2b = 12 \end{cases}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\begin{cases} a + b = 10 \\ 2a + 2b = 20 \end{cases}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\begin{cases} a + b = 10 \\ 2a + 2b = 24 \end{cases}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<p>The first system is complete (non-singular) because it has one solution. <span class="math notranslate nohighlight">\(a=8\)</span> and <span class="math notranslate nohighlight">\(b=2\)</span>.</p>
+<p>The second system is redundant (singular) because it has many solutions. Any <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> whose sum is 10.</p>
+<p>The second system is contradictory (singular) because it has no solutions. No <span class="math notranslate nohighlight">\(a+b\)</span> can be equal to 10 while <span class="math notranslate nohighlight">\(2(a+b)\)</span> not being 20.</p>
+<blockquote>
+<div><p>🔑 <strong>Singular:</strong> peculiar, irregular</p>
+</div></blockquote>
+<blockquote>
+<div><p>🔑 <strong>Non-singular:</strong> regular</p>
+</div></blockquote>
+<section id="Singularity-and-linear-dependency">
+<h3>Singularity and linear dependency<a class="headerlink" href="#Singularity-and-linear-dependency" title="Permalink to this headline">#</a></h3>
+<p>A system of equations can also be represented as lines.</p>
+<p>In a non-singular system the lines will intersect at the solution.</p>
+<p>In a singular (redundant) system the lines will be one over the other (ie parallel with distant zero).</p>
+<p>In a singular (contradictory) system the lines will be parallel and distant from each other.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">line1</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mf">10.0</span> <span class="o">-</span> <span class="n">a</span>
+
+
+<span class="k">def</span> <span class="nf">line2</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mf">6.0</span> <span class="o">-</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">a</span>
+
+
+<span class="k">def</span> <span class="nf">line3</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mf">20.0</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+
+<span class="k">def</span> <span class="nf">line4</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mf">12.0</span> <span class="o">-</span> <span class="n">a</span>
+
+
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">,</span> <span class="n">ax3</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">[</span><span class="n">line1</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">line1</span><span class="p">(</span><span class="mf">10.0</span><span class="p">)],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$a+b=10$&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">[</span><span class="n">line2</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">line2</span><span class="p">(</span><span class="mf">10.0</span><span class="p">)],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$a+2b=12$&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Complete Non-Singular system&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">[</span><span class="n">line1</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">line1</span><span class="p">(</span><span class="mf">10.0</span><span class="p">)],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$a+b=10$&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span>
+    <span class="p">[</span><span class="n">line3</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">line3</span><span class="p">(</span><span class="mf">10.0</span><span class="p">)],</span>
+    <span class="n">dashes</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="s2">&quot;3&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$2a+2b=20$&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Redundant Singular system&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+
+<span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">[</span><span class="n">line1</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">line1</span><span class="p">(</span><span class="mf">10.0</span><span class="p">)],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$a+b=10$&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">[</span><span class="n">line4</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">line4</span><span class="p">(</span><span class="mf">10.0</span><span class="p">)],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$2a+2b=24$&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Contradictory Singular system&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/linear_algebra_la_w1_6_0.png" src="../_images/linear_algebra_la_w1_6_0.png" />
+</div>
+</div>
+<p>It turns out that to distinguish between singular and non-singular, the constants can be removed.</p>
+<table class="table">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Complete</p></th>
+<th class="head"><p>Redundant</p></th>
+<th class="head"><p>Contradictory</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\begin{cases} a + b = 10 \\ a + 2b = 12 \end{cases}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\begin{cases} a + b = 10 \\ 2a + 2b = 20 \end{cases}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\begin{cases} a + b = 10 \\ 2a + 2b = 24 \end{cases}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<p>Becomes</p>
+<table class="table">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Non-Singular</p></th>
+<th class="head"><p>Singular</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\begin{cases} a + b = 0 \\ a + 2b = 0 \end{cases}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\begin{cases} a + b = 0 \\ 2a + 2b = 0 \end{cases}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<p>And this is where the notion of <strong>Non-singular</strong> and <strong>Singular</strong> matrices comes in.</p>
+<table class="table">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Non-Singular</p></th>
+<th class="head"><p>Singular</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 2 \end{bmatrix}\)</span> <span class="math notranslate nohighlight">\(\begin{bmatrix} 0 \\ 0 \end{bmatrix}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\begin{bmatrix} 1 &amp; 1 \\ 2 &amp; 2 \end{bmatrix}\)</span> <span class="math notranslate nohighlight">\(\begin{bmatrix} 0 \\ 0 \end{bmatrix}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<p></p><blockquote>
+<div><p>🔑 <strong>Singular</strong>: the rows are linearly dependent</p>
+<p>🔑 <strong>Non-singular</strong>: the rows are linearly independent</p>
+</div></blockquote>
+<p>When the rows are linearly independent, there is no constant you can multiply a row by to obtain the second row.</p>
+<p>A different interpretation is that each row carries new information that we cannot derive from any other rows.</p>
+<p>In contrast, the information provided by the rows of a singular matrix are either redundant or contradictory.</p>
+</section>
+<section id="Singularity-and-the-determinant">
+<h3>Singularity and the determinant<a class="headerlink" href="#Singularity-and-the-determinant" title="Permalink to this headline">#</a></h3>
+<blockquote>
+<div><p>🔑 <strong>Singular</strong>: determinant is zero</p>
+</div></blockquote>
+<blockquote>
+<div><p>🔑 <strong>Non-singular</strong>: determinant is non-zero</p>
+</div></blockquote>
+<p>To see how we get to the formula for the determinant and why it’s 0 for singular matrices, let’s consider the matrix <span class="math notranslate nohighlight">\(A\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(A = \begin{bmatrix} a &amp; b \\ c &amp; d \end{bmatrix}\)</span></p>
+<p>We saw earlier that <span class="math notranslate nohighlight">\(A\)</span> is singular if <span class="math notranslate nohighlight">\((a+b)k = c+d\)</span> for <span class="math notranslate nohighlight">\(k &gt; 0\)</span> (linear dependency).</p>
+<p>In particular we saw <span class="math notranslate nohighlight">\(\begin{bmatrix} 1 &amp; 1 \\ 2 &amp; 2 \end{bmatrix}\)</span> is singular because <span class="math notranslate nohighlight">\((1+1)k = 2+2\)</span> for <span class="math notranslate nohighlight">\(k=2\)</span>.</p>
+<p>Equivalently</p>
+<p><span class="math notranslate nohighlight">\(A = \begin{cases} ax + by = 0 \\ cx + dy = 0 \end{cases}\)</span></p>
+<p><span class="math notranslate nohighlight">\(=\begin{cases} k_1ax = cx \\ k_2by = dy \end{cases}\)</span></p>
+<p><span class="math notranslate nohighlight">\(=\begin{cases} k_1 = \cfrac{c}{a} \\ k_2 = \cfrac{d}{b} \end{cases}\)</span></p>
+<p>If <span class="math notranslate nohighlight">\(k_1 = k_2 = k &gt; 0\)</span>, we obtain</p>
+<p><span class="math notranslate nohighlight">\(\cfrac{c}{a} = \cfrac{d}{b}\)</span></p>
+<p>We get rid of the fractions and we obtain the formula of the determinant of <span class="math notranslate nohighlight">\(A\)</span></p>
+<p><span class="math notranslate nohighlight">\(\det A = ad - bc\)</span></p>
+<p><span class="math notranslate nohighlight">\(A\)</span> is singular if <span class="math notranslate nohighlight">\(ad - bc\)</span> is 0, which implies that <span class="math notranslate nohighlight">\(k &gt; 0\)</span></p>
+<p>The determinant has the following properties.</p>
+<blockquote>
+<div><p>🔑 <span class="math notranslate nohighlight">\(\det A \times \det B = \det AB\)</span></p>
+</div></blockquote>
+<blockquote>
+<div><p>🔑 <span class="math notranslate nohighlight">\(\det A^{-1} = \cfrac{1}{\det A}\)</span></p>
+</div></blockquote>
+<p>The second one actually can be derived from the first property.</p>
+<p><span class="math notranslate nohighlight">\(\det AA^{-1} = \det A \times \det A^{-1}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\det I = \det A \times \det A^{-1}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{\det I}{\det A} = \det A^{-1}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\cfrac{1}{\det A} = \det A^{-1}\)</span></p>
+<p>Let’s verify the first property, the second property and also that <span class="math notranslate nohighlight">\(\det I = 1\)</span></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">B</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)))</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">A</span><span class="p">)),</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">B</span><span class="p">)),</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">B</span><span class="p">))</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">==</span> <span class="mf">1.0</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Singularity-and-rank">
+<h3>Singularity and rank<a class="headerlink" href="#Singularity-and-rank" title="Permalink to this headline">#</a></h3>
+<p>We can think the rank of a matrix in terms of how non-singular a matrix is.</p>
+<p>A 2-D matrix has solution in a 2-D space.</p>
+<p>When a matrix is non-singular, we get a point as the solution; and since a point has 0 dimensions, the rank is 2.</p>
+<p>When a matrix is singular, we get a line as the solution or the whole space. A line has dimension 1 and the whole space has dimension 2, so the rank is 1 and 0, respectively.</p>
+<p>Similarly to what we saw for the determinant of matrix, the rank relates to the amount of linearly independent rows of a matrix.</p>
+<blockquote>
+<div><p>🔑 The rank of a matrix is the number of linearly independent rows</p>
+</div></blockquote>
+<p>Although this can help develop an intuition of what the rank of a matrix represents, it doesn’t help determine it, especially for large matrices or non-obvious linear dependencies.</p>
+<p>One method to determine the rank of a matrix is through the reduced row-echelon form (rref) of a matrix.</p>
+<p>Let’s consider the matrix</p>
+<p><span class="math notranslate nohighlight">\(\begin{bmatrix}5&amp;&amp;1\\4&amp;&amp;-3\end{bmatrix}\)</span></p>
+<p>We can obtain the row echelon form via row operations: - switching any two rows - multiplying (dividing) a row by a non-zero constant - adding (subtracting) one row to another</p>
+<p>Row operations are such that they don’t alter the singularity or non-singularity of a matrix, nor its rank.</p>
+<ol class="arabic simple">
+<li><p>Divide each row by the leftmost non-zero coefficient</p></li>
+</ol>
+<p><span class="math notranslate nohighlight">\(\begin{bmatrix}1&amp;&amp;\cfrac{1}{5}\\1&amp;&amp;-\cfrac{3}{4}\end{bmatrix}\)</span></p>
+<ol class="arabic simple" start="2">
+<li><p>Subtract the first row from the second row</p></li>
+</ol>
+<p><span class="math notranslate nohighlight">\(\begin{bmatrix}1&amp;&amp;\cfrac{1}{5}\\0&amp;&amp;-\cfrac{3}{4}-\cfrac{1}{5}\end{bmatrix}\)</span></p>
+<ol class="arabic simple" start="3">
+<li><p>Divide the last row by the leftmost non-zero coefficient</p></li>
+</ol>
+<p><span class="math notranslate nohighlight">\(\begin{bmatrix}1&amp;&amp;\cfrac{1}{5}\\0&amp;&amp;1\end{bmatrix}\)</span></p>
+<ol class="arabic simple" start="4">
+<li><p>Multiply the second row by <span class="math notranslate nohighlight">\(\cfrac{1}{5}\)</span> and subtract it from the first row</p></li>
+</ol>
+<p><span class="math notranslate nohighlight">\(\begin{bmatrix}1&amp;&amp;0\\0&amp;&amp;1\end{bmatrix}\)</span></p>
+<p>Or we can use the <code class="docutils literal notranslate"><span class="pre">rref</span></code> method of the <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> data structure from the <code class="docutils literal notranslate"><span class="pre">sp</span></code> package.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">]])</span><span class="o">.</span><span class="n">rref</span><span class="p">(</span><span class="n">pivots</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle \left[\begin{matrix}1 &amp; 0\\0 &amp; 1\end{matrix}\right]$</div></div>
+</div>
+<p>Let’s try to calculate the rref of a singular matrix: a 3x3 matrix where <strong>all</strong> rows are linearly dependent.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span><span class="o">.</span><span class="n">rref</span><span class="p">(</span><span class="n">pivots</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle \left[\begin{matrix}1 &amp; 2 &amp; 3\\0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0\end{matrix}\right]$</div></div>
+</div>
+<p>Let’s try another singular matrix, where only 2 rows are linearly dependent.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sp</span><span class="o">.</span><span class="n">Matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span><span class="o">.</span><span class="n">rref</span><span class="p">(</span><span class="n">pivots</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle \left[\begin{matrix}1 &amp; 2 &amp; 0\\0 &amp; 0 &amp; 1\\0 &amp; 0 &amp; 0\end{matrix}\right]$</div></div>
+</div>
+<p>The rref form is characterized by the presence of pivots.</p>
+<blockquote>
+<div><p>🔑 A pivot is the first non-zero entry of each row in a row-echelon form.</p>
+</div></blockquote>
+<p>And it turns out the pivots help us determine the rank of a matrix.</p>
+<blockquote>
+<div><p>🔑 The rank of a matrix is the number of pivots of its row-echelon form</p>
+</div></blockquote>
+</section>
+</section>
+</section>
+
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Linear Algebra</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="la_w2.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Linear Algebra - Week 2</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Federico Trifoglio<br/>
+  
+      &copy; Copyright 2023.<br/>
+    <div class="extra_footer">
+      <div id="imageOverlay"><img id="overlayImage" src=""></div>
+    </div>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

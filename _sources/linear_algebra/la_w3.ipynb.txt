@@ -1,0 +1,1408 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Linear Algebra - Week 3"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import math\n",
+    "from functools import partial\n",
+    "\n",
+    "import matplotlib as mpl\n",
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np\n",
+    "import sympy as sp\n",
+    "from IPython.display import Math, display\n",
+    "from scipy.ndimage import rotate\n",
+    "\n",
+    "plt.style.use(\"seaborn-v0_8-whitegrid\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Vectors"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's consider these two vectors:\n",
+    "\n",
+    "$\\vec{a}=\\begin{bmatrix}1\\\\3\\end{bmatrix}$ and $\\vec{b}=\\begin{bmatrix}4\\\\1\\end{bmatrix}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "a = np.array([1, 3])\n",
+    "b = np.array([4, 1])\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0],\n",
+    "    [0, 0],\n",
+    "    [a[0], b[0]],\n",
+    "    [a[1], b[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:orange\"],\n",
+    ")\n",
+    "a_deg = math.degrees(math.atan2(a[1], a[0]))\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "arc = mpl.patches.Arc((0, 0), 1, 1, angle=0, theta1=b_deg, theta2=a_deg)\n",
+    "plt.gca().add_patch(arc)\n",
+    "plt.annotate(\"$\\\\vec{a}$\", [a[0] / 2 - 0.5, a[1] / 2], color=\"tab:blue\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\vec{b}$\", [b[0] / 2, b[1] / 2 - 0.7], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\theta$\", [0.4, 0.4], fontsize=10)\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.title(\"Vectors $\\\\vec{a}$ and $\\\\vec{b}$ and their angle $\\\\theta$\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### The angle between vectors"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To calculate $\\theta$ we can use the **Law of Cosines**\n",
+    "\n",
+    "> 📐 $\\|\\vec{c}\\|^2 = \\|\\vec{a}\\|^2 + \\|\\vec{b}\\|^2 - 2\\|\\vec{a}\\|\\|\\vec{b}\\|\\cos\\theta$\n",
+    "\n",
+    "which relates the lengths of the sides of a triangle to the cosine of one of its angles."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We don't have $\\vec{c}$ though, but we can demonstrate that $\\vec{c} = \\vec{b} - \\vec{a}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "a = np.array([1, 3])\n",
+    "b = np.array([4, 1])\n",
+    "c = b - a\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0, 0, a[0]],\n",
+    "    [0, 0, 0, a[1]],\n",
+    "    [a[0], b[0], c[0], c[0]],\n",
+    "    [a[1], b[1], c[1], c[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:orange\", \"tab:pink\", \"tab:pink\"],\n",
+    "    alpha=[1.0, 1.0, 1.0, 0.3],\n",
+    ")\n",
+    "a_deg = math.degrees(math.atan2(a[1], a[0]))\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "arc = mpl.patches.Arc((0, 0), 1, 1, angle=0, theta1=b_deg, theta2=a_deg)\n",
+    "plt.gca().add_patch(arc)\n",
+    "plt.annotate(\"$\\\\vec{a}$\", [a[0] / 2 - 0.5, a[1] / 2], color=\"tab:blue\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\vec{b}$\", [b[0] / 2, b[1] / 2 - 0.7], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\vec{c}$\", [c[0] / 2, c[1] / 2 - 0.6], color=\"tab:pink\", fontsize=12)\n",
+    "plt.annotate(\n",
+    "    \"$\\\\vec{c}$ from tip of $\\\\vec{a}$\",\n",
+    "    [b[0] / 2, a[1] - 0.5],\n",
+    "    color=\"tab:pink\",\n",
+    "    fontsize=12,\n",
+    ")\n",
+    "plt.annotate(\"$\\\\theta$\", [0.4, 0.4], fontsize=10)\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.title(\"Proof $\\\\vec{c} = \\\\vec{b} - \\\\vec{a}$\")\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "> 🔑 Vectors are unique in that they maintain their direction and magnitude regardless of where they \"start\" or \"end\" in space. Vectors are typically drawn starting from the origin to clearly depict their direction and magnitude. However, the true essence of a vector is that it represents a direction and magnitude in space and can be shifted anywhere. When we compute $\\vec{c} = \\vec{b} - \\vec{a}$ we're calculating the vector that starts from the tip of $\\vec{a}$ nd goes to the tip of $\\vec{b}$. We can draw it starting from the origin or starting from the tip of $\\vec{a}$.\n",
+    "\n",
+    "Now, that we've established $\\vec{c} = \\vec{b} - \\vec{a}$, let's isolate $\\cos\\theta$ from the cosine formula \n",
+    "\n",
+    "$\\|\\vec{c}\\|^2 = \\|\\vec{a}\\|^2 + \\|\\vec{b}\\|^2 - 2\\|\\vec{a}\\|\\|\\vec{b}\\|\\cos\\theta$.\n",
+    "\n",
+    "$\\|\\vec{c}\\|^2 = \\vec{c} \\cdot \\vec{c}$\n",
+    "\n",
+    "$\\|\\vec{c}\\|^2 = (\\vec{b} - \\vec{a}) \\cdot (\\vec{b} - \\vec{a})$\n",
+    "\n",
+    "$\\|\\vec{c}\\|^2 = \\vec{b} \\cdot \\vec{b} + \\vec{a} \\cdot \\vec{a} - 2\\vec{a} \\cdot \\vec{b}$\n",
+    "\n",
+    "$\\|\\vec{c}\\|^2 = \\|\\vec{b}\\|^2 + \\|\\vec{a}\\|^2 - 2\\vec{a} \\cdot \\vec{b}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's verify what we've derived so far."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "assert np.isclose(np.linalg.norm(c) ** 2, np.dot(c, c))\n",
+    "assert np.isclose(np.linalg.norm(c) ** 2, np.dot(b - a, b - a))\n",
+    "assert np.isclose(\n",
+    "    np.linalg.norm(c) ** 2, np.dot(b, b) + np.dot(a, a) - 2 * np.dot(a, b)\n",
+    ")\n",
+    "assert np.isclose(\n",
+    "    np.linalg.norm(c) ** 2,\n",
+    "    np.linalg.norm(b) ** 2 + np.linalg.norm(a) ** 2 - 2 * np.dot(a, b),\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's substitute it into the cosine formula.\n",
+    "\n",
+    "$\\|\\vec{b}\\|^2 + \\|\\vec{a}\\|^2 - 2\\vec{a} \\cdot \\vec{b} = \\|\\vec{a}\\|^2 + \\|\\vec{b}\\|^2 - 2\\|\\vec{a}\\|\\|\\vec{b}\\|\\cos\\theta$\n",
+    "\n",
+    "$- 2\\vec{a} \\cdot \\vec{b} = - 2\\|\\vec{a}\\|\\|\\vec{b}\\|\\cos\\theta$\n",
+    "\n",
+    "$\\cfrac{- 2\\vec{a} \\cdot \\vec{b}}{- 2\\|\\vec{a}\\|\\|\\vec{b}\\|} = \\cos\\theta$\n",
+    "\n",
+    "> 📐 $\\cfrac{\\vec{a} \\cdot \\vec{b}}{\\|\\vec{a}\\|\\|\\vec{b}\\|} = \\cos\\theta$\n",
+    "\n",
+    "The numerator is the dot product of $\\vec{a}$ and $\\vec{b}$. The denominator is a normalization scalar.\n",
+    "\n",
+    "We can actually rewrite it as\n",
+    "\n",
+    "$\\cfrac{\\vec{a}}{\\|\\vec{a}\\|} \\cdot \\cfrac{\\vec{b}}{\\|\\vec{b}\\|} = \\cos\\theta$\n",
+    "\n",
+    "where $\\cfrac{\\vec{a}}{\\|\\vec{a}\\|}$ and $\\cfrac{\\vec{b}}{\\|\\vec{b}\\|}$ are the unit vectors of $\\vec{a}$ and $\\vec{b}$.\n",
+    "\n",
+    "And we can verify that the two are indeed the same."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "assert np.isclose(\n",
+    "    np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)),\n",
+    "    np.dot(a / np.linalg.norm(a), b / np.linalg.norm(b)),\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Once we have $\\cos\\theta$ we can calculate $\\theta$ with the inverse cosine function."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "cos_theta = np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))\n",
+    "print(f\"cos(theta): {cos_theta:.2f}\")\n",
+    "print(f\"theta (radians): {np.arccos(cos_theta):.2f}\")\n",
+    "print(\n",
+    "    f\"theta (degrees): {np.degrees(np.arccos(cos_theta)):.2f}\\N{DEGREE SIGN}\"\n",
+    ")  # or multiply radians by 180/math.pi\n",
+    "\n",
+    "a = np.array([1, 3])\n",
+    "b = np.array([4, 1])\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0],\n",
+    "    [0, 0],\n",
+    "    [a[0], b[0]],\n",
+    "    [a[1], b[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:orange\"],\n",
+    ")\n",
+    "a_deg = math.degrees(math.atan2(a[1], a[0]))\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "arc = mpl.patches.Arc((0, 0), 1, 1, angle=0, theta1=b_deg, theta2=a_deg)\n",
+    "plt.gca().add_patch(arc)\n",
+    "plt.annotate(\"$\\\\vec{a}$\", [a[0] / 2 - 0.5, a[1] / 2], color=\"tab:blue\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\vec{b}$\", [b[0] / 2, b[1] / 2 - 0.7], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\n",
+    "    f\"{np.degrees(np.arccos(cos_theta)):.1f}\\N{DEGREE SIGN}\", [0.4, 0.4], fontsize=10\n",
+    ")\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.title(\"Value of $\\\\theta$\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Vector projections"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now, let's say we want to project $\\vec{b}$ onto $\\vec{a}$.\n",
+    "\n",
+    "> 🔑 The vector projection of $\\vec{b}$ onto $\\vec{a}$ (denoted as $\\|\\overrightarrow{proj_{a}b}\\|$) is a vector with the same direction as $\\vec{a}$ and a magnitude such that the tip of $\\vec{b}$ lies perpendicularly onto $\\vec{a}$. \n",
+    "\n",
+    "It's like $\\vec{b}$ casting its shadow onto $\\vec{a}$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "a = np.array([1, 3])\n",
+    "b = np.array([4, 1])\n",
+    "proj_b = (np.dot(a, b) / np.linalg.norm(a)) * (a / np.linalg.norm(a))\n",
+    "d = b - proj_b\n",
+    "\n",
+    "img = plt.imread(\"../_static/flashlight.jpg\")\n",
+    "angle = math.degrees(math.atan2(a[1], a[0])) - 90\n",
+    "imgbox = mpl.offsetbox.OffsetImage(\n",
+    "    rotate(img, angle, reshape=False, cval=255), zoom=0.05\n",
+    ")\n",
+    "imgabb = mpl.offsetbox.AnnotationBbox(imgbox, (5, 0.5), xycoords=\"data\", frameon=False)\n",
+    "angle = math.degrees(math.atan2(a[1], a[0]))\n",
+    "\n",
+    "shadow = plt.Polygon(\n",
+    "    [proj_b, b, [0, 0]],\n",
+    "    closed=True,\n",
+    "    fill=True,\n",
+    "    edgecolor=\"gray\",\n",
+    "    facecolor=\"gray\",\n",
+    "    alpha=0.2,\n",
+    ")\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0],\n",
+    "    [0, 0],\n",
+    "    [a[0], b[0]],\n",
+    "    [a[1], b[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:orange\"],\n",
+    ")\n",
+    "a_deg = math.degrees(math.atan2(a[1], a[0]))\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "arc = mpl.patches.Arc((0, 0), 1, 1, angle=0, theta1=b_deg, theta2=a_deg)\n",
+    "plt.gca().add_patch(arc)\n",
+    "plt.gca().add_artist(imgabb)\n",
+    "plt.gca().add_patch(shadow)\n",
+    "plt.annotate(\"$\\\\vec{a}$\", [a[0] / 2 - 0.5, a[1] / 2], color=\"tab:blue\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\vec{b}$\", [b[0] / 2, b[1] / 2 - 0.7], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\theta$\", [0.4, 0.4], fontsize=10)\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.title(\"Projection as the 'shadow' cast by the vector\")\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The definition of $\\cos \\theta$ in a right triangle is $adjacent / hypotenuse$.\n",
+    "\n",
+    "<img src=\"https://ichef.bbci.co.uk/images/ic/1280xn/p0dktj82.png\" width=\"300px\">\n",
+    "*Source: www.bbc.co.uk/bitesize*"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The $hypotenuse$ is the length of vector we want to project ($\\|\\vec{b}\\|$).\n",
+    "\n",
+    "The $adjacent$ is the length of such projection ($\\|\\overrightarrow{proj_{a}b}\\|$).\n",
+    "\n",
+    "So, by definition:\n",
+    "\n",
+    "$\\cos\\theta = \\cfrac{\\|\\overrightarrow{proj_{a}b}\\|}{\\|\\vec{b}\\|}$\n",
+    "\n",
+    "and, the **length** of the projection of $\\vec{b}$ is:\n",
+    "\n",
+    "$\\|\\overrightarrow{proj_{a}b}\\| = \\|\\vec{b}\\|\\cos\\theta$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<img src=\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYHv2gl3xCjoh66VBZOxWU7R3ycaKBEQJLcHeyU-pc9kCcZq_q8WfNjEqE9FK83dtVnpo&usqp=CAU\" width=\"300px\">\n",
+    "*Source: www.ncetm.org.uk*"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In the image above, we can see an interesting fact.\n",
+    "\n",
+    "If the length of the vector we want to project is 1, then the length of the projection is $\\cos\\theta$.\n",
+    "\n",
+    "$\\|\\overrightarrow{proj_{a}b}\\| = \\cos\\theta$ when $\\|\\vec{b}\\| = 1$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "It turns out we don't need $\\cos\\theta$ to calculate the length of the projection.\n",
+    "\n",
+    "We can substitute the definition of $\\cos\\theta$ into the definition of the length of the projection.\n",
+    "\n",
+    "Definition of $\\cos\\theta$:\n",
+    "\n",
+    "$\\cfrac{\\vec{a} \\cdot \\vec{b}}{\\|\\vec{a}\\|\\|\\vec{b}\\|} = \\cos\\theta$\n",
+    "\n",
+    "Definition of length of the projection:\n",
+    "\n",
+    "$\\|\\overrightarrow{proj_{a}b}\\| = \\|\\vec{b}\\|\\cos\\theta$\n",
+    "\n",
+    "So it becomes:\n",
+    "\n",
+    "$\\|\\overrightarrow{proj_{a}b}\\| = \\|\\vec{b}\\|\\cfrac{\\vec{a} \\cdot \\vec{b}}{\\|\\vec{a}\\|\\|\\vec{b}\\|}$\n",
+    "\n",
+    "which simplifies to\n",
+    "\n",
+    "$\\|\\overrightarrow{proj_{a}b}\\| = \\cfrac{\\vec{a} \\cdot \\vec{b}}{\\|\\vec{a}\\|}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "What about the direction?\n",
+    "\n",
+    "By definition the projection of $\\vec{b}$ onto $\\vec{a}$ must have the same direction as $\\vec{a}$.\n",
+    "\n",
+    "> 🔑 A unit vector has direction $\\langle a_1, a_2, ..., a_n \\rangle \\in\\mathbb{R}^n$ and length of 1 ($\\|\\vec{a}\\|=1$).\n",
+    "\n",
+    "Let $\\|\\overrightarrow{proj_{a}b}\\|$ be the length of the projection and $\\cfrac{\\vec{a}}{\\|\\vec{a}\\|}$ be the unit vector of $\\vec{a}$, we get that\n",
+    "\n",
+    "$\\overrightarrow{proj_{a}b} = \\|\\overrightarrow{proj_{a}b}\\| \\cfrac{\\vec{a}}{\\|\\vec{a}\\|}$\n",
+    "\n",
+    "Finally, we can substitute the definition of $\\|\\overrightarrow{proj_{a}b}\\|$ and we obtain the formula of the **projection of** $\\vec{b}$ **onto** $\\vec{a}$:\n",
+    "\n",
+    "> 📐 $\\overrightarrow{proj_{a}b} = \\cfrac{\\vec{a} \\cdot \\vec{b}}{\\|\\vec{a}\\|} \\cfrac{\\vec{a}}{\\|\\vec{a}\\|}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "a = np.array([1, 3])\n",
+    "b = np.array([4, 1])\n",
+    "proj_b = (np.dot(a, b) / np.linalg.norm(a)) * (a / np.linalg.norm(a))\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0, 0],\n",
+    "    [0, 0, 0],\n",
+    "    [a[0], b[0], proj_b[0]],\n",
+    "    [a[1], b[1], proj_b[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:orange\", \"tab:green\"],\n",
+    "    alpha=[0.5, 1.0, 1.0],\n",
+    ")\n",
+    "plt.plot([proj_b[0], b[0]], [proj_b[1], b[1]], \"k--\", alpha=0.5)\n",
+    "a_deg = math.degrees(math.atan2(a[1], a[0]))\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "arc = mpl.patches.Arc((0, 0), 1, 1, angle=0, theta1=b_deg, theta2=a_deg)\n",
+    "plt.gca().add_patch(arc)\n",
+    "plt.annotate(\n",
+    "    \"$\\\\vec{a}$\",\n",
+    "    [a[0] / 2 - 0.1, a[1] / 2 + 1],\n",
+    "    color=\"tab:blue\",\n",
+    "    fontsize=12,\n",
+    "    alpha=0.5,\n",
+    ")\n",
+    "plt.annotate(\"$\\\\vec{b}$\", [b[0] / 2, b[1] / 2 - 0.7], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\n",
+    "    \"$\\\\vec{proj_{a}b}$\",\n",
+    "    [proj_b[0] / 2 - 1.1, proj_b[1] / 2],\n",
+    "    color=\"tab:green\",\n",
+    "    fontsize=12,\n",
+    ")\n",
+    "plt.annotate(\"$\\\\theta$\", [0.4, 0.4], fontsize=10)\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.title(\"Projection of $\\\\vec{b}$ onto $\\\\vec{a}$\")\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can see that $\\overrightarrow{proj_{a}b}$ (adjacent) and $\\vec{b}$ (hypotenuse) form a right triangle."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "a = np.linalg.norm(proj_b)\n",
+    "h = np.linalg.norm(b)\n",
+    "o = np.linalg.norm(proj_b - b)\n",
+    "\n",
+    "cos_theta = a / h\n",
+    "sin_theta = o / h"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "From the Pythagorean theorem we have\n",
+    "\n",
+    "$h^2 = o^2 + a^2$\n",
+    "\n",
+    "Equivalently:\n",
+    "\n",
+    "$1 = (\\cfrac{o}{h})^2 + (\\cfrac{a}{h})^2$\n",
+    "\n",
+    "$1 = \\cos\\theta^2 + \\sin\\theta^2$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's verify it."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "assert h**2 == o**2 + a**2\n",
+    "assert 1 == (o / h) ** 2 + (a / h) ** 2\n",
+    "assert 1 == cos_theta**2 + sin_theta**2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can also verify that the angles of the triangle sum up to 180.\n",
+    "\n",
+    "We already have one angle, and one is 90 by definition. We only need the one between $\\vec{b}$ and its adjacent $\\vec{proj_b} - \\vec{b}$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "a = np.array([1, 3])\n",
+    "b = np.array([4, 1])\n",
+    "proj_b = (np.dot(a, b) / np.linalg.norm(a)) * (a / np.linalg.norm(a))\n",
+    "c = proj_b - b\n",
+    "\n",
+    "a_deg = math.degrees(math.atan2(a[1], a[0]))\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "arc_1 = mpl.patches.Arc((0, 0), 1, 1, angle=0, theta1=b_deg, theta2=a_deg)\n",
+    "plt.gca().add_patch(arc_1)\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "c_deg = math.degrees(math.atan2(c[1], c[0]))\n",
+    "arc_2 = mpl.patches.Arc((b[0], b[1]), 1, 1, angle=0, theta1=-180 - b_deg, theta2=-c_deg)\n",
+    "plt.gca().add_patch(arc_2)\n",
+    "arc_3 = plt.Rectangle(\n",
+    "    proj_b,\n",
+    "    -0.3,\n",
+    "    -0.3,\n",
+    "    angle=a_deg,\n",
+    "    fill=False,\n",
+    "    edgecolor=\"k\",\n",
+    ")\n",
+    "plt.gca().add_patch(arc_3)\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0, 0],\n",
+    "    [0, 0, 0],\n",
+    "    [a[0], b[0], proj_b[0]],\n",
+    "    [a[1], b[1], proj_b[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:orange\", \"tab:green\"],\n",
+    "    alpha=[0.5, 1.0, 1.0],\n",
+    ")\n",
+    "plt.plot([proj_b[0], b[0]], [proj_b[1], b[1]], \"k--\", alpha=0.5)\n",
+    "\n",
+    "plt.annotate(\n",
+    "    \"$\\\\vec{a}$\",\n",
+    "    [a[0] / 2 - 0.1, a[1] / 2 + 1],\n",
+    "    color=\"tab:blue\",\n",
+    "    fontsize=12,\n",
+    "    alpha=0.5,\n",
+    ")\n",
+    "plt.annotate(\"$\\\\vec{b}$\", [b[0] / 2, b[1] / 2 - 0.7], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\n",
+    "    \"$\\\\vec{proj_{a}b}$\",\n",
+    "    [proj_b[0] / 2 - 1.1, proj_b[1] / 2],\n",
+    "    color=\"tab:green\",\n",
+    "    fontsize=12,\n",
+    ")\n",
+    "plt.annotate(\n",
+    "    f\"{np.degrees(np.arccos(cos_theta)):.1f}\\N{DEGREE SIGN}\", [0.4, 0.4], fontsize=10\n",
+    ")\n",
+    "plt.annotate(\"$\\\\theta_3$\", [3.0, 0.95], fontsize=10)\n",
+    "plt.annotate(\"90\\N{DEGREE SIGN}\", [0.9, 1.4], fontsize=10)\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.title(\"The sum of the 3 angles is 180\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's find $\\cos\\theta_3$ and verify that the sum of the 3 angles is 180."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "theta_1_deg = np.degrees(np.arccos(cos_theta))\n",
+    "\n",
+    "a = np.linalg.norm(proj_b - b)\n",
+    "h = np.linalg.norm(b)\n",
+    "o = np.linalg.norm(proj_b)\n",
+    "\n",
+    "cos_theta_2 = a / h\n",
+    "theta_2_deg = np.degrees(np.arccos(cos_theta_2))\n",
+    "\n",
+    "theta_3_deg = 90\n",
+    "\n",
+    "assert theta_1_deg + theta_2_deg + theta_3_deg == 180"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's consider a different pair of vectors.\n",
+    "\n",
+    "$\\vec{a}=\\begin{bmatrix}-2\\\\3\\end{bmatrix}$ and $\\vec{b}=\\begin{bmatrix}4\\\\1\\end{bmatrix}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "a = np.array([-2, 3])\n",
+    "b = np.array([4, 1])\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0],\n",
+    "    [0, 0],\n",
+    "    [a[0], b[0]],\n",
+    "    [a[1], b[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:orange\"],\n",
+    ")\n",
+    "a_deg = math.degrees(math.atan2(a[1], a[0]))\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "arc = mpl.patches.Arc((0, 0), 1, 1, angle=0, theta1=b_deg, theta2=a_deg)\n",
+    "plt.gca().add_patch(arc)\n",
+    "plt.annotate(\"$\\\\vec{a}$\", [a[0] / 2 - 0.7, a[1] / 2], color=\"tab:blue\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\vec{b}$\", [b[0] / 2, b[1] / 2 + 0.3], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\theta$\", [0.1, 0.6], fontsize=10)\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.title(\"Two vectors that form an obtuse angle\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can use the 'shadow' metaphor to get an intuition of what the projection of $\\vec{b}$ onto $\\vec{a}$ might look like."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "a = np.array([-2, 3])\n",
+    "b = np.array([4, 1])\n",
+    "proj_b = (np.dot(a, b) / np.linalg.norm(a)) * (a / np.linalg.norm(a))\n",
+    "d = b - proj_b\n",
+    "\n",
+    "img = plt.imread(\"../_static/flashlight.jpg\")\n",
+    "angle = math.degrees(math.atan2(a[1], a[0])) - 90\n",
+    "imgbox = mpl.offsetbox.OffsetImage(\n",
+    "    rotate(img, angle, reshape=False, cval=255), zoom=0.05\n",
+    ")\n",
+    "imgabb = mpl.offsetbox.AnnotationBbox(imgbox, (5, 1.5), xycoords=\"data\", frameon=False)\n",
+    "angle = math.degrees(math.atan2(a[1], a[0]))\n",
+    "\n",
+    "shadow = plt.Polygon(\n",
+    "    [proj_b, b, [0, 0]],\n",
+    "    closed=True,\n",
+    "    fill=True,\n",
+    "    edgecolor=\"gray\",\n",
+    "    facecolor=\"gray\",\n",
+    "    alpha=0.2,\n",
+    ")\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0],\n",
+    "    [0, 0],\n",
+    "    [a[0], b[0]],\n",
+    "    [a[1], b[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:orange\"],\n",
+    ")\n",
+    "a_deg = math.degrees(math.atan2(a[1], a[0]))\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "arc = mpl.patches.Arc((0, 0), 1, 1, angle=0, theta1=b_deg, theta2=a_deg)\n",
+    "plt.gca().add_patch(arc)\n",
+    "plt.gca().add_artist(imgabb)\n",
+    "plt.gca().add_patch(shadow)\n",
+    "plt.annotate(\"$\\\\vec{a}$\", [a[0] / 2 - 0.7, a[1] / 2], color=\"tab:blue\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\vec{b}$\", [b[0] / 2, b[1] / 2 + 0.3], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\n",
+    "    f\"{np.degrees(np.arccos(cos_theta)):.1f}\\N{DEGREE SIGN}\", [0.1, 0.6], fontsize=10\n",
+    ")\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.title(\"Projection as the 'shadow' cast by the vector\")\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's project $\\vec{b}$ onto $\\vec{a}$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "a = np.array([-2, 3])\n",
+    "b = np.array([4, 1])\n",
+    "proj_b = (np.dot(a, b) / np.linalg.norm(a)) * (a / np.linalg.norm(a))\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0, 0],\n",
+    "    [0, 0, 0],\n",
+    "    [a[0], b[0], proj_b[0]],\n",
+    "    [a[1], b[1], proj_b[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:orange\", \"tab:green\"],\n",
+    ")\n",
+    "plt.plot([proj_b[0], b[0]], [proj_b[1], b[1]], \"k--\", alpha=0.5)\n",
+    "a_deg = math.degrees(math.atan2(a[1], a[0]))\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "arc = mpl.patches.Arc((0, 0), 1, 1, angle=0, theta1=b_deg, theta2=a_deg)\n",
+    "plt.gca().add_patch(arc)\n",
+    "plt.annotate(\"$\\\\vec{a}$\", [a[0] / 2 - 0.7, a[1] / 2], color=\"tab:blue\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\vec{b}$\", [b[0] / 2, b[1] / 2 + 0.3], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\n",
+    "    \"$\\\\vec{proj_{a}b}$\",\n",
+    "    [proj_b[0] / 2 - 1.2, proj_b[1] / 2 - 0.2],\n",
+    "    color=\"tab:green\",\n",
+    "    fontsize=12,\n",
+    ")\n",
+    "plt.annotate(\n",
+    "    f\"{np.degrees(np.arccos(cos_theta)):.1f}\\N{DEGREE SIGN}\", [0.1, 0.6], fontsize=10\n",
+    ")\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.title(\"Projection of $\\\\vec{b}$ onto $\\\\vec{a}$\")\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Geometric intuition of Dot product"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's revisit the definition of $\\cos\\theta$ which we obtained from the **Law of Cosines**.\n",
+    "\n",
+    "> 📐 $\\cfrac{\\vec{a} \\cdot \\vec{b}}{\\|\\vec{a}\\|\\|\\vec{b}\\|} = \\cos\\theta$\n",
+    "\n",
+    "If we move $\\|\\vec{a}\\|\\|\\vec{b}\\|$ back to the RHS we get\n",
+    "\n",
+    "$\\vec{a} \\cdot \\vec{b} = \\|\\vec{a}\\|\\|\\vec{b}\\|\\cos\\theta$\n",
+    "\n",
+    "And when $\\cos\\theta > 0$ we can substitute $\\|\\vec{b}\\|\\cos\\theta$ with $\\|\\overrightarrow{proj_{a}b}\\|$ (whose equivalence was obtained from the general definition $\\cos \\theta = adjacent / hypotenuse$)\n",
+    "\n",
+    "$\\vec{a} \\cdot \\vec{b} = \\|\\vec{a}\\| \\|\\overrightarrow{proj_{a}b}\\|$\n",
+    "\n",
+    "> 🔑 When $\\vec{a}$ and $\\vec{b}$ \"agree\" on the direction ($0° < \\theta < 90°$, that is $\\cos\\theta > 1$) the dot product between $\\vec{a}$ and $\\vec{b}$ is the length of $\\vec{a}$ times the length of projection $\\vec{b}$ onto $\\vec{a}$.\n",
+    "\n",
+    "Let's verify it."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "a = np.array([1, 3])\n",
+    "b = np.array([4, 1])\n",
+    "\n",
+    "cos_theta = np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))\n",
+    "proj_b = np.linalg.norm(b) * cos_theta * a / np.linalg.norm(a)\n",
+    "\n",
+    "assert cos_theta > 0\n",
+    "assert np.isclose(np.dot(a, b), np.linalg.norm(a) * np.linalg.norm(proj_b))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's imagine $\\vec{b}$ was **parallel** to $\\vec{a}$, that is, $\\cos\\theta = 1$ (0° angle).\n",
+    "\n",
+    "Then $\\vec{b} = \\overrightarrow{proj_{a}b}$. In other words, $\\vec{b}$ is already projected onto $\\vec{a}$.\n",
+    "\n",
+    "In this case\n",
+    "\n",
+    "$\\vec{a} \\cdot \\vec{b} = \\|\\vec{a}\\|\\|\\vec{b}\\|$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "a = np.array([1, 3])\n",
+    "b = np.array([4, 1])\n",
+    "\n",
+    "cos_theta = np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))\n",
+    "proj_b = np.linalg.norm(b) * cos_theta * a / np.linalg.norm(a)\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0],\n",
+    "    [0, 0],\n",
+    "    [a[0], proj_b[0]],\n",
+    "    [a[1], proj_b[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:green\"],\n",
+    ")\n",
+    "plt.annotate(\n",
+    "    \"$\\\\vec{a}$\",\n",
+    "    [a[0] / 2 - 0.1, a[1] / 2 + 1],\n",
+    "    color=\"tab:blue\",\n",
+    "    fontsize=12,\n",
+    ")\n",
+    "plt.annotate(\n",
+    "    \"$\\\\vec{proj_{a}b}$\",\n",
+    "    [proj_b[0] / 2 - 1.1, proj_b[1] / 2],\n",
+    "    color=\"tab:green\",\n",
+    "    fontsize=12,\n",
+    ")\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.title(r\"$\\vec{a} \\cdot \\vec{b} = \\|\\vec{a}\\|\\|\\vec{b}\\|$ when $\\cos\\theta = 1$\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's see the case when the equivalence $\\vec{a} \\cdot \\vec{b} = \\|\\vec{a}\\| \\|\\overrightarrow{proj_{a}b}\\|$ doesn't hold, but $\\vec{a} \\cdot \\vec{b} = \\|\\vec{a}\\|\\|\\vec{b}\\|\\cos\\theta$ does."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "a = np.array([-2, 3])\n",
+    "b = np.array([4, 1])\n",
+    "\n",
+    "cos_theta = np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))\n",
+    "proj_b = np.linalg.norm(b) * cos_theta * a / np.linalg.norm(a)\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0, 0],\n",
+    "    [0, 0, 0],\n",
+    "    [a[0], b[0], proj_b[0]],\n",
+    "    [a[1], b[1], proj_b[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    color=[\"tab:blue\", \"tab:orange\", \"tab:green\"],\n",
+    ")\n",
+    "plt.plot([proj_b[0], b[0]], [proj_b[1], b[1]], \"k--\", alpha=0.5)\n",
+    "a_deg = math.degrees(math.atan2(a[1], a[0]))\n",
+    "b_deg = math.degrees(math.atan2(b[1], b[0]))\n",
+    "arc = mpl.patches.Arc((0, 0), 1, 1, angle=0, theta1=b_deg, theta2=a_deg)\n",
+    "plt.gca().add_patch(arc)\n",
+    "plt.annotate(\"$\\\\vec{a}$\", [a[0] / 2 - 0.7, a[1] / 2], color=\"tab:blue\", fontsize=12)\n",
+    "plt.annotate(\"$\\\\vec{b}$\", [b[0] / 2, b[1] / 2 + 0.3], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\n",
+    "    \"$\\\\vec{proj_{a}b}$\",\n",
+    "    [proj_b[0] / 2 - 1.2, proj_b[1] / 2 - 0.2],\n",
+    "    color=\"tab:green\",\n",
+    "    fontsize=12,\n",
+    ")\n",
+    "plt.annotate(\n",
+    "    f\"{np.degrees(np.arccos(cos_theta)):.1f}\\N{DEGREE SIGN}\", [0.1, 0.6], fontsize=10\n",
+    ")\n",
+    "plt.xticks(np.arange(-3, 7, 1))\n",
+    "plt.yticks(np.arange(-3, 6, 1))\n",
+    "plt.title(\"Projection of $\\\\vec{b}$ onto $\\\\vec{a}$\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Since the angle is more than 90°, $\\cos\\theta < 0$.\n",
+    "\n",
+    "So $\\vec{a} \\cdot \\vec{b}$ will be negative.\n",
+    "\n",
+    "But $\\|\\vec{a}\\| \\|\\overrightarrow{proj_{a}b}\\|$ is always positive."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(f\"Dot product: {np.dot(a, proj_b):.2f}\")\n",
+    "print(\n",
+    "    f\"Norm of a times norm of projection: {np.linalg.norm(a) * np.linalg.norm(proj_b):.2f}\"\n",
+    ")\n",
+    "print(\n",
+    "    f\"Norm of a times norm of b times cos theta: {np.linalg.norm(a) * np.linalg.norm(b) * cos_theta:.2f}\"\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Linear transformations"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's define some transformation matrices.\n",
+    "\n",
+    "Horizontal scaling by 2:\n",
+    "\n",
+    "$A_1=\\begin{bmatrix}2&&0\\\\0&&1\\end{bmatrix}$\n",
+    "\n",
+    "Horizontal reflection:\n",
+    "\n",
+    "$A_2=\\begin{bmatrix}-1&&0\\\\0&&1\\end{bmatrix}$\n",
+    "\n",
+    "Rotation by 90 degrees clockwise:\n",
+    "\n",
+    "$A_3=\\begin{bmatrix}0&&1\\\\-1&&0\\end{bmatrix}$\n",
+    "\n",
+    "Horizontal shear by 0.5:\n",
+    "\n",
+    "$A_4=\\begin{bmatrix}1&&0.5\\\\0&&1\\end{bmatrix}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "hscaling = np.array([[2, 0], [0, 1]])\n",
+    "reflection_yaxis = np.array([[-1, 0], [0, 1]])\n",
+    "rotation_90_clockwise = np.array([[0, 1], [-1, 0]])\n",
+    "shear_x = np.array([[1, 0.5], [0, 1]])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's apply these transformations to the basis vectors.\n",
+    "\n",
+    "$\\vec{e_1}=\\begin{bmatrix}1\\\\0\\end{bmatrix}$ and $\\vec{e_2}=\\begin{bmatrix}0\\\\1\\end{bmatrix}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "e1 = np.array([1, 0])\n",
+    "e2 = np.array([0, 1])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "A transformation is applied by multiplying $A_k$ by $e_i$.\n",
+    "\n",
+    "For $e_1$ we have:\n",
+    "\n",
+    "$\\begin{bmatrix}2&&0\\\\0&&1\\end{bmatrix}\n",
+    "\\begin{bmatrix}1\\\\0\\end{bmatrix} = \n",
+    "\\begin{bmatrix}2 \\times 1 + 0 \\times 0\\\\0 \\times 1 + 1 \\times 0\\end{bmatrix} =\n",
+    "\\begin{bmatrix}2\\\\0\\end{bmatrix}$\n",
+    "\n",
+    "For $e_2$ we have:\n",
+    "\n",
+    "$\\begin{bmatrix}2&&0\\\\0&&1\\end{bmatrix}\n",
+    "\\begin{bmatrix}0\\\\1\\end{bmatrix} = \n",
+    "\\begin{bmatrix}2 \\times 0 + 0 \\times 1\\\\0 \\times 0 + 1 \\times 1\\end{bmatrix} =\n",
+    "\\begin{bmatrix}0\\\\1\\end{bmatrix}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's verify it."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "display(\n",
+    "    Math(\n",
+    "        \"T(\\\\vec{e_1})=\"\n",
+    "        + sp.latex(sp.Matrix(list(hscaling @ e1)))\n",
+    "        + \"T(\\\\vec{e_2})=\"\n",
+    "        + sp.latex(sp.Matrix(list(hscaling @ e2)))\n",
+    "    )\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's visualize it."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def plot_transformation(T, title, ax, basis=None, lim=5):\n",
+    "    if basis is None:\n",
+    "        e1 = np.array([[1], [0]])\n",
+    "        e2 = np.array([[0], [1]])\n",
+    "    else:\n",
+    "        e1, e2 = basis\n",
+    "    zero = np.zeros(1, dtype=\"int\")\n",
+    "    c = \"tab:blue\"\n",
+    "    c_t = \"tab:orange\"\n",
+    "    ax.set_xticks(np.arange(-lim, lim))\n",
+    "    ax.set_yticks(np.arange(-lim, lim))\n",
+    "    ax.set_xlim(-lim, lim)\n",
+    "    ax.set_ylim(-lim, lim)\n",
+    "    _plot_vectors(e1, e2, c, ax)\n",
+    "    ax.plot(\n",
+    "        [zero, e2[0], e1[0] + e2[0], e1[0]],\n",
+    "        [zero, e2[1], e1[1] + e2[1], e1[1]],\n",
+    "        color=c,\n",
+    "    )\n",
+    "    _make_labels(e1, \"$e_1$\", c, y_offset=(-0.2, 1.0), ax=ax)\n",
+    "    _make_labels(e2, \"$e_2$\", c, y_offset=(-0.2, 1.0), ax=ax)\n",
+    "    e1_t = T(e1)\n",
+    "    e2_t = T(e2)\n",
+    "    _plot_vectors(e1_t, e2_t, c_t, ax)\n",
+    "    ax.plot(\n",
+    "        [zero, e2_t[0], e1_t[0] + e2_t[0], e1_t[0]],\n",
+    "        [zero, e2_t[1], e1_t[1] + e2_t[1], e1_t[1]],\n",
+    "        color=c_t,\n",
+    "    )\n",
+    "    _make_labels(e1_t, \"$T(e_1)$\", c_t, y_offset=(0.0, 1.0), ax=ax)\n",
+    "    _make_labels(e2_t, \"$T(e_2)$\", c_t, y_offset=(0.0, 1.0), ax=ax)\n",
+    "    ax.set_aspect(\"equal\")\n",
+    "    ax.set_title(title)\n",
+    "\n",
+    "\n",
+    "def _make_labels(e, text, color, y_offset, ax):\n",
+    "    e_sgn = 0.4 * np.array([[1] if i == 0 else i for i in np.sign(e)])\n",
+    "    return ax.text(\n",
+    "        e[0] - 0.2 + e_sgn[0],\n",
+    "        e[1] + y_offset[0] + y_offset[1] * e_sgn[1],\n",
+    "        text,\n",
+    "        fontsize=12,\n",
+    "        color=color,\n",
+    "    )\n",
+    "\n",
+    "\n",
+    "def _plot_vectors(e1, e2, color, ax):\n",
+    "    ax.quiver(\n",
+    "        [0, 0],\n",
+    "        [0, 0],\n",
+    "        [e1[0], e2[0]],\n",
+    "        [e1[1], e2[1]],\n",
+    "        color=color,\n",
+    "        angles=\"xy\",\n",
+    "        scale_units=\"xy\",\n",
+    "        scale=1,\n",
+    "    )\n",
+    "\n",
+    "\n",
+    "def T(A, v):\n",
+    "    w = A @ v\n",
+    "    return w\n",
+    "\n",
+    "\n",
+    "fig, axs = plt.subplots(nrows=2, ncols=3, figsize=(3 * 4, 2 * 4))\n",
+    "ax1, ax2, ax3, ax4, ax5, ax6 = axs.flatten()\n",
+    "plot_transformation(partial(T, hscaling), title=\"Horizontal scaling by 2\", ax=ax1)\n",
+    "plot_transformation(partial(T, reflection_yaxis), title=\"Horizontal reflection\", ax=ax2)\n",
+    "plot_transformation(\n",
+    "    partial(T, rotation_90_clockwise), title=\"Rotation by 90 degrees clockwise\", ax=ax3\n",
+    ")\n",
+    "plot_transformation(partial(T, shear_x), title=\"Horizontal shear by 0.5\", ax=ax4)\n",
+    "plot_transformation(\n",
+    "    partial(T, rotation_90_clockwise @ shear_x), title=\"Rotation and shear\", ax=ax5\n",
+    ")\n",
+    "plot_transformation(\n",
+    "    partial(T, shear_x @ rotation_90_clockwise), title=\"Shear and rotation\", ax=ax6\n",
+    ")\n",
+    "plt.tight_layout()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Linear transformations and rank"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Since linear transformations are matrices, they can be singular and non-singular and also have a rank."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "non_sing_tr = np.array([[3, 1], [1, 2]])\n",
+    "sing_tr = np.array([[1, 1], [2, 2]])\n",
+    "\n",
+    "fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(2 * 4, 1 * 4))\n",
+    "plot_transformation(\n",
+    "    partial(T, non_sing_tr), title=\"Non-singular transformation\", ax=ax1\n",
+    ")\n",
+    "plot_transformation(partial(T, sing_tr), title=\"Singular transformation\", ax=ax2)\n",
+    "plt.tight_layout()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can also verify that the first linear transformations has rank 2, while the second one has rank 1.\n",
+    "\n",
+    "So the first linear transformations doesn't reduce the amount of information of the original matrix, while the second one does as it has reduced the rank from 2 to 1, that is transforms a matrix with 2 linearly independent rows to one with only 1 linearly independent row.\n",
+    "\n",
+    "> 🔑 The singularity of a linear transformation determines whether there is dimensionality reduction\n",
+    "\n",
+    "> 🔑 The rank of a linear transformation quantifies the dimensionality reduction"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "m, p = sp.Matrix(non_sing_tr).rref()\n",
+    "print(\"Number of pivots (rank):\", len(p))\n",
+    "m"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "m, p = sp.Matrix(sing_tr).rref()\n",
+    "print(\"Number of pivots (rank):\", len(p))\n",
+    "m"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Linear transformations and determinant"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "A linear transformation also has a determinant.\n",
+    "\n",
+    "> 🔑 The determinant of a linear transformation is the area or volume of the transformed basis vectors"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's consider thes non-singular transformations\n",
+    "\n",
+    "$\\begin{bmatrix}3&&1\\\\1&&2\\end{bmatrix}$\n",
+    "\n",
+    "whose determinant is 5.\n",
+    "\n",
+    "If we apply it to the basis vectors (whose area is 1) we get a parallelogram with area 5."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig, ax = plt.subplots()\n",
+    "plot_transformation(partial(T, non_sing_tr), title=\"Non-singular transformation\", ax=ax)\n",
+    "t_e1 = partial(T, non_sing_tr)(e1)\n",
+    "t_e2 = partial(T, non_sing_tr)(e2)\n",
+    "b_area = plt.Rectangle(\n",
+    "    [0, 0],\n",
+    "    1,\n",
+    "    1,\n",
+    "    fill=True,\n",
+    "    facecolor=\"tab:blue\",\n",
+    "    alpha=0.2,\n",
+    ")\n",
+    "t_area = plt.Polygon(\n",
+    "    [[0, 0], t_e1, t_e1 + t_e2, t_e2],\n",
+    "    closed=True,\n",
+    "    fill=True,\n",
+    "    facecolor=\"tab:orange\",\n",
+    "    alpha=0.2,\n",
+    ")\n",
+    "plt.gca().add_patch(b_area)\n",
+    "plt.gca().add_patch(t_area)\n",
+    "plt.title(\"Determinant as the area of the parallelogram\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To verify it, we can use the formula for the area of a triangle $A_t = \\cfrac{bh}{2}$. For a parallelogram it's just $A_p = bh$.\n",
+    "\n",
+    "To calculate $A_p = bh$ we only need $\\vec{h}$, because $b = \\|T(\\vec{e_1})\\|$.\n",
+    "\n",
+    "To find $\\vec{h}$ we can project $T(\\vec{e_2})$ onto $T(\\vec{e_1})$ and subtract the projection from $T(\\vec{e_2})$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "t_e1 = partial(T, non_sing_tr)(e1)\n",
+    "t_e2 = partial(T, non_sing_tr)(e2)\n",
+    "proj_t_e2 = (np.dot(t_e1, t_e2) / np.linalg.norm(t_e1)) * (t_e1 / np.linalg.norm(t_e1))\n",
+    "h = t_e2 - proj_t_e2\n",
+    "\n",
+    "plt.quiver(\n",
+    "    [0, 0, 0, proj_t_e2[0], t_e1[0]],\n",
+    "    [0, 0, 0, proj_t_e2[1], t_e1[1]],\n",
+    "    [t_e1[0], t_e2[0], proj_t_e2[0], h[0], h[0]],\n",
+    "    [t_e1[1], t_e2[1], proj_t_e2[1], h[1], h[1]],\n",
+    "    angles=\"xy\",\n",
+    "    scale_units=\"xy\",\n",
+    "    scale=1,\n",
+    "    fc=[\"tab:orange\", \"tab:orange\", \"tab:pink\", \"none\", \"none\"],\n",
+    "    ec=[\"none\", \"none\", \"none\", \"tab:green\", \"tab:green\"],\n",
+    "    ls=[\"solid\", \"solid\", \"solid\", \"dashed\", \"dashed\"],\n",
+    "    linewidth=1,\n",
+    ")\n",
+    "t_area = plt.Polygon(\n",
+    "    [[0, 0], t_e1, t_e1 + t_e2, t_e2],\n",
+    "    closed=True,\n",
+    "    fill=True,\n",
+    "    facecolor=\"tab:orange\",\n",
+    "    alpha=0.2,\n",
+    ")\n",
+    "plt.gca().add_patch(t_area)\n",
+    "plt.plot(\n",
+    "    [0, t_e2[0], t_e1[0] + t_e2[0], t_e1[0]],\n",
+    "    [0, t_e2[1], t_e2[1] + t_e1[1], t_e1[1]],\n",
+    "    color=\"tab:orange\",\n",
+    ")\n",
+    "plt.annotate(\"$T(e_1)$\", [t_e1[0], t_e1[1] - 0.4], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\"$T(e_2)$\", [t_e2[0], t_e2[1] + 0.4], color=\"tab:orange\", fontsize=12)\n",
+    "plt.annotate(\n",
+    "    \"$proj_{T_(e_1)}T(e_2)$\",\n",
+    "    [proj_t_e2[0] - 1.0, proj_t_e2[1] - 1.0],\n",
+    "    color=\"tab:pink\",\n",
+    "    fontsize=12,\n",
+    ")\n",
+    "plt.annotate(\n",
+    "    \"$h$\",\n",
+    "    [t_e2[0] + 0.5, t_e2[1] - 0.8],\n",
+    "    color=\"tab:green\",\n",
+    "    fontsize=12,\n",
+    ")\n",
+    "plt.xticks(np.arange(-5, 5))\n",
+    "plt.yticks(np.arange(-5, 5))\n",
+    "plt.xlim(-5, 5)\n",
+    "plt.ylim(-5, 5)\n",
+    "plt.gca().set_aspect(\"equal\")\n",
+    "plt.title(\"The height of the triangles/parallelogram\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now that we have $\\vec{h}$, let's calculate $A_p$ and verify it's the same as the determinant of the linear transformation."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "assert np.isclose(np.linalg.norm(t_e1) * np.linalg.norm(h), np.linalg.det(non_sing_tr))"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": ".venv",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.5"
+  },
+  "orig_nbformat": 4
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
