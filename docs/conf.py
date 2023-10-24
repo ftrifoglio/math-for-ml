@@ -10,10 +10,16 @@ copyright = "2023"
 extensions = [
     "nbsphinx",
     "sphinx_book_theme",
+    "sphinxext.opengraph",
 ]
 
 nbsphinx_execute = "always"
 nbsphinx_allow_errors = True
+
+ogp_site_url = "https://fedassembly.github.io/math-for-ml/"
+ogp_description_length = 300
+ogp_type = "article"
+ogp_enable_meta_description = True
 
 # -- Options for HTML output ---
 

@@ -13,6 +13,7 @@ I did not include notes on statistics because it's a topic I didn't need to refr
 
 .. toctree::
    :hidden:
+   :caption: Topics
 
-   Linear Algebra <notebooks/linear_algebra>
-   Calculus <notebooks/calculus>
+   Linear Algebra <linear_algebra/index>
+   Calculus <calculus/index>
