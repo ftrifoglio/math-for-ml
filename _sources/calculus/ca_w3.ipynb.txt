@@ -122,7 +122,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "def linear(x, m, *args):\n",
+    "def linear(x, m):\n",
     "    return x * m\n",
     "\n",
     "\n",
@@ -411,7 +411,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "def sigmoid(x, *args):\n",
+    "def sigmoid(x):\n",
     "    return 1 / (1 + np.exp(-x))\n",
     "\n",
     "\n",
@@ -472,10 +472,6 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "def sigmoid(x, *args):\n",
-    "    return 1 / (1 + np.exp(-x))\n",
-    "\n",
-    "\n",
     "def compute_log_loss(Y, Y_hat):\n",
     "    m = Y_hat.shape[1]\n",
     "    loss = (-1 / m) * (\n",
@@ -627,6 +623,15 @@
     "    loss = loss_new\n",
     "    if i % 100 == 0:\n",
     "        print(f\"Iter {i} - Log loss={loss:.6f}\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "params"
    ]
   },
   {
@@ -1147,7 +1152,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "def relu(x, *args):\n",
+    "def relu(x):\n",
     "    # np.maximum: element-wise max, not np.max along axis\n",
     "    return np.maximum(0, x)\n",
     "\n",
@@ -1202,11 +1207,11 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "def d_sigmoid(x, *args):\n",
+    "def d_sigmoid(x):\n",
     "    return sigmoid(x) * (1 - sigmoid(x))\n",
     "\n",
     "\n",
-    "def d_relu(x, *args):\n",
+    "def d_relu(x):\n",
     "    if isinstance(x, np.ndarray):\n",
     "        x = x.copy()\n",
     "        x[x == 0] = np.nan\n",
