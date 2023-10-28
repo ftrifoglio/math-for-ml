@@ -1011,7 +1011,7 @@ title="Print to PDF"
 <p>Let’s verify it.</p>
 <p><span class="math notranslate nohighlight">\(\cfrac{d}{dy}\ln{y} = \cfrac{1}{y}\)</span> but also <span class="math notranslate nohighlight">\(\cfrac{1}{\cfrac{d}{dx}e^{\ln y}} = \cfrac{1}{y}\)</span></p>
 <p><span class="math notranslate nohighlight">\(\cfrac{d}{dy}\sqrt{y} = \cfrac{d}{dy}y^{\frac{1}{2}} = \cfrac{1}{2}y^{-\frac{1}{2}}\)</span> but also <span class="math notranslate nohighlight">\(\cfrac{1}{\cfrac{d}{dx}\left( y^{\frac{1}{2}} \right)^2} = \cfrac{1}{2y^{\frac{1}{2}}} = \cfrac{1}{2}y^{-\frac{1}{2}} = \cfrac{1}{2}\cfrac{1}{y^\frac{1}{2}} = \cfrac{1}{2}y^{-\frac{1}{2}}\)</span></p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
@@ -1022,6 +1022,21 @@ title="Print to PDF"
     <span class="k">assert</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">d_exponential</span><span class="p">(</span><span class="n">x_1</span><span class="p">)</span> <span class="o">==</span> <span class="n">d_logarithmic</span><span class="p">(</span><span class="n">exponential</span><span class="p">(</span><span class="n">x_1</span><span class="p">),</span> <span class="n">b</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">e</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">AssertionError</span>                            Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[6], line 5</span>
+<span class="ansi-green-intense-fg ansi-bold">      2</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">assert</span> <span style="color: rgb(98,98,98)">1</span> <span style="color: rgb(98,98,98)">/</span> d_quadratic(x_1) <span style="color: rgb(98,98,98)">==</span> d_squareroot(quadratic(x_1))
+<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> np<span style="color: rgb(98,98,98)">.</span>exp(np<span style="color: rgb(98,98,98)">.</span>log(x_1)):
+<span class="ansi-green-fg">----&gt; 5</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">assert</span> <span style="color: rgb(98,98,98)">1</span> <span style="color: rgb(98,98,98)">/</span> d_exponential(x_1) <span style="color: rgb(98,98,98)">==</span> d_logarithmic(exponential(x_1), b<span style="color: rgb(98,98,98)">=</span>np<span style="color: rgb(98,98,98)">.</span>e)
+
+<span class="ansi-red-fg">AssertionError</span>:
+</pre></div></div>
 </div>
 </section>
 <section id="Derivative-rules">
@@ -1439,7 +1454,7 @@ $\displaystyle 0.7$</div></div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
 WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
-I0000 00:00:1698306901.221129    2432 tfrt_cpu_pjrt_client.cc:349] TfrtCpuClient created.
+I0000 00:00:1698514798.738567    2873 tfrt_cpu_pjrt_client.cc:349] TfrtCpuClient created.
 No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)
 </pre></div></div>
 </div>
