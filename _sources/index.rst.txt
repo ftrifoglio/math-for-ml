@@ -1,3 +1,5 @@
+:og:description: Dive deep into the world of mathematics for machine learning and data science with comprehensive notes from DeepLearning.ai's course, covering linear algebra, calculus, PCA, SVM, and more.
+
 Mathematics for Machine Learning and Data Science 
 =================================================
 
@@ -17,3 +19,6 @@ I did not include notes on statistics because it's a topic I didn't need to refr
 
    Linear Algebra <linear_algebra/index>
    Calculus <calculus/index>
+
+.. meta::
+   :description: Dive deep into the world of mathematics for machine learning and data science with comprehensive notes from DeepLearning.ai's course, covering linear algebra, calculus, PCA, SVM, and more.

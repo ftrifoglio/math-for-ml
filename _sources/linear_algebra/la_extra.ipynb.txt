@@ -8,6 +8,13 @@
    ]
   },
   {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<div style=\"display:none;\">Dive into the fundamentals of linear algebra for machine learning and data science. This week you'll apply linear algebra to PCA (Principal Component Analysis) and SVM (Support Vector Machines).</div>"
+   ]
+  },
+  {
    "cell_type": "code",
    "execution_count": null,
    "metadata": {},
@@ -1121,7 +1128,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.11.5"
+   "version": "3.11.6"
   },
   "orig_nbformat": 4
  },

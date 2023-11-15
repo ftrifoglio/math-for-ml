@@ -9,12 +9,12 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://fedassembly.github.io/math-for-ml/calculus/ca_w1.html" />
 <meta property="og:site_name" content="Mathematics for Machine Learning and Data Science" />
-<meta property="og:description" content="Derivatives: Average rate of change of a function: Let x = 0.25 and\Delta x = 1.25, we calculate the average rate of change of each function wrt x over the interval\Delta x as 📐\cfrac{\Delta f}{\Delta x} = \cfrac{f(x + \Delta x) - f(x)}{\Delta x} As\Delta x approaches 0 we get the instantaneous r..." />
+<meta property="og:description" content="Dive into the fundamentals of calculus for machine learning and data science. This week you’ll learn about derivatives, univariate optimization and the difference between symbolic, numerical and automatic differentiation. Derivatives: Average rate of change of a function: Let x = 0.25 and\Delta x..." />
 <meta property="og:image:width" content="1146" />
 <meta property="og:image:height" content="600" />
-<meta property="og:image" content="https://fedassembly.github.io/math-for-ml/_images/social_previews/summary_calculus_ca_w1_c8cb0157.png" />
-<meta property="og:image:alt" content="Derivatives: Average rate of change of a function: Let x = 0.25 and\Delta x = 1.25, we calculate the average rate of change of each function wrt x over the i..." />
-<meta name="description" content="Derivatives: Average rate of change of a function: Let x = 0.25 and\Delta x = 1.25, we calculate the average rate of change of each function wrt x over the interval\Delta x as 📐\cfrac{\Delta f}{\Delta x} = \cfrac{f(x + \Delta x) - f(x)}{\Delta x} As\Delta x approaches 0 we get the instantaneous r..." />
+<meta property="og:image" content="https://fedassembly.github.io/math-for-ml/_images/social_previews/summary_calculus_ca_w1_63e7ca4d.png" />
+<meta property="og:image:alt" content="Dive into the fundamentals of calculus for machine learning and data science. This week you’ll learn about derivatives, univariate optimization and the diffe..." />
+<meta name="description" content="Dive into the fundamentals of calculus for machine learning and data science. This week you’ll learn about derivatives, univariate optimization and the difference between symbolic, numerical and automatic differentiation. Derivatives: Average rate of change of a function: Let x = 0.25 and\Delta x..." />
 <meta name="twitter:card" content="summary_large_image" />
 
     <title>Calculus - Week 1 &#8212; Mathematics for Machine Learning and Data Science</title>
@@ -527,7 +527,8 @@ title="Print to PDF"
                 
   <section id="Calculus---Week-1">
 <h1>Calculus - Week 1<a class="headerlink" href="#Calculus---Week-1" title="Permalink to this headline">#</a></h1>
-<div class="nbinput nblast docutils container">
+<div style="display:none;"><p>Dive into the fundamentals of calculus for machine learning and data science. This week you’ll learn about derivatives, univariate optimization and the difference between symbolic, numerical and automatic differentiation.</p>
+</div><div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
@@ -678,7 +679,7 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/calculus_ca_w1_4_0.png" src="../_images/calculus_ca_w1_4_0.png" />
+<img alt="../_images/calculus_ca_w1_5_0.png" src="../_images/calculus_ca_w1_5_0.png" />
 </div>
 </div>
 <p>Let <span class="math notranslate nohighlight">\(x = 0.25\)</span> and <span class="math notranslate nohighlight">\(\Delta x = 1.25\)</span>, we calculate the average rate of change of each function wrt <span class="math notranslate nohighlight">\(x\)</span> over the interval <span class="math notranslate nohighlight">\(\Delta x\)</span> as</p>
@@ -740,7 +741,7 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/calculus_ca_w1_6_0.png" src="../_images/calculus_ca_w1_6_0.png" />
+<img alt="../_images/calculus_ca_w1_7_0.png" src="../_images/calculus_ca_w1_7_0.png" />
 </div>
 </div>
 <p>As <span class="math notranslate nohighlight">\(\Delta x\)</span> approaches 0 we get the instantaneous rate of change of each function wrt x.</p>
@@ -794,7 +795,7 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/calculus_ca_w1_8_0.png" src="../_images/calculus_ca_w1_8_0.png" />
+<img alt="../_images/calculus_ca_w1_9_0.png" src="../_images/calculus_ca_w1_9_0.png" />
 </div>
 </div>
 </section>
@@ -948,7 +949,7 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/calculus_ca_w1_11_0.png" src="../_images/calculus_ca_w1_11_0.png" />
+<img alt="../_images/calculus_ca_w1_12_0.png" src="../_images/calculus_ca_w1_12_0.png" />
 </div>
 </div>
 </section>
@@ -1011,7 +1012,7 @@ title="Print to PDF"
 <p>Let’s verify it.</p>
 <p><span class="math notranslate nohighlight">\(\cfrac{d}{dy}\ln{y} = \cfrac{1}{y}\)</span> but also <span class="math notranslate nohighlight">\(\cfrac{1}{\cfrac{d}{dx}e^{\ln y}} = \cfrac{1}{y}\)</span></p>
 <p><span class="math notranslate nohighlight">\(\cfrac{d}{dy}\sqrt{y} = \cfrac{d}{dy}y^{\frac{1}{2}} = \cfrac{1}{2}y^{-\frac{1}{2}}\)</span> but also <span class="math notranslate nohighlight">\(\cfrac{1}{\cfrac{d}{dx}\left( y^{\frac{1}{2}} \right)^2} = \cfrac{1}{2y^{\frac{1}{2}}} = \cfrac{1}{2}y^{-\frac{1}{2}} = \cfrac{1}{2}\cfrac{1}{y^\frac{1}{2}} = \cfrac{1}{2}y^{-\frac{1}{2}}\)</span></p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
@@ -1022,21 +1023,6 @@ title="Print to PDF"
     <span class="k">assert</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">d_exponential</span><span class="p">(</span><span class="n">x_1</span><span class="p">)</span> <span class="o">==</span> <span class="n">d_logarithmic</span><span class="p">(</span><span class="n">exponential</span><span class="p">(</span><span class="n">x_1</span><span class="p">),</span> <span class="n">b</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">e</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AssertionError</span>                            Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[6], line 5</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">assert</span> <span style="color: rgb(98,98,98)">1</span> <span style="color: rgb(98,98,98)">/</span> d_quadratic(x_1) <span style="color: rgb(98,98,98)">==</span> d_squareroot(quadratic(x_1))
-<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> np<span style="color: rgb(98,98,98)">.</span>exp(np<span style="color: rgb(98,98,98)">.</span>log(x_1)):
-<span class="ansi-green-fg">----&gt; 5</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">assert</span> <span style="color: rgb(98,98,98)">1</span> <span style="color: rgb(98,98,98)">/</span> d_exponential(x_1) <span style="color: rgb(98,98,98)">==</span> d_logarithmic(exponential(x_1), b<span style="color: rgb(98,98,98)">=</span>np<span style="color: rgb(98,98,98)">.</span>e)
-
-<span class="ansi-red-fg">AssertionError</span>:
-</pre></div></div>
 </div>
 </section>
 <section id="Derivative-rules">
@@ -1301,7 +1287,7 @@ $\displaystyle - \frac{k p^{k} \left(1 - p\right)^{- k + n + 1} + k p^{k + 1} \l
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/calculus_ca_w1_47_0.png" src="../_images/calculus_ca_w1_47_0.png" />
+<img alt="../_images/calculus_ca_w1_48_0.png" src="../_images/calculus_ca_w1_48_0.png" />
 </div>
 </div>
 <p>When <span class="math notranslate nohighlight">\(k = 7\)</span> and <span class="math notranslate nohighlight">\(n = 10\)</span>, the maximum of <span class="math notranslate nohighlight">\(Pr(7, 10, p)\)</span> is for <span class="math notranslate nohighlight">\(p=0.7\)</span>, that is when <span class="math notranslate nohighlight">\(\cfrac{d}{dp}Pr(7, 10, p) = 0\)</span></p>
@@ -1448,21 +1434,11 @@ $\displaystyle 0.7$</div></div>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
-I0000 00:00:1698577039.777524    2757 tfrt_cpu_pjrt_client.cc:349] TfrtCpuClient created.
-No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/calculus_ca_w1_57_1.png" src="../_images/calculus_ca_w1_57_1.png" />
+<img alt="../_images/calculus_ca_w1_58_0.png" src="../_images/calculus_ca_w1_58_0.png" />
 </div>
 </div>
 </section>

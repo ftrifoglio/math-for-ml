@@ -9,12 +9,12 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://fedassembly.github.io/math-for-ml/linear_algebra/la_w4.html" />
 <meta property="og:site_name" content="Mathematics for Machine Learning and Data Science" />
-<meta property="og:description" content="Eigenvalues and Eigenvectors: Basis: 🔑 A basis of a space is a set of linearly independent vectors that spans the space. In a 1-D space, we can only have one element in the basis; in a 2-D space, we can only have two elements in the basis, and so on. 🔑 The span of a basis is the space consisting ..." />
+<meta property="og:description" content="Dive into the fundamentals of linear algebra for machine learning and data science. This week you’ll learn about eigenvalues and eigenvectors. Eigenvalues and Eigenvectors: Basis: 🔑 A basis of a space is a set of linearly independent vectors that spans the space. In a 1-D space, we can only have ..." />
 <meta property="og:image:width" content="1146" />
 <meta property="og:image:height" content="600" />
-<meta property="og:image" content="https://fedassembly.github.io/math-for-ml/_images/social_previews/summary_linear_algebra_la_w4_087f2360.png" />
-<meta property="og:image:alt" content="Eigenvalues and Eigenvectors: Basis: 🔑 A basis of a space is a set of linearly independent vectors that spans the space. In a 1-D space, we can only have one..." />
-<meta name="description" content="Eigenvalues and Eigenvectors: Basis: 🔑 A basis of a space is a set of linearly independent vectors that spans the space. In a 1-D space, we can only have one element in the basis; in a 2-D space, we can only have two elements in the basis, and so on. 🔑 The span of a basis is the space consisting ..." />
+<meta property="og:image" content="https://fedassembly.github.io/math-for-ml/_images/social_previews/summary_linear_algebra_la_w4_ada75118.png" />
+<meta property="og:image:alt" content="Dive into the fundamentals of linear algebra for machine learning and data science. This week you’ll learn about eigenvalues and eigenvectors. Eigenvalues an..." />
+<meta name="description" content="Dive into the fundamentals of linear algebra for machine learning and data science. This week you’ll learn about eigenvalues and eigenvectors. Eigenvalues and Eigenvectors: Basis: 🔑 A basis of a space is a set of linearly independent vectors that spans the space. In a 1-D space, we can only have ..." />
 <meta name="twitter:card" content="summary_large_image" />
 
     <title>Linear Algebra - Week 4 &#8212; Mathematics for Machine Learning and Data Science</title>
@@ -399,7 +399,8 @@ title="Print to PDF"
                 
   <section id="Linear-Algebra---Week-4">
 <h1>Linear Algebra - Week 4<a class="headerlink" href="#Linear-Algebra---Week-4" title="Permalink to this headline">#</a></h1>
-<div class="nbinput nblast docutils container">
+<div style="display:none;"><p>Dive into the fundamentals of linear algebra for machine learning and data science. This week you’ll learn about eigenvalues and eigenvectors.</p>
+</div><div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
@@ -409,7 +410,7 @@ title="Print to PDF"
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">sympy</span> <span class="k">as</span> <span class="nn">sp</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Math</span><span class="p">,</span> <span class="n">display</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Math</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;seaborn-v0_8-whitegrid&quot;</span><span class="p">)</span>
 </pre></div>
@@ -467,7 +468,7 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/linear_algebra_la_w4_5_0.png" src="../_images/linear_algebra_la_w4_5_0.png" />
+<img alt="../_images/linear_algebra_la_w4_6_0.png" src="../_images/linear_algebra_la_w4_6_0.png" />
 </div>
 </div>
 </section>
@@ -527,7 +528,7 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/linear_algebra_la_w4_9_0.png" src="../_images/linear_algebra_la_w4_9_0.png" />
+<img alt="../_images/linear_algebra_la_w4_10_0.png" src="../_images/linear_algebra_la_w4_10_0.png" />
 </div>
 </div>
 <p>With some imagination, we can see that the blue square on the left-hand side gets sheared horizontally with <span class="math notranslate nohighlight">\(A_1\)</span> and gets blown out with <span class="math notranslate nohighlight">\(A_2\)</span>.</p>
@@ -699,7 +700,7 @@ $\displaystyle A_1 - A_2=\left[\begin{matrix}-1 &amp; 1\\0 &amp; 0\end{matrix}\r
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/linear_algebra_la_w4_15_0.png" src="../_images/linear_algebra_la_w4_15_0.png" />
+<img alt="../_images/linear_algebra_la_w4_16_0.png" src="../_images/linear_algebra_la_w4_16_0.png" />
 </div>
 </div>
 <p>Let’s consider another matrix.</p>
@@ -752,7 +753,7 @@ $\displaystyle A_1 - A_2=\left[\begin{matrix}-1 &amp; 1\\0 &amp; 0\end{matrix}\r
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/linear_algebra_la_w4_17_0.png" src="../_images/linear_algebra_la_w4_17_0.png" />
+<img alt="../_images/linear_algebra_la_w4_18_0.png" src="../_images/linear_algebra_la_w4_18_0.png" />
 </div>
 </div>
 </section>

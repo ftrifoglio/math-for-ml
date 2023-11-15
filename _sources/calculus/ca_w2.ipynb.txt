@@ -8,6 +8,13 @@
    ]
   },
   {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<div style=\"display:none;\">Dive into the fundamentals of calculus for machine learning and data science. This week you'll learn about partial derivatives, the gradient and multivariate optimization with gradient descent.</div>"
+   ]
+  },
+  {
    "cell_type": "code",
    "execution_count": null,
    "metadata": {},
@@ -22,7 +29,7 @@
     "import plotly.io as pio\n",
     "import sympy as sp\n",
     "from IPython.core.getipython import get_ipython\n",
-    "from IPython.display import HTML\n",
+    "from IPython.display import display, HTML\n",
     "from matplotlib.animation import FuncAnimation\n",
     "\n",
     "plt.style.use(\"seaborn-v0_8-whitegrid\")\n",
@@ -842,7 +849,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.11.5"
+   "version": "3.11.6"
   },
   "orig_nbformat": 4
  },

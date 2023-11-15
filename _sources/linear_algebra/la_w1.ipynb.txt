@@ -8,6 +8,13 @@
    ]
   },
   {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<div style=\"display:none;\">Dive into the fundamentals of linear algebra for machine learning and data science. This week you'll learn about singularity, linear dependency, determinant and rank.</div>"
+   ]
+  },
+  {
    "cell_type": "code",
    "execution_count": null,
    "metadata": {},
@@ -386,7 +393,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.11.5"
+   "version": "3.11.6"
   },
   "orig_nbformat": 4
  },

@@ -9,12 +9,12 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://fedassembly.github.io/math-for-ml/linear_algebra/la_w3.html" />
 <meta property="og:site_name" content="Mathematics for Machine Learning and Data Science" />
-<meta property="og:description" content="Vectors: Let’s consider these two vectors:\vec{a}=\begin{bmatrix}1\\3\end{bmatrix} and\vec{b}=\begin{bmatrix}4\\1\end{bmatrix} The angle between vectors: To calculate\theta we can use the Law of Cosines 📐\|\vec{c}\|^2 = \|\vec{a}\|^2 + \|\vec{b}\|^2 - 2\|\vec{a}\|\|\vec{b}\|\cos\theta which relat..." />
+<meta property="og:description" content="Dive into the fundamentals of linear algebra for machine learning and data science. This week you’ll learn about vectors, projections and linear transformations. Vectors: Let’s consider these two vectors:\vec{a}=\begin{bmatrix}1\\3\end{bmatrix} and\vec{b}=\begin{bmatrix}4\\1\end{bmatrix} The angl..." />
 <meta property="og:image:width" content="1146" />
 <meta property="og:image:height" content="600" />
-<meta property="og:image" content="https://fedassembly.github.io/math-for-ml/_images/social_previews/summary_linear_algebra_la_w3_b155bc6f.png" />
-<meta property="og:image:alt" content="Vectors: Let’s consider these two vectors:\vec{a}=\begin{bmatrix}1\\3\end{bmatrix} and\vec{b}=\begin{bmatrix}4\\1\end{bmatrix} The angle between vectors: To..." />
-<meta name="description" content="Vectors: Let’s consider these two vectors:\vec{a}=\begin{bmatrix}1\\3\end{bmatrix} and\vec{b}=\begin{bmatrix}4\\1\end{bmatrix} The angle between vectors: To calculate\theta we can use the Law of Cosines 📐\|\vec{c}\|^2 = \|\vec{a}\|^2 + \|\vec{b}\|^2 - 2\|\vec{a}\|\|\vec{b}\|\cos\theta which relat..." />
+<meta property="og:image" content="https://fedassembly.github.io/math-for-ml/_images/social_previews/summary_linear_algebra_la_w3_856ea8d3.png" />
+<meta property="og:image:alt" content="Dive into the fundamentals of linear algebra for machine learning and data science. This week you’ll learn about vectors, projections and linear transformati..." />
+<meta name="description" content="Dive into the fundamentals of linear algebra for machine learning and data science. This week you’ll learn about vectors, projections and linear transformations. Vectors: Let’s consider these two vectors:\vec{a}=\begin{bmatrix}1\\3\end{bmatrix} and\vec{b}=\begin{bmatrix}4\\1\end{bmatrix} The angl..." />
 <meta name="twitter:card" content="summary_large_image" />
 
     <title>Linear Algebra - Week 3 &#8212; Mathematics for Machine Learning and Data Science</title>
@@ -433,7 +433,8 @@ title="Print to PDF"
                 
   <section id="Linear-Algebra---Week-3">
 <h1>Linear Algebra - Week 3<a class="headerlink" href="#Linear-Algebra---Week-3" title="Permalink to this headline">#</a></h1>
-<div class="nbinput nblast docutils container">
+<div style="display:none;"><p>Dive into the fundamentals of linear algebra for machine learning and data science. This week you’ll learn about vectors, projections and linear transformations.</p>
+</div><div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
@@ -444,7 +445,7 @@ title="Print to PDF"
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">sympy</span> <span class="k">as</span> <span class="nn">sp</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Math</span><span class="p">,</span> <span class="n">display</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Math</span>
 <span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">rotate</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;seaborn-v0_8-whitegrid&quot;</span><span class="p">)</span>
@@ -491,7 +492,7 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/linear_algebra_la_w3_4_0.png" src="../_images/linear_algebra_la_w3_4_0.png" />
+<img alt="../_images/linear_algebra_la_w3_5_0.png" src="../_images/linear_algebra_la_w3_5_0.png" />
 </div>
 </div>
 <section id="The-angle-between-vectors">
@@ -547,7 +548,7 @@ title="Print to PDF"
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/linear_algebra_la_w3_8_0.png" src="../_images/linear_algebra_la_w3_8_0.png" />
+<img alt="../_images/linear_algebra_la_w3_9_0.png" src="../_images/linear_algebra_la_w3_9_0.png" />
 </div>
 </div>
 <blockquote>
@@ -656,7 +657,7 @@ theta (degrees): 57.53°
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/linear_algebra_la_w3_15_1.png" src="../_images/linear_algebra_la_w3_15_1.png" />
+<img alt="../_images/linear_algebra_la_w3_16_1.png" src="../_images/linear_algebra_la_w3_16_1.png" />
 </div>
 </div>
 </section>
@@ -724,18 +725,18 @@ theta (degrees): 57.53°
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/linear_algebra_la_w3_18_0.png" src="../_images/linear_algebra_la_w3_18_0.png" />
+<img alt="../_images/linear_algebra_la_w3_19_0.png" src="../_images/linear_algebra_la_w3_19_0.png" />
 </div>
 </div>
 <p>The definition of <span class="math notranslate nohighlight">\(\cos \theta\)</span> in a right triangle is <span class="math notranslate nohighlight">\(adjacent / hypotenuse\)</span>.</p>
-<p><img alt="14f1fb6177be461a86d2c21b0d1e74f0" class="no-scaled-link" src="https://ichef.bbci.co.uk/images/ic/1280xn/p0dktj82.png" style="width: 300px;" /> <em>Source: www.bbc.co.uk/bitesize</em></p>
+<p><img alt="6274b185747c49aa808f9af0103c2f46" class="no-scaled-link" src="https://ichef.bbci.co.uk/images/ic/1280xn/p0dktj82.png" style="width: 300px;" /> <em>Source: www.bbc.co.uk/bitesize</em></p>
 <p>The <span class="math notranslate nohighlight">\(hypotenuse\)</span> is the length of vector we want to project (<span class="math notranslate nohighlight">\(\|\vec{b}\|\)</span>).</p>
 <p>The <span class="math notranslate nohighlight">\(adjacent\)</span> is the length of such projection (<span class="math notranslate nohighlight">\(\|\overrightarrow{proj_{a}b}\|\)</span>).</p>
 <p>So, by definition:</p>
 <p><span class="math notranslate nohighlight">\(\cos\theta = \cfrac{\|\overrightarrow{proj_{a}b}\|}{\|\vec{b}\|}\)</span></p>
 <p>and, the <strong>length</strong> of the projection of <span class="math notranslate nohighlight">\(\vec{b}\)</span> is:</p>
 <p><span class="math notranslate nohighlight">\(\|\overrightarrow{proj_{a}b}\| = \|\vec{b}\|\cos\theta\)</span></p>
-<p><img alt="5070d37f847c4a61b32418c0fb4fb955" class="no-scaled-link" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYHv2gl3xCjoh66VBZOxWU7R3ycaKBEQJLcHeyU-pc9kCcZq_q8WfNjEqE9FK83dtVnpo&amp;usqp=CAU" style="width: 300px;" /> <em>Source: www.ncetm.org.uk</em></p>
+<p><img alt="e9b537f0befb4017bf4863a484f179a3" class="no-scaled-link" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYHv2gl3xCjoh66VBZOxWU7R3ycaKBEQJLcHeyU-pc9kCcZq_q8WfNjEqE9FK83dtVnpo&amp;usqp=CAU" style="width: 300px;" /> <em>Source: www.ncetm.org.uk</em></p>
 <p>In the image above, we can see an interesting fact.</p>
 <p>If the length of the vector we want to project is 1, then the length of the projection is <span class="math notranslate nohighlight">\(\cos\theta\)</span>.</p>
 <p><span class="math notranslate nohighlight">\(\|\overrightarrow{proj_{a}b}\| = \cos\theta\)</span> when <span class="math notranslate nohighlight">\(\|\vec{b}\| = 1\)</span></p>
@@ -811,7 +812,7 @@ theta (degrees): 57.53°
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/linear_algebra_la_w3_25_0.png" src="../_images/linear_algebra_la_w3_25_0.png" />
+<img alt="../_images/linear_algebra_la_w3_26_0.png" src="../_images/linear_algebra_la_w3_26_0.png" />
 </div>
 </div>
 <p>We can see that <span class="math notranslate nohighlight">\(\overrightarrow{proj_{a}b}\)</span> (adjacent) and <span class="math notranslate nohighlight">\(\vec{b}\)</span> (hypotenuse) form a right triangle.</p>
@@ -917,7 +918,7 @@ theta (degrees): 57.53°
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/linear_algebra_la_w3_32_0.png" src="../_images/linear_algebra_la_w3_32_0.png" />
+<img alt="../_images/linear_algebra_la_w3_33_0.png" src="../_images/linear_algebra_la_w3_33_0.png" />
 </div>
 </div>
 <p>Let’s find <span class="math notranslate nohighlight">\(\cos\theta_3\)</span> and verify that the sum of the 3 angles is 180.</p>
@@ -978,7 +979,7 @@ theta (degrees): 57.53°
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/linear_algebra_la_w3_36_0.png" src="../_images/linear_algebra_la_w3_36_0.png" />
+<img alt="../_images/linear_algebra_la_w3_37_0.png" src="../_images/linear_algebra_la_w3_37_0.png" />
 </div>
 </div>
 <p>We can use the ‘shadow’ metaphor to get an intuition of what the projection of <span class="math notranslate nohighlight">\(\vec{b}\)</span> onto <span class="math notranslate nohighlight">\(\vec{a}\)</span> might look like.</p>
@@ -1041,7 +1042,7 @@ theta (degrees): 57.53°
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/linear_algebra_la_w3_38_0.png" src="../_images/linear_algebra_la_w3_38_0.png" />
+<img alt="../_images/linear_algebra_la_w3_39_0.png" src="../_images/linear_algebra_la_w3_39_0.png" />
 </div>
 </div>
 <p>Let’s project <span class="math notranslate nohighlight">\(\vec{b}\)</span> onto <span class="math notranslate nohighlight">\(\vec{a}\)</span>.</p>
@@ -1091,7 +1092,7 @@ theta (degrees): 57.53°
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/linear_algebra_la_w3_40_0.png" src="../_images/linear_algebra_la_w3_40_0.png" />
+<img alt="../_images/linear_algebra_la_w3_41_0.png" src="../_images/linear_algebra_la_w3_41_0.png" />
 </div>
 </div>
 </section>
@@ -1171,7 +1172,7 @@ theta (degrees): 57.53°
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/linear_algebra_la_w3_45_0.png" src="../_images/linear_algebra_la_w3_45_0.png" />
+<img alt="../_images/linear_algebra_la_w3_46_0.png" src="../_images/linear_algebra_la_w3_46_0.png" />
 </div>
 </div>
 <p>Let’s see the case when the equivalence <span class="math notranslate nohighlight">\(\vec{a} \cdot \vec{b} = \|\vec{a}\| \|\overrightarrow{proj_{a}b}\|\)</span> doesn’t hold, but <span class="math notranslate nohighlight">\(\vec{a} \cdot \vec{b} = \|\vec{a}\|\|\vec{b}\|\cos\theta\)</span> does.</p>
@@ -1222,7 +1223,7 @@ theta (degrees): 57.53°
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/linear_algebra_la_w3_47_0.png" src="../_images/linear_algebra_la_w3_47_0.png" />
+<img alt="../_images/linear_algebra_la_w3_48_0.png" src="../_images/linear_algebra_la_w3_48_0.png" />
 </div>
 </div>
 <p>Since the angle is more than 90°, <span class="math notranslate nohighlight">\(\cos\theta &lt; 0\)</span>.</p>
@@ -1407,7 +1408,7 @@ $\displaystyle T(\vec{e_1})=\left[\begin{matrix}2\\0\end{matrix}\right]T(\vec{e_
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/linear_algebra_la_w3_59_0.png" src="../_images/linear_algebra_la_w3_59_0.png" />
+<img alt="../_images/linear_algebra_la_w3_60_0.png" src="../_images/linear_algebra_la_w3_60_0.png" />
 </div>
 </div>
 <section id="Linear-transformations-and-rank">
@@ -1434,7 +1435,7 @@ $\displaystyle T(\vec{e_1})=\left[\begin{matrix}2\\0\end{matrix}\right]T(\vec{e_
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/linear_algebra_la_w3_62_0.png" src="../_images/linear_algebra_la_w3_62_0.png" />
+<img alt="../_images/linear_algebra_la_w3_63_0.png" src="../_images/linear_algebra_la_w3_63_0.png" />
 </div>
 </div>
 <p>We can also verify that the first linear transformations has rank 2, while the second one has rank 1.</p>
@@ -1542,7 +1543,7 @@ $\displaystyle \left[\begin{matrix}1 &amp; 1\\0 &amp; 0\end{matrix}\right]$</div
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/linear_algebra_la_w3_69_0.png" src="../_images/linear_algebra_la_w3_69_0.png" />
+<img alt="../_images/linear_algebra_la_w3_70_0.png" src="../_images/linear_algebra_la_w3_70_0.png" />
 </div>
 </div>
 <p>To verify it, we can use the formula for the area of a triangle <span class="math notranslate nohighlight">\(A_t = \cfrac{bh}{2}\)</span>. For a parallelogram it’s just <span class="math notranslate nohighlight">\(A_p = bh\)</span>.</p>
@@ -1611,7 +1612,7 @@ $\displaystyle \left[\begin{matrix}1 &amp; 1\\0 &amp; 0\end{matrix}\right]$</div
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/linear_algebra_la_w3_71_0.png" src="../_images/linear_algebra_la_w3_71_0.png" />
+<img alt="../_images/linear_algebra_la_w3_72_0.png" src="../_images/linear_algebra_la_w3_72_0.png" />
 </div>
 </div>
 <p>Now that we have <span class="math notranslate nohighlight">\(\vec{h}\)</span>, let’s calculate <span class="math notranslate nohighlight">\(A_p\)</span> and verify it’s the same as the determinant of the linear transformation.</p>

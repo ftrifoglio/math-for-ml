@@ -8,6 +8,13 @@
    ]
   },
   {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<div style=\"display:none;\">Dive into the fundamentals of calculus for machine learning and data science. This week you'll learn about optimization of single and multi-layer neural networks, second derivatives, the Hessian and second-order optimization algorithms like Newton's method.</div>"
+   ]
+  },
+  {
    "cell_type": "code",
    "execution_count": null,
    "metadata": {},
@@ -23,7 +30,7 @@
     "import plotly.io as pio\n",
     "import sympy as sp\n",
     "from IPython.core.getipython import get_ipython\n",
-    "from IPython.display import HTML, Math\n",
+    "from IPython.display import display, HTML, Math\n",
     "from matplotlib.animation import FuncAnimation\n",
     "from scipy.interpolate import interp1d\n",
     "\n",
@@ -449,7 +456,7 @@
     "\n",
     "$\\mathcal{L}(w, b, Y) = -\\prod \\limits_{i=1}^{m} p_i^{y_i}(1-p_i)^{1-y_i}$\n",
     "\n",
-    "In [Univariate optimization (week 1)](/ca_w1.html#Univariate-optimization) we've seen how it's easier to calculate the derivative of the logarithm of the PMF of the Binomial Distribution.\n",
+    "In [Univariate optimization (week 1)](ca_w1.html#Univariate-optimization) we've seen how it's easier to calculate the derivative of the logarithm of the PMF of the Binomial Distribution.\n",
     "\n",
     "We can do the same here to obtain a more manageable loss function.\n",
     "\n",
@@ -2311,7 +2318,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.11.5"
+   "version": "3.11.6"
   },
   "orig_nbformat": 4
  },
