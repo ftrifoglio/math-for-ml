@@ -1,3 +1,5 @@
+:og:description: Dive deep into the world of mathematics for machine learning and data science with comprehensive notes from DeepLearning.ai's course, covering linear algebra.
+
 Linear Algebra
 ==============
 
@@ -9,3 +11,6 @@ Linear Algebra
    Week 4 <la_w4>
    Extra <la_extra>
    Exercises <la_exer>
+
+.. meta::
+   :description: Dive deep into the world of mathematics for machine learning and data science with comprehensive notes from DeepLearning.ai's course, covering linear algebra.

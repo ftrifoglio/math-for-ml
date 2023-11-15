@@ -56,3 +56,4 @@ clean: ## Clean up environment
 	@rm -f .python-version
 	@find . | grep __pycache__ | xargs rm -rf
 	@find . | grep .ipynb_checkpoints | xargs rm -rf
+	@find . | grep .mypy_cache | xargs rm -rf

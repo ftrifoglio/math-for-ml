@@ -3,3 +3,4 @@
 .python-version
 .DS_Store
 docs/build
+.mypy_cache

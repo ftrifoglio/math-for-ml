@@ -20,6 +20,7 @@ ogp_site_url = "https://fedassembly.github.io/math-for-ml/"
 ogp_description_length = 300
 ogp_type = "article"
 ogp_enable_meta_description = True
+ogp_image_alt = False
 
 # -- Options for HTML output ---
 
